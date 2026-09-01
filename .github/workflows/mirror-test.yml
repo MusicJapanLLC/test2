@@ -1,0 +1,35 @@
+name: Mirror MusicJapanLLC/test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror branches and tags
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --mirror https://github.com/MusicJapanLLC/test.git source.git
+          cd source.git
+          git remote set-url --push origin "https://x-access-token:${GH_TOKEN}@github.com/${TARGET}.git"
+          while read -r ref; do
+            git push --force origin "${ref}:${ref}"
+          done < <(git for-each-ref --format='%(refname)' refs/heads refs/tags)
+          source_default="$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null || true)"
+          if [ -z "${source_default}" ]; then
+            source_default="refs/heads/claude/employee-onboarding-setup-udm86"
+          else
+            source_default="${source_default#refs/remotes/origin/}"
+            source_default="refs/heads/${source_default}"
+          fi
+          git push --force origin "${source_default}:refs/heads/main"
