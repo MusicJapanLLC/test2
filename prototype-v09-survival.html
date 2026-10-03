@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#101d1d">
+<title>GUILD∞ v0.9 — Survival Prototype</title>
+<link rel="stylesheet" href="survival-v09.css">
+</head>
+<body>
+<canvas id="c" aria-label="GUILD∞ survival field"></canvas>
+<header id="hud">
+  <div class="brand"><b>GUILD∞</b><small>DAY <span id="day">1</span> · <span id="phase">DAY</span></small></div>
+  <div class="clock"><strong id="clock">02:30</strong><small id="phase-note">夜まで</small></div>
+  <div class="resources">
+    <span>WOOD <b id="wood">0</b></span><span>FOOD <b id="food">0</b></span><span>SCRAP <b id="scrap">0</b></span><span>◆ <b id="crystal">0</b></span>
+  </div>
+</header>
+<div id="status-row">
+  <span>HP <b id="hp">100</b></span>
+  <span>住民 <b id="villagers">0</b>/200</span>
+  <span>斧 <b>EQUIPPED</b></span>
+  <span id="save-indicator">SAVE ✓</span>
+</div>
+<div id="toast" hidden></div>
+<div id="event-ticker"><small>CAMP LOG</small><strong id="ticker">斧一本。まず木を集めろ</strong></div>
+<div id="context-bar">
+  <div><small id="context-kicker">TARGET</small><strong id="context-name">探索中</strong><span id="context-detail">木へ近づくと伐採できる</span></div>
+  <button id="context-action">斧 / 伐採</button>
+</div>
+<nav id="bottom-dock">
+  <button data-sheet="build"><span>▣</span><small>建築</small></button>
+  <button data-sheet="people"><span>♙</span><small>人</small></button>
+  <button id="boost"><span id="boost-speed">×1</span><small id="hourglass">砂時計 0</small></button>
+  <button data-sheet="relic"><span>◆</span><small>RELIC</small></button>
+  <button data-sheet="log"><span>≡</span><small>記録</small></button>
+</nav>
+<section id="sheet" hidden>
+  <header><div><small>SURVIVAL MENU</small><h2 id="sheet-title">建築</h2></div><button id="sheet-close">×</button></header>
+  <div id="sheet-body"></div>
+</section>
+<div id="hint">押したまま指を滑らせる：移動　近づいて「斧 / 伐採」</div>
+<script src="graphics.js"></script>
+<script src="audio-v07.js"></script>
+<script src="survival-v09.js"></script>
+</body>
+</html>
