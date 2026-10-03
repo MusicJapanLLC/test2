@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#101915">
+<title>GUILD∞ — BUILDJOY v1.1</title>
+<link rel="stylesheet" href="buildjoy-v11.css">
+</head>
+<body>
+<canvas id="game" aria-label="GUILD∞ BUILDJOY v1.1"></canvas>
+
+<header id="hud">
+  <section class="identity-panel pixel-frame">
+    <span class="crest">∞</span>
+    <span class="brand-copy"><b>GUILD∞</b><small>灯の開拓地 · LANTERN FRONTIER</small></span>
+    <span class="rank"><small>RANK</small><b id="rank">1</b></span>
+  </section>
+  <section class="time-panel pixel-frame">
+    <b id="day">DAY 1</b><span id="phase">DAY</span><small id="clock">08:00</small>
+  </section>
+  <section class="resources pixel-frame" aria-label="資源">
+    <div class="res wood"><i></i><span><small>WOOD</small><b id="wood">0</b></span></div>
+    <div class="res stone"><i></i><span><small>STONE</small><b id="stone">0</b></span></div>
+    <div class="res food"><i></i><span><small>FOOD</small><b id="food">0</b></span></div>
+    <div class="res people"><i></i><span><small>PEOPLE</small><b id="people">0/200</b></span></div>
+  </section>
+</header>
+
+<div id="objective" class="pixel-frame"><small>NEXT OBJECTIVE</small><b id="objective-text">木を集めて最初の小屋を建てよう</b></div>
+<div id="warning" hidden></div>
+<div id="ticker" class="pixel-frame"><span class="ticker-mark">◆</span><span id="ticker-text">近づくだけで自動採取 · DRAG TO MOVE</span></div>
+
+<div id="utilities">
+  <button id="sound" class="pixel-button">♪ OFF</button>
+  <button id="speed" class="pixel-button">×1</button>
+</div>
+
+<button id="context" hidden class="pixel-button danger"><b id="context-main">ATTACK</b><small id="context-sub">近くの敵</small></button>
+
+<section id="dock" class="pixel-frame">
+  <button id="build-open" class="dock-button primary"><span class="dock-icon">⌂</span><b>BUILD</b><small>街を広げる</small></button>
+  <button id="workers-open" class="dock-button"><span class="dock-icon">♟</span><b>PEOPLE</b><small id="worker-caption">小屋で解禁</small></button>
+  <button id="bag-open" class="dock-button"><span class="dock-icon">▣</span><b>BAG</b><small>DROP / ITEM</small></button>
+  <button id="save-open" class="dock-button"><span class="dock-icon">◆</span><b>SAVE</b><small id="save-status">AUTO</small></button>
+</section>
+
+<section id="sheet" class="pixel-frame" hidden>
+  <div class="sheet-head"><div><small>GUILD∞ MANAGEMENT</small><b id="sheet-title">BUILD</b></div><button id="sheet-close" class="pixel-button">×</button></div>
+
+  <div id="build-panel" class="build-grid">
+    <button data-build="hut" data-icon="⌂"><span class="card-icon">⌂</span><span><b>小屋</b><small>人を雇える</small><em>WOOD 10 · STONE 3</em></span></button>
+    <button data-build="lumber" data-icon="♠"><span class="card-icon">♠</span><span><b>木材所</b><small>木材効率UP</small><em>WOOD 16 · STONE 5</em></span></button>
+    <button data-build="quarry" data-icon="◆"><span class="card-icon">◆</span><span><b>採石所</b><small>石材効率UP</small><em>WOOD 12 · STONE 9</em></span></button>
+    <button data-build="barricade" data-icon="▥" class="wide wall-card"><span class="card-icon">▥</span><span><b>集落防壁</b><small>一度で外周ぜんぶを建設 · ゲート付き</small><em>WOOD 24 · STONE 4</em></span></button>
+    <button data-build="lantern" data-icon="✦"><span class="card-icon">✦</span><span><b>灯火塔</b><small>夜を照らす</small><em>WOOD 6 · STONE 2</em></span></button>
+  </div>
+
+  <div id="workers-panel" hidden>
+    <div id="workers-lock" class="panel-note">小屋を建てると雇用が解禁される</div>
+    <div id="worker-list" class="worker-list"></div>
+    <div class="hire-grid">
+      <button data-hire="wood"><b>＋ 木こり</b><small>FOOD 5 · 木材を自動採取</small></button>
+      <button data-hire="stone"><b>＋ 採石人</b><small>FOOD 5 · 石材を自動採取</small></button>
+      <button data-hire="food"><b>＋ 採集人</b><small>FOOD 4 · 食料を自動採取</small></button>
+      <button data-hire="guard"><b>＋ 衛兵</b><small>FOOD 7 · 夜を守る</small></button>
+    </div>
+  </div>
+
+  <div id="bag-panel" hidden>
+    <div class="bag-grid">
+      <div><small>AXE</small><b>1</b><span>STARTER</span></div>
+      <div><small>HOURGLASS</small><b id="hourglass">1</b><span>RARE</span></div>
+      <div><small>TICKET</small><b id="ticket">0</b><span>RARE</span></div>
+      <div><small>GEM</small><b id="gem">0</b><span>SR</span></div>
+    </div>
+    <p class="panel-note">砂時計で30秒だけ ×2 → ×3　最大×3 · 建設が主役、ガチャは補助</p>
+  </div>
+
+  <div id="save-panel" hidden>
+    <div class="save-card"><small>LAST SAVE</small><b id="last-save">--:--:--</b><span>1秒 heartbeat / mutation / backup / IndexedDB mirror</span></div>
+    <button id="manual-save" class="pixel-button full">今すぐ保存</button>
+  </div>
+</section>
+
+<script src="buildjoy-audio-v10.js"></script>
+<script src="buildjoy-v11.js"></script>
+</body>
+</html>
