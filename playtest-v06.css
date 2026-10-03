@@ -1,0 +1,18 @@
+:root{--pixel-font:ui-monospace,"SFMono-Regular",Menlo,Monaco,"Cascadia Mono","Hiragino Kaku Gothic ProN","Yu Gothic UI",monospace}
+html,body,button{font-family:var(--pixel-font)!important}
+body.playtest-v06{-webkit-font-smoothing:none;text-rendering:geometricPrecision}
+body.playtest-v06 #hud,body.playtest-v06 #right,body.playtest-v06 #bottom,body.playtest-v06 #hint,body.playtest-v06 #menu{font-family:var(--pixel-font)!important}
+body.playtest-v06 .identity,body.playtest-v06 .resources small,body.playtest-v06 .utility,body.playtest-v06 .management span,body.playtest-v06 .menu-kicker,body.playtest-v06 .ledger dt{letter-spacing:.12em}
+body.playtest-v06 .resources b,body.playtest-v06 .management small{font-variant-numeric:tabular-nums}
+body.playtest-v06 .utility,body.playtest-v06 .management,body.playtest-v06 .ledger,body.playtest-v06 .ledger-button{border-radius:1px}
+body.playtest-v06 .utility,body.playtest-v06 .management{box-shadow:inset 0 1px #ffffff0a,0 4px 0 #08181944,0 8px 18px #0002}
+body.playtest-v06 .utility:active,body.playtest-v06 .management:active{transform:translateY(2px);box-shadow:inset 0 2px 3px #0008,0 2px 0 #08181955!important}
+body.playtest-v06 #hint{transition:opacity .35s ease,transform .35s ease;max-width:calc(100vw - 28px);white-space:normal;line-height:1.55;padding:4px 8px;background:#0b2020a6;border:1px solid #aa915042}
+body.playtest-v06 #hint.quiet{opacity:.22;transform:translateY(3px)}
+body.playtest-v06 #menu{backdrop-filter:blur(3px)}
+body.playtest-v06 .ledger{max-height:min(620px,calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 42px));overflow:auto}
+#touch-marker{position:fixed;z-index:11;width:14px;height:14px;margin:-7px 0 0 -7px;pointer-events:none;opacity:0;border:1px solid #efd18d;box-shadow:0 0 0 1px #18302f,0 0 10px #e8bb6855;transform:rotate(45deg) scale(.45)}
+#touch-marker:before{content:"";position:absolute;inset:3px;background:#e6c57a66}
+#touch-marker.show{animation:touchPulse .34s steps(4,end)}
+@keyframes touchPulse{0%{opacity:.95;transform:rotate(45deg) scale(.45)}55%{opacity:.8;transform:rotate(45deg) scale(1)}100%{opacity:0;transform:rotate(45deg) scale(1.35)}}
+@media(max-width:430px){body.playtest-v06 #right{gap:4px}body.playtest-v06 .utility{min-width:44px;padding:7px 7px;font-size:8px}body.playtest-v06 .menu-entry{min-width:54px}body.playtest-v06 #bottom{gap:5px}body.playtest-v06 .management{padding:8px 8px}body.playtest-v06 .management span{font-size:7px}body.playtest-v06 .management small{font-size:8px}}
