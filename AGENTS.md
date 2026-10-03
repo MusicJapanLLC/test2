@@ -4,8 +4,9 @@
 
 1. `GUILD_RULES.md`
 2. `COLLAB.md`
-3. `UI_DIRECTION_V06.md`
-4. 自分の担当Issue / PR
+3. `VISUAL_TARGET_V06.md`
+4. `UI_DIRECTION_V06.md`
+5. 自分の担当Issue / PR
 
 ChatGPT Workが別で作っている新作ゲームには一切触れません
 
@@ -13,11 +14,17 @@ ChatGPT Workが別で作っている新作ゲームには一切触れません
 
 `legacy/guild-v05-detail-polish` の現行画面を基準にする
 
+最新コンセプト画像は「完成イメージの方向性資料」として扱い、**当面は左側の街プレイ画面の品質だけを狙う**
+
 - 高密度ドットキャラ
 - タイル世界
 - polygon / pseudo-3D建築
 - 灯り・影・霧
 - teal / amber系の落ち着いた色
+- Guild Hallが一目で主役と分かる画面
+- 少人数NPCでも街が濃く見える環境detail
+
+右側に描かれた依頼一覧 / 冒険者装備 / 施設詳細 / ワールドマップ等は将来像であり、v0.6で先行実装しない
 
 この見た目を壊して古いWebアプリ風へ戻さない
 
@@ -33,7 +40,7 @@ ChatGPT Workが別で作っている新作ゲームには一切触れません
 
 - スマホはフィールドをタップ / ドラッグして移動
 - 十字キーは表示しない
-- **A/B/X/Yの常設表示も廃止方向**
+- **A/B/X/Yの常設表示も廃止**
 - 既存の内部action APIは互換性のため残してよい
 - 代わりに小さな `MENU` 入口を用意する
 - 建物は直接タップして調べる
@@ -75,4 +82,4 @@ ChatGPT Workが別で作っている新作ゲームには一切触れません
 
 作業開始前に担当を宣言し、完了時は Changed / Files / Tests / Known risks / Merge notes を必ず残す
 
-**詳細な最新UI指示は `UI_DIRECTION_V06.md`**
+**詳細なv0.6指示は `VISUAL_TARGET_V06.md` と `UI_DIRECTION_V06.md`**
