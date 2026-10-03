@@ -1,0 +1,5 @@
+/* CC0 UI texture overlay — Kenney RPG UI pack. Falls back to base CSS if remote assets are unavailable. */
+.panelTexture{background-color:#151310;background-image:url('https://raw.githubusercontent.com/hyunghwan/glenmoor-story/main/public/assets/ui/kenney/panel_brown.png');background-size:100% 100%;image-rendering:pixelated}
+#dock .primary{background-color:#21180f;background-image:url('https://raw.githubusercontent.com/hyunghwan/glenmoor-story/main/public/assets/ui/kenney/buttonLong_brown.png');background-size:100% 100%;image-rendering:pixelated}
+#dock .primary:active{background-image:url('https://raw.githubusercontent.com/hyunghwan/glenmoor-story/main/public/assets/ui/kenney/buttonLong_brown_pressed.png')}
+#sheet{background-color:#0d0e0f;background-image:url('https://raw.githubusercontent.com/hyunghwan/glenmoor-story/main/public/assets/ui/kenney/panelInset_brown.png');background-size:100% 100%;image-rendering:pixelated}
