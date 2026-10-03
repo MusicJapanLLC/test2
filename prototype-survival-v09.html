@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#14201d">
+<title>GUILD∞ — Survival v0.9 Alpha</title>
+<link rel="stylesheet" href="survival-v09.css">
+</head>
+<body>
+<canvas id="game" aria-label="GUILD∞ survival prototype"></canvas>
+
+<header id="hud">
+  <div class="brand"><span class="mark">∞</span><span><b>GUILD∞</b><small>SURVIVAL ALPHA</small></span></div>
+  <div class="clock"><b id="day-label">DAY 1</b><span id="phase-label">DAWN</span><small id="time-label">06:00</small></div>
+  <div class="resources">
+    <div><small>WOOD</small><b id="wood">0</b></div>
+    <div><small>STONE</small><b id="stone">0</b></div>
+    <div><small>FOOD</small><b id="food">0</b></div>
+    <div><small>HP</small><b id="hp">100</b></div>
+  </div>
+</header>
+
+<div id="warning" hidden></div>
+<div id="ticker"><span class="dot"></span><span id="ticker-text">斧を持っている · まず木を集めよう</span></div>
+
+<section id="bottom">
+  <button id="context" class="context idle"><span id="context-main">MOVE</span><small id="context-sub">木や岩に近づく</small></button>
+  <div class="quick-row">
+    <button id="build-open">BUILD</button>
+    <button id="workers-open">WORKERS <span id="worker-count">0/200</span></button>
+    <button id="bag-open">BAG</button>
+    <button id="save-status">AUTO SAVE</button>
+  </div>
+</section>
+
+<div id="panel" hidden>
+  <div class="panel-head"><b id="panel-title">BUILD</b><button id="panel-close">×</button></div>
+  <div id="build-panel" class="panel-view">
+    <button data-build="campfire"><b>焚き火</b><small>WOOD 8 · STONE 4</small></button>
+    <button data-build="workbench"><b>作業台</b><small>WOOD 16 · STONE 8</small></button>
+    <button data-build="barricade"><b>バリケード</b><small>WOOD 12</small></button>
+    <button data-build="shelter"><b>簡易シェルター</b><small>WOOD 24 · STONE 10</small></button>
+  </div>
+  <div id="workers-panel" class="panel-view" hidden>
+    <p id="workers-lock">最初の夜を越えて、焚き火かシェルターを作ると生存者が現れる</p>
+    <div id="worker-controls" hidden>
+      <button data-hire="woodcutter"><b>木こりを雇う</b><small>FOOD 5 · 木材を自動採取</small></button>
+      <button data-hire="guard"><b>衛兵を雇う</b><small>FOOD 8 · 夜の防衛</small></button>
+    </div>
+  </div>
+  <div id="bag-panel" class="panel-view" hidden>
+    <div class="bag-grid">
+      <div><small>AXE</small><b>1</b></div>
+      <div><small>HOURGLASS</small><b id="hourglass">0</b></div>
+      <div><small>SUMMON TICKET</small><b id="ticket">0</b></div>
+      <div><small>BLUEPRINT</small><b id="blueprint">0</b></div>
+      <div><small>GEM</small><b id="gem">0</b></div>
+      <div><small>SCRAP</small><b id="scrap">0</b></div>
+    </div>
+    <button id="use-hourglass">砂時計を使う</button>
+    <div class="rates">DROP / GACHA hooks remain compatible · N / R / SR / SSR</div>
+  </div>
+</div>
+
+<script src="graphics.js"></script>
+<script src="audio.js"></script>
+<script src="survival-v09.js"></script>
+</body>
+</html>
