@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#101713">
+<title>GUILD∞ — BUILDJOY v1.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="buildjoy-v11.css">
+</head>
+<body>
+<canvas id="game" aria-label="GUILD Infinity Buildjoy game field"></canvas>
+
+<header id="hud">
+  <section class="identity">
+    <div class="sigil">∞</div>
+    <div class="identity-copy"><b>GUILD∞</b><small>LANTERN FRONTIER</small></div>
+    <div class="daystamp"><small id="phase">DAY</small><b id="day">01</b><span id="clock">08:00</span></div>
+  </section>
+  <section class="resource-rail">
+    <div class="resource wood"><i>▥</i><span><small>WOOD</small><b id="wood">0</b></span></div>
+    <div class="resource stone"><i>◆</i><span><small>STONE</small><b id="stone">0</b></span></div>
+    <div class="resource food"><i>●</i><span><small>FOOD</small><b id="food">4</b></span></div>
+    <div class="resource people"><i>♟</i><span><small>CREW</small><b id="people">0/200</b></span></div>
+  </section>
+</header>
+
+<section id="objective">
+  <div class="quest-glyph">!</div>
+  <div><small>NEXT MILESTONE</small><b id="objective-text">木と石を集めて開拓小屋を建てる</b></div>
+</section>
+
+<div id="threat" hidden><b>NIGHT RAID</b><span id="threat-copy">防壁を守れ</span></div>
+
+<div id="utilities">
+  <button id="sound" aria-label="sound">♪</button>
+  <button id="speed" aria-label="game speed">×1</button>
+</div>
+
+<div id="ticker"><span class="ticker-mark">›</span><span id="ticker-text">斧一本から開始 · 近くの資源は自動採取</span></div>
+
+<button id="context" hidden><span id="context-icon">⚔</span><span><b id="context-main">ATTACK</b><small id="context-sub">近くの敵</small></span></button>
+
+<section id="dock">
+  <button id="build-open" class="dock-main"><i>⌂</i><span><b>BUILD</b><small>街を広げる</small></span></button>
+  <button id="crew-open"><i>♟</i><span><b>CREW</b><small id="crew-caption">0 PEOPLE</small></span></button>
+  <button id="relic-open"><i>✦</i><span><b>RELIC</b><small id="relic-caption">0 GEM</small></span></button>
+  <button id="bag-open"><i>▣</i><span><b>BAG</b><small>ITEMS</small></span></button>
+</section>
+
+<section id="sheet" hidden>
+  <div class="sheet-backdrop"></div>
+  <article class="sheet-card">
+    <header class="sheet-head">
+      <div><small>GUILD LEDGER</small><b id="sheet-title">BUILD</b></div>
+      <button id="sheet-close">×</button>
+    </header>
+    <div id="sheet-body"></div>
+  </article>
+</section>
+
+<aside id="arrival" hidden>
+  <canvas id="arrival-portrait" width="48" height="48"></canvas>
+  <div><small>NEW SURVIVOR</small><b id="arrival-name">Mira</b><span id="arrival-line">「働くなら、ちゃんと飯は出してね」</span></div>
+</aside>
+
+<script src="buildjoy-audio-v10.js"></script>
+<script src="buildjoy-v11.js"></script>
+</body>
+</html>
