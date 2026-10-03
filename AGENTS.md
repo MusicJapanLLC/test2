@@ -1,43 +1,78 @@
 # GUILD∞ AI ENTRYPOINT
 
-このリポジトリでGUILD∞を触るAI / Codex / Claude / ChatGPTは、**実装前に必ず `GUILD_RULES.md` を読んでください**
+このリポジトリで旧GUILD∞を触るAI / Codex / Claude / ChatGPTは、**実装前に必ず以下を最新版で読んでください**
 
-その後 `COLLAB.md` を読み、現在の担当境界を確認してください
+1. `GUILD_RULES.md`
+2. `COLLAB.md`
+3. `UI_DIRECTION_V06.md`
+4. 自分の担当Issue / PR
 
-## 優先順位
+ChatGPT Workが別で作っている新作ゲームには一切触れません
 
-1. ドット絵
-2. グラフィック
-3. 操作性 / UI
+## 現在の承認済みビジュアル基準
 
-## 現在の方向
+`legacy/guild-v05-detail-polish` の現行画面を基準にする
 
-- ロマンシング サガ系16bit RPGの探索感を高レベル参考にする
-- ブレイブリーデフォルト系のジオラマ / 奥行き感を高レベル参考にする
-- 既存作品の固有アセット、UI、キャラ、音楽、文章、マップはコピーしない
-- GUILD∞独自の `16bitドットRPG × ジオラマ風疑似3D × ギルド都市育成` にする
+- 高密度ドットキャラ
+- タイル世界
+- polygon / pseudo-3D建築
+- 灯り・影・霧
+- teal / amber系の落ち着いた色
 
-## 操作の必須変更
+この見た目を壊して古いWebアプリ風へ戻さない
 
-- ヌルヌルしたアナログ移動を最終形にしない
-- 4方向の1マス移動を基本にする
-- スマホは目的地を直接タップし、障害物を避けて1マスずつ歩く
-- 十字キーは通常画面へ表示しない
-- 下部にコンパクトなA/B/X/Y
+## 最新優先順位
+
+1. 操作感
+2. UI / Typography
+3. ドット絵・建物detail
+4. QA
+5. その後に機能拡張
+
+## 最新UI方針
+
+- スマホはフィールドをタップ / ドラッグして移動
+- 十字キーは表示しない
+- **A/B/X/Yの常設表示も廃止方向**
+- 既存の内部action APIは互換性のため残してよい
+- 代わりに小さな `MENU` 入口を用意する
+- 建物は直接タップして調べる
+- UIフォント / 数字 / 日本語ラベルのリズムを統一する
+- SFC/16bit系のデジタル感を出すが、既存ゲームの固有UIはコピーしない
+- genericな丸ボタン、バラバラな文字サイズ、Webアプリ風のpillを増やさない
 - 人をむやみに増やさない
 - TAP TO STARTのブロッキング画面を復活させない
 
-## 並行作業
+## 役割分担
 
-自分の担当以外を勝手に作り直さないでください
+### Input / Feel
+- tap / drag movement
+- retarget / stop feel
+- camera timing
+- building tap reliability
 
-担当候補
-- 操作係
-- グラフィック係
-- UI係
-- システム係
-- QA / 捜査係
+### UI / Typography
+- font rhythm
+- HUD copy
+- MENU
+- controller表示整理
+- menu panel
 
-作業開始前に担当を宣言し、完了時は `GUILD_RULES.md` のhandoff形式で報告してください
+### Graphics
+- current art baselineを維持しdetail向上
+- character / building / terrain / light
 
-**ルールの正本は常に `GUILD_RULES.md` です**
+### Systems
+- save / menu state / compatibility hooks
+- UIやgraphicsを勝手に作り直さない
+
+### QA / Investigation
+- iPhone safe-area
+- touch conflict
+- text clipping
+- pixel blur
+- controller再出現防止
+
+作業開始前に担当を宣言し、完了時は Changed / Files / Tests / Known risks / Merge notes を必ず残す
+
+**詳細な最新UI指示は `UI_DIRECTION_V06.md`**
