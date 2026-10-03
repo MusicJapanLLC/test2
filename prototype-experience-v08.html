@@ -68,27 +68,50 @@
   <div id="v08-sheet" hidden>
     <section class="v08-panel is-active" data-v08-panel="guild">
       <div class="sheet-title"><b>ギルド管理</b><span id="v08-guild-summary">Lv.1</span></div>
-      <p>日常操作はこの下部バーだけで完結　街を見ながら育てる</p>
+      <div class="meta-inventory">
+        <span>◆ GEM <b id="meta-gems">20</b></span>
+        <span>⌛ HOURGLASS <b id="meta-hourglass">1</b></span>
+        <span>▧ BLUEPRINT <b id="meta-blueprint">1</b></span>
+      </div>
+      <p>街を歩きながら育てる　希少アイテムは依頼や節目から獲得</p>
     </section>
+
     <section class="v08-panel" data-v08-panel="roster">
       <div class="sheet-title"><b>冒険者</b><span id="v08-roster-summary">10 / 200</span></div>
-      <p>人口上限200へ拡張中　描画人数と内部人口は分離して街の見やすさを守る</p>
+      <div class="summon-row">
+        <div><small>召喚券</small><b id="meta-ticket">1</b></div>
+        <div><small>星晶</small><b id="meta-gems-roster">20</b></div>
+        <button id="meta-gacha">召喚する</button>
+      </div>
+      <div id="meta-gacha-result" class="gacha-result">N 55% / R 30% / SR 12% / SSR 3%</div>
     </section>
+
     <section class="v08-panel" data-v08-panel="quest">
-      <div class="sheet-title"><b>依頼</b><span>自動進行</span></div>
-      <p>冒険者は仕事を受け、帰還時に資源を持ち帰る　完了ログは上のtickerへ流れる</p>
+      <div class="sheet-title"><b>依頼</b><span>DROP ENABLED</span></div>
+      <p>依頼完了時に低確率で砂時計・召喚券・設計図・星晶がドロップ　通常プレイでも収集可能</p>
     </section>
+
     <section class="v08-panel" data-v08-panel="facility">
-      <div class="sheet-title"><b>施設</b><span>SELECT / UPGRADE</span></div>
+      <div class="sheet-title"><b>施設</b><span>BUILD / UPGRADE</span></div>
       <div class="facility-grid">
         <button data-building="guild"><b>ギルド本部</b><small>強化</small></button>
-        <button data-building="inn"><b>宿屋</b><small>施設API接続待ち</small></button>
-        <button data-building="forge"><b>鍛冶場</b><small>施設API接続待ち</small></button>
-        <button data-building="store"><b>市場</b><small>施設API接続待ち</small></button>
+        <button data-building="inn"><b>宿屋</b><small>既存施設</small></button>
+        <button data-building="forge"><b>鍛冶場</b><small>既存施設</small></button>
+        <button data-building="store"><b>市場</b><small>既存施設</small></button>
       </div>
+      <div class="construction-title">NEW BUILDING · 設計図を1枚使用</div>
+      <div class="construction-grid">
+        <button data-build-type="herb"><b>薬草園</b><small>回復/素材DROP補助</small></button>
+        <button data-build-type="training"><b>訓練所</b><small>冒険者育成</small></button>
+        <button data-build-type="workshop"><b>工房</b><small>砂時計/道具</small></button>
+        <button data-build-type="trade"><b>交易所</b><small>星晶/資源交換</small></button>
+      </div>
+      <div id="meta-built-list" class="built-list">建設済み: なし</div>
     </section>
+
     <section class="v08-panel" data-v08-panel="record">
       <div class="sheet-title"><b>記録</b><span id="v08-save-status">AUTO SAVE</span></div>
+      <div class="save-readout"><span>LAST</span><b id="meta-last-save">--:--:--</b><span>MIRROR</span><b id="meta-save-mirror">CHECKING</b></div>
       <button id="menu-save" class="v08-record-button">今の街を記録する</button>
     </section>
   </div>
@@ -104,7 +127,9 @@
 <script src="graphics.js"></script>
 <script src="audio.js"></script>
 <script src="game.js"></script>
+<script src="motion-safety-v09.js"></script>
 <script src="prototype-experience-v07.js"></script>
 <script src="prototype-experience-v08.js"></script>
+<script src="progression-v08.js"></script>
 </body>
 </html>
