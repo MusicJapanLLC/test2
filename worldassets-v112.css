@@ -1,0 +1,23 @@
+:root{
+  --v112-panel:url('https://raw.githubusercontent.com/MinaPecheux/godot-tutorials/5e4685c5574684575bd8870354d4cd1e1e674af9/20-Pseudolocalisation/art/sprites/panel_brown.png');
+  --v112-button:url('https://raw.githubusercontent.com/MinaPecheux/godot-tutorials/5e4685c5574684575bd8870354d4cd1e1e674af9/20-Pseudolocalisation/art/sprites/btn-long.png');
+  --v112-town:url('https://raw.githubusercontent.com/Two-Weeks-Team/openClawWorld/main/packages/client/public/assets/kenney/tiles/tinytown_tilemap.png');
+  --v112-chars:url('https://raw.githubusercontent.com/Two-Weeks-Team/openClawWorld/main/packages/client/public/assets/kenney/characters/characters_spritesheet.png');
+}
+#game{z-index:0}
+#world-art-overlay{position:fixed;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;image-rendering:pixelated;image-rendering:crisp-edges}
+#hud,#objective,#warning,#ticker,#utilities,#context,#dock,#sheet{z-index:20}
+#sheet{z-index:40}
+.pixel-frame{border-image-source:var(--v112-panel)!important}
+.pixel-button{background-image:var(--v112-button)!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.dock-button,.build-grid>button,.hire-grid button,.save-card,.panel-note,.worker-card,.resources{border-image-source:var(--v112-panel)!important}
+.worker-face{position:relative!important;background:#140e09!important;background-image:none!important;overflow:hidden!important}
+.worker-face:before{content:"";position:absolute;left:5px;top:7px;width:32px;height:32px;background-image:var(--v112-chars);background-repeat:no-repeat;background-size:1836px 406px;background-position:var(--char-x,0px) 0;image-rendering:pixelated}
+.worker-card:nth-child(7n+1) .worker-face{--char-x:0px}.worker-card:nth-child(7n+2) .worker-face{--char-x:-136px}.worker-card:nth-child(7n+3) .worker-face{--char-x:-238px}.worker-card:nth-child(7n+4) .worker-face{--char-x:-340px}.worker-card:nth-child(7n+5) .worker-face{--char-x:-442px}.worker-card:nth-child(7n+6) .worker-face{--char-x:-544px}.worker-card:nth-child(7n+7) .worker-face{--char-x:-646px}
+.card-icon{width:40px!important;height:40px!important;color:transparent!important;background-image:var(--v112-town)!important;background-size:384px 352px!important;background-repeat:no-repeat!important;image-rendering:pixelated!important}
+.build-grid>button:nth-child(1) .card-icon{background-position:-96px -160px!important}
+.build-grid>button:nth-child(2) .card-icon{background-position:0 -192px!important}
+.build-grid>button:nth-child(3) .card-icon{background-position:0 -128px!important}
+.build-grid>button:nth-child(4) .card-icon{background-position:-288px -96px!important}
+.build-grid>button:nth-child(5) .card-icon{background-position:-256px -320px!important}
+@media(max-width:390px){.worker-face:before{left:3px;top:5px}}
