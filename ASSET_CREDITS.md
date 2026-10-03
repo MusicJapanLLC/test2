@@ -1,31 +1,57 @@
 # GUILD∞ Asset Credits / Provenance
 
-This file tracks any third-party assets imported into the old/legacy GUILD∞ project
+This file tracks third-party assets referenced or imported into the old/legacy GUILD∞ project
 
-## Currently imported
+## v1.1.1 owner-review prototype — actually referenced
 
-None yet in the v1.1 branch
+| Local usage | Asset / Project | Author | Source | License | Integration |
+|---|---|---|---|---|---|
+| `openassets-v111.css` worker portraits/silhouettes | Free 16x16 Puny Character Sprites | Shade | https://merchant-shade.itch.io/16x16-puny-characters | CC0-1.0 | Raw GitHub mirror references for Worker/Soldier/Archer/Mage variants; CSS scales them as pixel portraits |
+| `openassets-v111.css` RPG panel/button skin | Kenney UI Pack: RPG Expansion / Adventure UI family | Kenney | https://kenney.nl/assets/ui-pack-rpg-expansion | CC0 | Raw GitHub mirror references for brown panel / inset / long button / pressed button |
 
-## Approved reference / candidate libraries
+### Exact Puny Character mirror files used
+Source mirror: `series-ai/jam-ready-assets`, which records `SPDX-License-Identifier: CC0-1.0` for this pack
+
+- `puny-characters/2D/top-down-rpg/Human-Worker-Red.png`
+- `puny-characters/2D/top-down-rpg/Human-Worker-Cyan.png`
+- `puny-characters/2D/top-down-rpg/Human-Soldier-Red.png`
+- `puny-characters/2D/top-down-rpg/Human-Soldier-Cyan.png`
+- `puny-characters/2D/top-down-rpg/Archer-Green.png`
+- `puny-characters/2D/top-down-rpg/Mage-Cyan.png`
+
+Mirror license record:
+`https://github.com/series-ai/jam-ready-assets/blob/main/puny-characters/2D/top-down-rpg/License.txt`
+
+### Exact Kenney mirror files used
+Prototype mirror path:
+`series-ai/jam-ready-assets/kenney-ui-adventure-pack/ui/PNG/`
+
+- `panel_brown.png`
+- `panelInset_brown.png`
+- `buttonLong_brown.png`
+- `buttonLong_brown_pressed.png`
+
+Original Kenney source remains the license authority
+
+## Approved next coherent world family
 
 | Asset / Project | Author | Source | License | Status |
 |---|---|---|---|---|
-| Solstice Valley | Debb1ie | https://github.com/Debb1ie/Soltice-Valley-Drop | MIT per README | code/design reference only |
-| Origin 16-bit ARPG | DFarm6 | https://github.com/DFarm6/origin-16bit-arpg | MIT | code/design reference only |
-| Free 16x16 Puny Character Sprites | Shade | https://merchant-shade.itch.io/16x16-puny-characters | CC0 | preferred character prototype family |
-| MiniWorld Sprites | Shade | https://opengameart.org/content/miniworld-sprites | CC0 | preferred world/character family candidate |
-| Hero character sprite sheet | Fry | https://opengameart.org/content/hero-character-sprite-sheet | CC0 | alternate player-character candidate |
-| 496 pixel art icons for medieval/fantasy RPG | 7Soul1 / repack by gnola14 | https://opengameart.org/content/496-pixel-art-icons-for-medievalfantasy-rpg | CC0 | UI/inventory icon candidate |
-| Pixel Art Icons - RPG Essentials | Kettoman | https://kettoman.itch.io/pixel-art-icons-rpg-essentials-16x16 | CC0 | UI item icon candidate |
-| Feudal Japan Props Vol.1 | PixelKensei | https://pixelkensei.itch.io/feudal-japan-props-vol1-free-pixel-art-assets | CC0 | props candidate only if palette/perspective fits |
+| 16x16 Puny World Tileset | Shade | https://merchant-shade.itch.io/16x16-puny-world | CC0 | preferred tree/rock/resource/building family for Graphics lane |
+| MiniWorld Sprites | Shade | https://opengameart.org/content/miniworld-sprites | CC0 | compatible Shade world/building/character family |
+| 496 pixel art icons for medieval/fantasy RPG | 7Soul1 / repack by gnola14 | https://opengameart.org/content/496-pixel-art-icons-for-medievalfantasy-rpg | CC0 | optional inventory/build icon family after compatibility check |
 
-## Import rule
+## Code/design references only
 
-When an asset is actually copied into the repository, replace/add a row with:
-- exact local file path
-- exact original file name
-- version/date if available
-- verified license at time of import
-- any modifications made
+| Project | Source | License | Use |
+|---|---|---|---|
+| Solstice Valley | https://github.com/Debb1ie/Soltice-Valley-Drop | MIT per README | browser pixel architecture / particles / HUD / day-night reference only |
+| Origin 16-bit ARPG | https://github.com/DFarm6/origin-16bit-arpg | MIT | rarity / progression / UI hierarchy reference only |
 
-Do not mix unrelated packs simply because they are free; art direction consistency has priority
+## Release rule
+
+1. Prototype may reference verified CC0 files from stable raw GitHub mirrors for speed
+2. Before shipping an app/store build, selected third-party files must be vendored into the MusicJapanLLC repository/app bundle
+3. Every vendored file keeps exact original name, source, license and modification note here
+4. Do not mix unrelated visual packs just because they are free; art-direction consistency has priority
+5. Commercial/proprietary game art, music, UI, maps, logos and sprites are reference-only and must never be copied

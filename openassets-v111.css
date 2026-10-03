@@ -1,0 +1,41 @@
+:root{
+  --oa-panel:url('https://raw.githubusercontent.com/series-ai/jam-ready-assets/main/kenney-ui-adventure-pack/ui/PNG/panel_brown.png');
+  --oa-inset:url('https://raw.githubusercontent.com/series-ai/jam-ready-assets/main/kenney-ui-adventure-pack/ui/PNG/panelInset_brown.png');
+  --oa-button:url('https://raw.githubusercontent.com/series-ai/jam-ready-assets/main/kenney-ui-adventure-pack/ui/PNG/buttonLong_brown.png');
+  --oa-button-down:url('https://raw.githubusercontent.com/series-ai/jam-ready-assets/main/kenney-ui-adventure-pack/ui/PNG/buttonLong_brown_pressed.png');
+  --puny-worker-red:url('https://raw.githubusercontent.com/series-ai/jam-ready-assets/main/puny-characters/2D/top-down-rpg/Human-Worker-Red.png');
+  --puny-worker-cyan:url('https://raw.githubusercontent.com/series-ai/jam-ready-assets/main/puny-characters/2D/top-down-rpg/Human-Worker-Cyan.png');
+  --puny-soldier-red:url('https://raw.githubusercontent.com/series-ai/jam-ready-assets/main/puny-characters/2D/top-down-rpg/Human-Soldier-Red.png');
+  --puny-soldier-cyan:url('https://raw.githubusercontent.com/series-ai/jam-ready-assets/main/puny-characters/2D/top-down-rpg/Human-Soldier-Cyan.png');
+  --puny-archer:url('https://raw.githubusercontent.com/series-ai/jam-ready-assets/main/puny-characters/2D/top-down-rpg/Archer-Green.png');
+  --puny-mage:url('https://raw.githubusercontent.com/series-ai/jam-ready-assets/main/puny-characters/2D/top-down-rpg/Mage-Cyan.png');
+}
+/* v1.1.1 is an asset-integration skin only: no gameplay state is changed here */
+.pixel-frame{clip-path:none;background:#2c2016;border:12px solid transparent;border-image-source:var(--oa-panel);border-image-slice:24 fill;border-image-width:12px;border-image-repeat:stretch;box-shadow:4px 5px 0 #080503aa,inset 0 1px #fff1}
+.pixel-frame:before{display:none}
+.pixel-button{clip-path:none;border:0;background-color:transparent;background-image:var(--oa-button);background-size:100% 100%;background-repeat:no-repeat;box-shadow:none;color:#fff0c4;text-shadow:1px 1px 0 #2d1a0c;padding:8px 10px}
+.pixel-button:active{background-image:var(--oa-button-down);transform:translateY(2px);filter:none}
+#dock{border-top:0;background:#21170ff5;box-shadow:0 -5px 0 #09060488;padding-left:10px;padding-right:10px}
+.dock-button{border:8px solid transparent;border-image-source:var(--oa-inset);border-image-slice:22 fill;border-image-width:8px;background:#21170f;color:#d7c29c;margin:0 2px;box-shadow:none}
+.dock-button.primary{border-image-source:var(--oa-panel);background:#382416;color:#ffe4a5;box-shadow:none}
+.dock-button:active{transform:translateY(1px);filter:brightness(1.08)}
+#sheet{background:#2c2016;border-image-source:var(--oa-panel)}
+.build-grid>button,.hire-grid button,.save-card,.panel-note{clip-path:none;background:#23180f;border:9px solid transparent;border-image-source:var(--oa-inset);border-image-slice:22 fill;border-image-width:9px;box-shadow:none}
+.build-grid>button:active,.hire-grid button:active{transform:translateY(1px);filter:brightness(1.08)}
+.card-icon{background:#1d130c;border:1px solid #8c673d;color:#f0c875;box-shadow:inset 0 0 0 2px #0007}
+.wall-card{background:#352414!important;border-image-source:var(--oa-panel)!important}
+.worker-card{grid-template-columns:46px 1fr auto;min-height:62px;padding:6px 8px;background:#21160f;border:9px solid transparent;border-image-source:var(--oa-inset);border-image-slice:22 fill;border-image-width:9px;box-shadow:none}
+.worker-face{width:42px;height:46px;background-color:#140e09!important;background-repeat:no-repeat!important;background-position:center!important;background-size:32px 32px!important;image-rendering:pixelated;border:1px solid #9f7746;box-shadow:inset 0 0 0 2px #0009}
+.worker-face>*{display:none!important}
+.worker-card:nth-child(6n+1) .worker-face{background-image:var(--puny-worker-red)!important}
+.worker-card:nth-child(6n+2) .worker-face{background-image:var(--puny-worker-cyan)!important}
+.worker-card:nth-child(6n+3) .worker-face{background-image:var(--puny-soldier-red)!important}
+.worker-card:nth-child(6n+4) .worker-face{background-image:var(--puny-soldier-cyan)!important}
+.worker-card:nth-child(6n+5) .worker-face{background-image:var(--puny-archer)!important}
+.worker-card:nth-child(6n+6) .worker-face{background-image:var(--puny-mage)!important}
+.worker-copy b{font-size:10px;color:#ffe6ad;text-shadow:1px 1px #170c06}.worker-copy small{color:#c8b18c}.worker-copy span{color:#e1bd78}.trait-badge{background:#1b120b;border:1px solid #8b693d;color:#f0ca80}
+.resources{border:9px solid transparent;border-image-source:var(--oa-inset);border-image-slice:22 fill;border-image-width:9px;background:#21170f}.res{border-right:1px solid #6d4e30}.res b{color:#fff0c8}.res small{color:#b49b76}
+.identity-panel,.time-panel,#ticker,#objective{background:#2b1e14}
+#ticker{height:34px;color:#f0dfbe}.ticker-mark{color:#ffc55f}
+.sheet-head{background:#1b120cf5;border-bottom:1px solid #8e6b42}
+@media(max-width:390px){.worker-card{grid-template-columns:42px 1fr auto}.worker-face{width:38px;height:42px;background-size:30px 30px!important}}
