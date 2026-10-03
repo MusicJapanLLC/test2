@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const MUSIC_URL='https://opengameart.org/sites/default/files/The_Bards_Tale.mp3';
 let track=null,ctx=null,master=null,fx=null,amb=null,enabled=false,night=false,ambTimer=null;
-function ensureTrack(){if(track)return;track=new Audio(MUSIC_URL);track.loop=true;track.preload='auto';track.volume=0;track.crossOrigin='anonymous'}
+function ensureTrack(){if(track)return;track=new Audio(MUSIC_URL);track.loop=true;track.preload='auto';track.volume=0}
 function graph(){if(ctx)return true;const A=window.AudioContext||window.webkitAudioContext;if(!A)return false;ctx=new A({latencyHint:'interactive'});master=ctx.createGain();fx=ctx.createGain();amb=ctx.createGain();master.gain.value=.82;fx.gain.value=.92;amb.gain.value=.18;fx.connect(master);amb.connect(master);master.connect(ctx.destination);return true}
 const hz=m=>440*Math.pow(2,(m-69)/12);
 function tone(m,d=.08,v=.06,type='triangle',delay=0,bus=fx){if(!ctx)return;const t=ctx.currentTime+delay,o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type=type;o.frequency.value=hz(m);f.type='lowpass';f.frequency.value=3600;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(f);f.connect(g);g.connect(bus);o.start(t);o.stop(t+d+.03)}
