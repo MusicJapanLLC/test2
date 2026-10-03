@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0a1718">
+<title>GUILD∞ v0.9.1 — Lantern Wild</title>
+<link rel="stylesheet" href="ui-v091-polish.css">
+</head>
+<body>
+<canvas id="game" aria-label="GUILD∞ Lantern Wild survival prototype"></canvas>
+
+<header class="hud">
+  <div class="brandline">
+    <div class="crest">∞</div>
+    <div class="brandcopy"><b>GUILD∞</b><small>LANTERN WILD · SURVIVAL</small></div>
+    <div class="daybox"><small id="phaseLabel">DAY</small><b id="dayLabel">01</b></div>
+  </div>
+  <div class="meters">
+    <div><small>WOOD</small><b id="wood">0</b></div>
+    <div><small>FOOD</small><b id="food">2</b></div>
+    <div><small>GOLD</small><b id="gold">0</b></div>
+    <div><small>CORE</small><b id="coreHp">100</b></div>
+  </div>
+  <div class="submeters">
+    <span>◇ <b id="crystal">0</b></span>
+    <span>券 <b id="ticket">0</b></span>
+    <span>砂 <b id="sand">0</b></span>
+    <span class="saveState" id="saveState">AUTO SAVE ●</span>
+    <span class="clock" id="clock">昼 02:00</span>
+  </div>
+</header>
+
+<section class="mission" id="mission">
+  <span class="missionTag">NEXT</span>
+  <b id="missionText">木を12集めて作業台を建てる</b>
+</section>
+
+<button class="sound" id="sound">♪ OFF</button>
+
+<div class="ticker" id="ticker">斧一本から始まる。まずは木を探そう</div>
+
+<section class="context" id="context">
+  <div class="contextCopy">
+    <small id="contextKicker">FIELD</small>
+    <b id="contextTitle">周囲を探索</b>
+    <span id="contextSub">画面を押したままドラッグで移動</span>
+  </div>
+  <button id="action" class="action primary" disabled>---</button>
+  <button id="speed" class="action speed">×1</button>
+</section>
+
+<nav class="dock" aria-label="常設メニュー">
+  <button data-tab="goal"><span>▤</span><small>目標</small></button>
+  <button data-tab="crew"><span>♙</span><small>人員</small></button>
+  <button data-tab="build" class="buildMain"><span>⌂</span><small>建築</small></button>
+  <button data-tab="bag"><span>▱</span><small>バッグ</small></button>
+  <button data-tab="summon"><span>✦</span><small>召喚</small></button>
+</nav>
+
+<section class="sheet" id="sheet" hidden>
+  <div class="sheetCard">
+    <header><div><small>BASE CONTROL</small><b id="sheetTitle">メニュー</b></div><button id="sheetClose">×</button></header>
+    <div id="sheetBody"></div>
+  </div>
+</section>
+
+<script src="survival-v091-polish.js"></script>
+</body>
+</html>
