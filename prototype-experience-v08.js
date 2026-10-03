@@ -90,7 +90,7 @@
   });
 
   // v0.8 user rule: no permanently free x5/x10.
-  // Until the systems lane exposes the finite Hourglass entitlement, keep world speed locked at x1.
+  // Until Systems exposes the finite Hourglass entitlement, keep speed locked at x1.
   if(speedBtn){
     api()?.setSpeed?.(1);
     speedBtn.textContent='×1';
@@ -104,7 +104,7 @@
   }
 
   // v0.8 drag steering override.
-  // Capture phase prevents the canonical tap-to-destination listener from receiving plain field input.
+  // Capture phase blocks the old tap-to-destination listener for plain field input.
   let pointer=null,ox=0,oy=0,dir=null,lastStep=0,moved=false;
   const DEAD=13, REPEAT=118;
   function direction(dx,dy){
@@ -118,7 +118,7 @@
     pulse.classList.remove('show');void pulse.offsetWidth;pulse.classList.add('show');
   }
   function step(now,force=false){
-    if(!dir)return;
+    if(pointer===null||!dir)return;
     if(force||now-lastStep>=REPEAT){
       lastStep=now;
       api()?.move?.(dir);
@@ -141,7 +141,6 @@
     if(!next)return;
     moved=true;
     if(next!==dir){dir=next;step(performance.now(),true)}
-    else step(performance.now());
   }
   function finish(e){
     if(pointer===null||(e?.pointerId!==undefined&&e.pointerId!==pointer))return;
@@ -158,6 +157,8 @@
     c.addEventListener('pointercancel',finish,true);
     c.addEventListener('lostpointercapture',finish,true);
   }
+  // Continue stepping even when the finger stays still after the drag direction is chosen.
+  setInterval(()=>step(performance.now()),34);
 
   // Never let dock interaction leak into the world input layer.
   $('v08-dock')?.addEventListener('pointerdown',e=>e.stopPropagation(),true);
