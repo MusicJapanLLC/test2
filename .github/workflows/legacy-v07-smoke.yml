@@ -1,0 +1,31 @@
+name: Legacy GUILD v0.7 Smoke
+
+on:
+  push:
+    branches:
+      - legacy/guild-v07-smooth
+      - legacy/agent-qa-v07
+  pull_request:
+    branches:
+      - legacy/guild-v07-smooth
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax
+        run: |
+          node --check smooth-game-v07.js
+          node --check audio-v07.js
+          node --check qa-v07-smoke.mjs
+      - name: Product regression checks
+        run: node qa-v07-smoke.mjs
