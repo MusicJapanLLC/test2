@@ -1,0 +1,67 @@
+name: Guild Infinite CI
+
+on:
+  push:
+    branches:
+      - "game/**"
+  pull_request:
+    paths:
+      - "index.html"
+      - ".github/workflows/guild-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate required game surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f index.html
+          grep -q '<canvas id="c"></canvas>' index.html
+          grep -q 'id="upgrade"' index.html
+          grep -q 'id="hire"' index.html
+          grep -q 'id="fever"' index.html
+          grep -q 'pointerdown' index.html
+          grep -q 'pointermove' index.html
+          grep -q 'pointerup' index.html
+          grep -q 'requestAnimationFrame' index.html
+          if grep -q 'TAP TO START' index.html; then
+            echo 'Blocking start screen reintroduced'
+            exit 1
+          fi
+
+      - name: Syntax-check inline JavaScript
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          html = Path('index.html').read_text(encoding='utf-8')
+          blocks = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, flags=re.S | re.I)
+          if not blocks:
+              raise SystemExit('No inline <script> block found')
+          Path('/tmp/guild-inline.js').write_text('\n'.join(blocks), encoding='utf-8')
+          PY
+          node --check /tmp/guild-inline.js
+
+      - name: Serve prototype and verify HTTP response
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8080 --bind 127.0.0.1 >/tmp/guild-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill $server_pid || true' EXIT
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:8080/index.html >/tmp/guild-index.html; then
+              break
+            fi
+            sleep 0.25
+          done
+          grep -q 'GUILD∞' /tmp/guild-index.html
+          grep -q 'HD2D Prototype' /tmp/guild-index.html
