@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#09090d">
+<title>GUILD∞ — Legacy HD-2D v0.5 UI</title>
+<link rel="stylesheet" href="./legacy-v05.css">
+</head>
+<body>
+<div id="wrap">
+<canvas id="game"></canvas>
+<div id="hud">
+  <div class="crest">G∞</div>
+  <div class="chip"><small>GOLD</small><b id="gold">100</b></div>
+  <div class="chip"><small>WOOD</small><b id="wood">30</b></div>
+  <div class="chip"><small>FOOD</small><b id="food">18</b></div>
+  <div class="chip"><small>GUILD</small><b id="lv">Lv.1</b></div>
+  <div class="chip titlechip"><small>REGION</small><b id="zone">EMBER CAMP</b></div>
+</div>
+<div id="questlog"></div>
+<div id="topButtons"><button class="round" id="sound" aria-label="Sound">♪</button><button class="round" id="speed">×1</button></div>
+<div id="meta"><button class="metaBtn" id="upgrade">GUILD<br><span id="cost">120G</span></button><button class="metaBtn" id="hire">HIRE<br><span>60G</span></button><button class="metaBtn" id="burst">FEVER<br><span>20s</span></button></div>
+<div id="hint">DRAG TO MOVE · WASD / ARROWS · APPROACH A BUILDING TO INTERACT</div>
+<div id="dragGuide"></div>
+<button id="action">ACTION</button>
+</div>
+<script src="./legacy-v05.js"></script>
+</body>
+</html>
