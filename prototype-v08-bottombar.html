@@ -1,12 +1,59 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#142425"><title>GUILD∞ v0.8 Bottom Bar</title><link rel="stylesheet" href="ui-v08.css"></head>
-<body><canvas id="c" aria-label="ギルドの街"></canvas>
-<header id="hud"><div class="identity"><span class="crest">∞</span><span class="brand">GUILD<span>∞</span><small>灯の街 · LANTERN HOLLOW</small></span><b id="level">Lv.1</b></div><div class="resources"><div><small>GOLD</small><b id="gold">100</b></div><div><small>WOOD</small><b id="wood">30</b></div><div><small>FOOD</small><b id="food">18</b></div></div></header>
-<button id="sound" aria-label="BGMを切り替える">♪ OFF</button>
-<div class="goal"><b>目標</b> 冒険者を12人にする <span id="goal-progress">6 / 12</span></div>
-<div id="toast-stack"></div>
-<div id="hint">押したままドラッグ：移動　建物を軽くタップ：選択</div>
-<div id="ticker">街は静かだ。冒険者たちが仕事を探している</div>
-<section id="context"><div class="context-copy"><b id="context-title">ギルド本部</b><small id="context-sub">Lv.1 · 街の中心施設</small></div><button id="context-action" class="quick primary">強化</button><button id="speed" class="quick">×1</button></section>
-<nav id="nav" aria-label="常設メニュー"><button class="nav-btn active" data-tab="quest"><span class="icon">▤</span><span>依頼</span></button><button class="nav-btn" data-tab="party"><span class="icon">♙</span><span>冒険者</span></button><button id="hire" class="nav-btn center"><span class="icon">▶</span><span>HIRE</span></button><button class="nav-btn" data-tab="facility"><span class="icon">⌂</span><span>施設</span></button><button class="nav-btn" data-tab="record"><span class="icon">▱</span><span>記録</span></button></nav>
-<script src="graphics.js"></script><script src="audio-v07.js"></script><script src="smooth-game-v08.js"></script></body></html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#152528">
+<title>GUILD∞ v0.8 Systems</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="ui-v06.css">
+<link rel="stylesheet" href="ui-v08.css">
+</head>
+<body>
+<canvas id="c" aria-label="ギルドの街"></canvas>
+<header id="hud">
+  <div class="identity">
+    <span class="crest">∞</span>
+    <span class="brand">GUILD<span class="infinity">∞</span><small>灯の街 · LANTERN HOLLOW</small></span>
+    <b id="level">Lv.1</b>
+  </div>
+  <div class="resources">
+    <div><small>GOLD</small><b id="gold">100</b></div>
+    <div><small>WOOD</small><b id="wood">30</b></div>
+    <div><small>FOOD</small><b id="food">18</b></div>
+    <div><small>GEM</small><b id="gem">0</b></div>
+  </div>
+</header>
+<div id="right">
+  <button id="sound" class="utility" aria-label="BGMを切り替える" aria-pressed="false">♪ OFF</button>
+  <button id="speed" class="utility" aria-label="時砂を使って倍速">×1 ◇0</button>
+</div>
+<div id="toast-stack" aria-live="polite"></div>
+<div id="hint">押したまま指を滑らせる：移動　建物を軽くタップ：選択</div>
+<section id="bottom-shell" aria-label="ギルド管理">
+  <div id="log-strip"><span class="log-label">LOG</span><div id="ticker">街の記録を読み込んでいます…</div></div>
+  <div id="context-panel">
+    <div class="context-copy"><small id="context-kicker">SELECTED FACILITY</small><b id="context-title">ギルド本部</b><span id="context-sub">Lv.1 · 強化 105G</span></div>
+    <button id="context-action" class="primary-action">強化</button>
+  </div>
+  <div id="tab-panel" hidden>
+    <div class="tab-view" data-view="quest"><div class="stat"><small>完了依頼</small><b id="quest-count">0</b></div><div class="stat"><small>次の報酬</small><b>素材 / 時砂 / 券</b></div><button id="quest-claim" class="mini-action">即席依頼</button></div>
+    <div class="tab-view" data-view="party" hidden><div class="stat"><small>冒険者</small><b id="party-count">6 / 200</b></div><div class="stat"><small>次の雇用</small><b id="hire-cost">60G</b></div><button id="hire" class="mini-action">HIRE</button></div>
+    <div class="tab-view" data-view="build" hidden><div id="build-list" class="build-list"></div></div>
+    <div class="tab-view" data-view="gacha" hidden><div class="stat"><small>召喚券</small><b id="ticket-count">0</b></div><div class="stat"><small>星晶</small><b id="gem-count">0</b></div><button id="gacha-pull" class="mini-action">召喚する</button></div>
+    <div class="tab-view" data-view="record" hidden><div class="stat"><small>AUTO SAVE</small><b id="save-status">3秒ごと</b></div><div class="stat"><small>最終保存</small><b id="last-save">--:--</b></div><button id="manual-save" class="mini-action">今すぐ保存</button></div>
+  </div>
+  <nav id="bottom-nav">
+    <button class="nav-btn active" data-tab="quest"><span>▤</span><small>依頼</small></button>
+    <button class="nav-btn" data-tab="party"><span>♙</span><small>冒険者</small></button>
+    <button class="nav-btn" data-tab="build"><span>⌂</span><small>建築</small></button>
+    <button class="nav-btn" data-tab="gacha"><span>✦</span><small>召喚</small></button>
+    <button class="nav-btn" data-tab="record"><span>▣</span><small>記録</small></button>
+  </nav>
+</section>
+<div id="goal-chip"><span>目標</span> 冒険者を12人にする <b id="goal-progress">6 / 12</b></div>
+<script src="graphics.js"></script>
+<script src="audio-v07.js"></script>
+<script src="smooth-game-v08.js"></script>
+</body>
+</html>
