@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0b1718">
+<title>GUILD∞ v0.9.2 — Builder Lite</title>
+<link rel="stylesheet" href="ui-v092-builder.css">
+</head>
+<body>
+<canvas id="game" aria-label="GUILD∞ Builder Lite prototype"></canvas>
+
+<header class="hud">
+  <div class="brandline">
+    <div class="crest">∞</div>
+    <div class="brandcopy"><b>GUILD∞</b><small>LANTERN WILD · BUILDER LITE</small></div>
+    <div class="daybox"><small id="phaseLabel">DAY</small><b id="dayLabel">01</b></div>
+  </div>
+  <div class="meters">
+    <div><small>WOOD</small><b id="wood">0</b></div>
+    <div><small>STONE</small><b id="stone">0</b></div>
+    <div><small>FOOD</small><b id="food">3</b></div>
+    <div><small>GOLD</small><b id="gold">0</b></div>
+  </div>
+  <div class="submeters">
+    <span>◇ <b id="crystal">0</b></span>
+    <span>砂 <b id="sand">0</b></span>
+    <span>人 <b id="crewCount">0</b></span>
+    <span class="saveState" id="saveState">AUTO SAVE ●</span>
+    <span class="clock" id="clock">昼 1:40</span>
+  </div>
+</header>
+
+<section class="mission">
+  <span class="missionTag">NEXT</span>
+  <b id="missionText">歩くだけで木と石を集めて、最初の小屋を建てよう</b>
+</section>
+
+<button class="sound" id="sound">♪ AUTO</button>
+
+<div class="ticker" id="ticker">近づくだけで自動採取。まずは好きに歩いてみよう</div>
+
+<section class="context">
+  <div class="contextCopy">
+    <small id="contextKicker">AUTO</small>
+    <b id="contextTitle">探索中</b>
+    <span id="contextSub">木・石に近づくと自動で採取する</span>
+  </div>
+  <button id="action" class="action primary" disabled>AUTO</button>
+  <button id="speed" class="action speed">×1</button>
+</section>
+
+<nav class="dock" aria-label="常設メニュー">
+  <button data-tab="goal"><span>▤</span><small>目標</small></button>
+  <button data-tab="crew"><span>♙</span><small>人員</small></button>
+  <button data-tab="build" class="buildMain"><span>⌂</span><small>建築</small></button>
+  <button data-tab="bag"><span>▱</span><small>バッグ</small></button>
+  <button data-tab="summon"><span>✦</span><small>召喚</small></button>
+</nav>
+
+<section class="sheet" id="sheet" hidden>
+  <div class="sheetCard">
+    <header><div><small>BASE CONTROL</small><b id="sheetTitle">建築</b></div><button id="sheetClose">×</button></header>
+    <div id="sheetBody"></div>
+  </div>
+</section>
+
+<script src="builder-v092.js"></script>
+</body>
+</html>
