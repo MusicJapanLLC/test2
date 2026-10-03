@@ -32,11 +32,9 @@
   <button id="speed" class="utility speed-locked" aria-label="世界の進行速度">×1</button>
 </div>
 
-<!-- Canonical runtime log remains the source; v0.8 mirrors it into the bottom ticker. -->
 <div id="log" aria-live="polite"></div>
 <div id="hint">DRAG TO WALK　·　指を離すと止まる</div>
 
-<!-- Hidden compatibility actions required by the canonical game core. -->
 <nav id="controller" class="compat-controller" aria-hidden="true">
   <div class="actions">
     <button id="action-X" data-action="X" class="x" tabindex="-1">X</button>
@@ -45,6 +43,7 @@
     <button id="action-B" data-action="B" class="b" tabindex="-1">B</button>
   </div>
 </nav>
+<span id="roster" hidden>10 / 10</span>
 
 <div id="v08-logbar" role="status" aria-live="polite">
   <span class="log-led"></span>
@@ -54,7 +53,7 @@
 <section id="v08-dock" aria-label="ギルド管理">
   <div class="v08-quick">
     <button id="upgrade" class="v08-command primary"><span>GUILD UP</span><small id="cost">120G</small></button>
-    <button id="hire" class="v08-command"><span>HIRE</span><small id="roster">10 / 200</small></button>
+    <button id="hire" class="v08-command"><span>HIRE</span><small id="v08-roster-display">10 / 200</small></button>
     <button id="fever" class="v08-command"><span>FEVER</span><small id="fever-time">20 sec</small></button>
   </div>
 
@@ -95,7 +94,6 @@
   </div>
 </section>
 
-<!-- Hidden compatibility menu: routine play no longer uses the full-screen modal. -->
 <section id="menu" hidden aria-hidden="true">
   <div class="ledger menu-shell">
     <div id="menu-status">ギルド Lv.1</div>
