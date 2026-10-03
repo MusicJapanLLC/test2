@@ -2,121 +2,128 @@
 
 このリポジトリで旧GUILD∞を触るAI / Codex / Claude / ChatGPTは、**実装前に必ず以下を最新版で読んでください**
 
-1. `SURVIVAL_CORE_V09.md` ← **最優先の最新仕様**
+1. `BUILDJOY_CORE_V10.md` ← **最優先の最新仕様**
 2. `GUILD_RULES.md`
 3. `COLLAB.md`
-4. `V08_FEEDBACK_2026-10-04.md`
-5. `VISUAL_TARGET_V06.md`
-6. 自分の担当Issue / PR
+4. `SURVIVAL_CORE_V09.md` ← 歴史/互換参照のみ。v1.0と衝突したらv1.0優先
+5. 自分の担当Issue / PR
 
 ChatGPT Workが別で作っている新作ゲームには一切触れません
 
-## v0.9のゲーム開始状態
+## v1.0のゲーム方向
 
-旧GUILD∞はサバイバル育成ゲームへ進化します
+旧GUILD∞は **construction-first casual survival** へ調整します
 
-- 最初は主人公1人だけ
-- 所持は斧1本
-- 雇用NPC 0人
-- 街は完成していない
-- 木 / 石 / 食料を手で集める
-- 集めた素材で建築
-- 建築後に人を雇って作業を自動化
+主役:
+- 建物を増やす
+- 街が目に見えて広がる
+- 手作業から雇用/自動化へ進む
+- 音/エフェクト/テンポで作業そのものが気持ちいい
+
+Survivalは補助:
 - 昼夜あり
-- 夜にゾンビ襲撃
-- バリケード / 防衛 / 修理が必要
-- 現在の美しい街は中盤〜終盤の成長先として残す
+- 夜に少数ゾンビ
+- バリケード/衛兵で軽く守る
+- 面倒なsurvival管理を主役にしない
 
-## モーション最優先ルール
+## 最新フィードバック
 
-社長が画面揺れで明確に酔いを訴えたため、**screen shakeは禁止**
+- 木が少なすぎる → 大幅増量 / respawn
+- 石が少なすぎる → 大幅増量 / respawn
+- 作業台を必須ゲートにしない
+- マス移動廃止
+- drag vectorで滑らかなcontinuous movement
+- 木/石/食料は近づくと自動採取 + モーション
+- routine gather button連打をなくす
+- 建設の視覚/音/particle feedbackを強化
+- first useful building 30–60 sec
+- first worker 2–4 min目標
+- screen shake = 0
+- autosave必須
+- 今の承認済みpixel/HD-2D方向は維持
 
-- ランダムcamera shake禁止
-- level up / FEVER / attackでも画面全体を揺らさない
-- hit feedbackはsprite recoil / flash / particles / SEで行う
+## 開始状態
+
+- 主人公1人
+- 斧1本
+- hired workers 0
+- 荒野/小さな開拓地
+- 近距離に十分なtree/rock/forage
+- 建設を始めるまで素材探しで彷徨わせない
 
 ## 操作
 
-- mobileはdrag movement
-- plain field tapでauto-walkしない
+- mobile: smooth analog drag movement
+- world positionはfloat
+- spriteはpixel-artのままでよい
+- plain field tap auto-walkなし
 - visible ABXYなし
 - permanent joystickなし
-- 近接対象に応じたcontext actionのみ
-  - CHOP
-  - MINE
-  - GATHER
-  - ATTACK
-  - BUILD
-  - REPAIR
+- gatheringはauto
+- context actionはattack/repair/special向け
 
-## v0.9の優先順位
+## 優先順位
 
-1. screen shake完全撤去
-2. autosave/reload persistence
-3. manual gathering: tree / rock / food
-4. construction: campfire / workbench / barricade
-5. day / night clock
-6. zombie first wave
-7. axe combat
-8. worker hire + assignment automation
-9. drops / rarity / gacha / Hourglass compatibility
-10. graphics polish / later-town evolution
+1. smooth movement
+2. abundant resources + auto gather motion
+3. build joy / construction effects
+4. autosave/reload persistence
+5. workers / automation
+6. casual day/night + small zombie waves
+7. music / SFX / tempo polish
+8. drops / rarity / gacha / Hourglass
+9. later-town growth toward approved polished town
 
 ## 役割分担
 
-### Survival Systems
-- save schema
-- inventory/resources
-- recipes/construction
-- workers/roles
-- day/night
-- zombie waves
-- barricade HP
-- drops/gacha state
+### Systems
+- resource density / respawn state
+- auto gathering state
+- building placement/effects hooks
+- workers/automation
+- casual day/night/zombie pressure
+- persistence
 
-### Input / Combat
-- drag movement
-- contextual target/action
-- axe chop/attack
-- collision/hit detection
-- no shake
+### Input / Feel
+- analog drag
+- acceleration/deceleration
+- auto-work interrupt
+- combat/repair coexistence
 
-### Graphics / World States
-- empty wilderness start
-- tree/rock/forage nodes
-- build stages
-- barricades
-- zombies
-- day/night palettes
-- current town as later-stage visual target
+### Graphics
+- abundant tree/rock/forage
+- gather animations
+- construction stages/particles
+- early camp -> current polished town progression
 
-### UX / HUD
-- day/time
-- contextual action
-- bottom log
-- build/worker panels
-- dusk/night warnings
+### UX
+- BUILD always accessible
+- bottom ticker/log
+- worker controls
+- context only for special action
+- no routine gather button spam
 
-### Economy / Progression
-- recipes/costs
-- upkeep/housing
-- wave scaling
-- rarity/drop/gacha rates
-- Hourglass economy
-- unlock tree
+### Economy
+- first building 30–60 sec
+- first worker 2–4 min
+- lightweight survival costs
+- construction pacing
 
 ### Audio
-- chop/gather/build/combat/zombie/dawn-night ambience
-- no rumble or motion-sickness effects
+- stronger day pulse
+- chop/mine/pickup/build/hire/drop
+- dusk/night/dawn transitions
+- phone-speaker friendly
 
 ### QA
 - 390x844 first
-- reload persistence
-- first 10-minute loop
-- first night survivability
+- smooth drag
+- no resource starvation
+- auto gather
+- build under 60 sec
 - no shake
-- drag + combat coexistence
+- autosave/reload
 
 作業開始前に担当を宣言し、完了時は Changed / Files / Tests / Known risks / Merge notes を残す
 
-**v0.9の正本は `SURVIVAL_CORE_V09.md`**
+**v1.0の正本は `BUILDJOY_CORE_V10.md`**
