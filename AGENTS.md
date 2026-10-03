@@ -2,128 +2,67 @@
 
 このリポジトリで旧GUILD∞を触るAI / Codex / Claude / ChatGPTは、**実装前に必ず以下を最新版で読んでください**
 
-1. `BUILDJOY_CORE_V10.md` ← **最優先の最新仕様**
-2. `GUILD_RULES.md`
-3. `COLLAB.md`
-4. `SURVIVAL_CORE_V09.md` ← 歴史/互換参照のみ。v1.0と衝突したらv1.0優先
+1. `BUILDJOY_CORE_V10.md` — ゲーム性の正本
+2. `REFERENCE_LIBRARY_V11.md` — **品質/参考/ライセンスの最新正本**
+3. `GUILD_RULES.md`
+4. `COLLAB.md`
 5. 自分の担当Issue / PR
 
 ChatGPT Workが別で作っている新作ゲームには一切触れません
 
-## v1.0のゲーム方向
+## 最新フィードバック v1.1
 
-旧GUILD∞は **construction-first casual survival** へ調整します
+Ownerは一つずつ「顔は？性格は？UIは？」と指摘する状態に疲れている
 
-主役:
-- 建物を増やす
-- 街が目に見えて広がる
-- 手作業から雇用/自動化へ進む
-- 音/エフェクト/テンポで作業そのものが気持ちいい
+今後はAI側が事前に完成品水準を確認してから出す
 
-Survivalは補助:
-- 昼夜あり
-- 夜に少数ゾンビ
-- バリケード/衛兵で軽く守る
-- 面倒なsurvival管理を主役にしない
+必須:
+- 防壁1個を置く方式を廃止 → **1回で集落全体の防壁/perimeterを建設**
+- キャラを色付き四角形で済ませない
+- 顔 / 髪 / 服 / 道具 / 役職差を最低限持つ
+- hired workerは `name / personality / role / trait / visual seed / flavor line` を持つ
+- Worker UIは顔/名前/性格/役割を見せる
+- genericな黒い長方形＋文字だけのUIを減らす
+- pixel-frame / icon / active state / hierarchyを作る
+- v1.0よりテンポを上げる
+- 建設が主役であり、Survivalは補助
 
-## 最新フィードバック
+## Reference-first rule
 
-- 木が少なすぎる → 大幅増量 / respawn
-- 石が少なすぎる → 大幅増量 / respawn
-- 作業台を必須ゲートにしない
-- マス移動廃止
-- drag vectorで滑らかなcontinuous movement
-- 木/石/食料は近づくと自動採取 + モーション
-- routine gather button連打をなくす
-- 建設の視覚/音/particle feedbackを強化
-- first useful building 30–60 sec
-- first worker 2–4 min目標
-- screen shake = 0
-- autosave必須
-- 今の承認済みpixel/HD-2D方向は維持
+Graphics / UX / Character担当は、作業前に `REFERENCE_LIBRARY_V11.md` のMIT/CC0資料を確認する
 
-## 開始状態
+参考候補:
+- Solstice Valley (MIT): browser pixel-RPG architecture / day-night / particles / HUD hierarchy
+- Origin 16-bit ARPG (MIT): rarity / loot / progression UI / richer procedural pixel detail
+- Shade Puny Characters / MiniWorld Sprites (CC0): coherent character/world family
+- 7Soul RPG icons (CC0): UI/inventory icon family
 
-- 主人公1人
-- 斧1本
-- hired workers 0
-- 荒野/小さな開拓地
-- 近距離に十分なtree/rock/forage
-- 建設を始めるまで素材探しで彷徨わせない
+**著作権のある商用ゲーム素材をコピーしない**
+参考は品質・情報設計・テンポ・実装手法に限定
 
-## 操作
+第三者assetを入れる場合は `ASSET_CREDITS.md` に title / author / URL / license / local path を必ず記録
 
-- mobile: smooth analog drag movement
-- world positionはfloat
-- spriteはpixel-artのままでよい
-- plain field tap auto-walkなし
-- visible ABXYなし
-- permanent joystickなし
-- gatheringはauto
-- context actionはattack/repair/special向け
+## v1.1 Priority
 
-## 優先順位
+1. whole-perimeter barricade
+2. character face/personality/detail
+3. worker cards
+4. UI quality pass
+5. faster movement/gather/build tempo
+6. coherent open-source asset family導入
+7. autosave/no-shake regression
 
-1. smooth movement
-2. abundant resources + auto gather motion
-3. build joy / construction effects
-4. autosave/reload persistence
-5. workers / automation
-6. casual day/night + small zombie waves
-7. music / SFX / tempo polish
-8. drops / rarity / gacha / Hourglass
-9. later-town growth toward approved polished town
+## Existing gameplay rules still active
 
-## 役割分担
-
-### Systems
-- resource density / respawn state
-- auto gathering state
-- building placement/effects hooks
-- workers/automation
-- casual day/night/zombie pressure
-- persistence
-
-### Input / Feel
-- analog drag
-- acceleration/deceleration
-- auto-work interrupt
-- combat/repair coexistence
-
-### Graphics
-- abundant tree/rock/forage
-- gather animations
-- construction stages/particles
-- early camp -> current polished town progression
-
-### UX
-- BUILD always accessible
-- bottom ticker/log
-- worker controls
-- context only for special action
-- no routine gather button spam
-
-### Economy
-- first building 30–60 sec
-- first worker 2–4 min
-- lightweight survival costs
-- construction pacing
-
-### Audio
-- stronger day pulse
-- chop/mine/pickup/build/hire/drop
-- dusk/night/dawn transitions
-- phone-speaker friendly
-
-### QA
-- 390x844 first
-- smooth drag
-- no resource starvation
+- smooth analog drag movement
 - auto gather
-- build under 60 sec
-- no shake
-- autosave/reload
+- abundant resources
+- first construction fast
+- first worker early
+- autosave mandatory
+- x1 normal / Hourglass x2-x3 / no free x5/x10
+- no screen shake
+- population cap 200
+- late-game target is the approved rich HD-2D/pixel town
 
-作業開始前に担当を宣言し、完了時は Changed / Files / Tests / Known risks / Merge notes を残す
-
-**v1.0の正本は `BUILDJOY_CORE_V10.md`**
+作業完了時は Changed / Files / Tests / Known risks / Merge notes / Reference-license notes を残す
