@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#122426">
+<title>GUILD∞ v0.9 Survival</title>
+<link rel="stylesheet" href="ui-v09-survival.css">
+</head>
+<body>
+<canvas id="c" aria-label="荒野のギルド拠点"></canvas>
+
+<header id="hud">
+  <div class="identity">
+    <span class="crest">∞</span>
+    <span class="brand">GUILD<span>∞</span><small>灯の荒野 · LANTERN WILD</small></span>
+    <b id="day-label">DAY 1</b>
+  </div>
+  <div class="resources">
+    <div><small>WOOD</small><b id="wood">0</b></div>
+    <div><small>FOOD</small><b id="food">2</b></div>
+    <div><small>GOLD</small><b id="gold">0</b></div>
+    <div><small>HP</small><b id="core-hp">100</b></div>
+  </div>
+  <div class="rarebar">
+    <span>◇ <b id="crystal">0</b></span>
+    <span>券 <b id="ticket">0</b></span>
+    <span>砂 <b id="sand">0</b></span>
+    <span id="phase-clock">昼 02:30</span>
+  </div>
+</header>
+
+<button id="sound" class="topbtn">♪ OFF</button>
+
+<div id="goal"><b>最初の目標</b><span id="goal-text">木を12集めて作業台を建てる</span></div>
+
+<div id="ticker">斧一本から始めよう。夜になる前に備えが必要だ</div>
+
+<section id="context">
+  <div class="context-copy">
+    <b id="context-title">周囲を探索</b>
+    <small id="context-sub">ドラッグで移動</small>
+  </div>
+  <button id="context-action" class="quick primary" disabled>---</button>
+  <button id="speed" class="quick">×1</button>
+</section>
+
+<nav id="nav" aria-label="常設メニュー">
+  <button class="nav-btn" data-tab="quest"><span class="icon">▤</span><span>目標</span></button>
+  <button class="nav-btn" data-tab="workers"><span class="icon">♙</span><span>人員</span></button>
+  <button id="build-open" class="nav-btn center"><span class="icon">⌂</span><span>建築</span></button>
+  <button class="nav-btn" data-tab="bag"><span class="icon">▱</span><span>バッグ</span></button>
+  <button class="nav-btn" data-tab="summon"><span class="icon">✦</span><span>召喚</span></button>
+</nav>
+
+<section id="sheet" hidden>
+  <div class="sheet-card">
+    <header><b id="sheet-title">メニュー</b><button id="sheet-close">×</button></header>
+    <div id="sheet-body"></div>
+  </div>
+</section>
+
+<script src="graphics.js"></script>
+<script src="audio-v07.js"></script>
+<script src="survival-game-v09.js"></script>
+</body>
+</html>
