@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+<title>GUILD∞ v0.9.4 REFORM</title>
+<link rel="stylesheet" href="reform-v094.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+<div class="topbar"><div class="brand"><b>GUILD∞</b><small>FRONTIER REFORM</small></div><div class="res"><i>🪵</i><b id="wood">6</b></div><div class="res"><i>🪨</i><b id="stone">4</b></div><div class="res"><i>🍖</i><b id="food">4</b></div><div class="res"><i>✦</i><b id="gold">0</b></div><div class="day"><small>DAY</small><b id="day">01</b></div></div>
+<button class="sound" id="sound">♪ TAP</button><div class="quest" id="quest">最初の素材は揃っている — 開拓の家を建てる</div><div class="toast" id="toast"></div>
+<div class="portraitMini" id="portraitMini"><canvas id="miniFace" width="58" height="58"></canvas></div><div class="ticker" id="ticker">開拓素材は揃っている　中央の『建設』から最初の家を建てよう</div>
+<nav class="dock"><button data-tab="town"><span>◆</span>街</button><button data-tab="crew"><span>♟</span>住民</button><button data-tab="build" class="build"><span>⌂</span>建設</button><button data-tab="bag"><span>✦</span>収集</button><button data-tab="log"><span>▤</span>記録</button></nav>
+<section class="sheet" id="sheet" hidden><div class="panel"><div class="panelHead"><div><small>GUILD CONTROL</small><b id="panelTitle">建設</b></div><button id="close">×</button></div><div class="panelBody" id="panelBody"></div></div></section>
+<script src="reform-v094.js"></script>
+</body></html>
