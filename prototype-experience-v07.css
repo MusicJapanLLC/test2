@@ -1,0 +1,13 @@
+/* GUILD∞ Experience v0.7 — additive polish only
+   Canonical art/game/audio files remain untouched. */
+#c{z-index:1}
+#hud,#right,#log,#hint,#menu{z-index:5}
+#touch-pulse{position:fixed;z-index:7;width:28px;height:16px;margin:-8px 0 0 -14px;border:1px solid #efd08f;box-shadow:0 0 0 1px #132526,0 0 12px #d9a64f88;pointer-events:none;opacity:0;transform:scale(.75);image-rendering:pixelated}
+#touch-pulse.show{animation:touch-pulse .42s steps(4,end)}
+@keyframes touch-pulse{0%{opacity:0;transform:scale(.65)}18%{opacity:1;transform:scale(1)}68%{opacity:.7;transform:scale(1.12)}100%{opacity:0;transform:scale(1.35)}}
+#hint{transition:opacity .28s ease}
+#hint.is-dim{opacity:.28}
+#menu:not([hidden]) .menu-shell{animation:menu-enter .14s steps(3,end)}
+@keyframes menu-enter{0%{opacity:0;transform:translateY(7px)}100%{opacity:1;transform:none}}
+.menu-trigger::before{content:"▦";font-size:8px;margin-right:4px;color:#c7a766}
+@media(max-width:420px){#right{top:calc(env(safe-area-inset-top) + 96px)}.menu-trigger{padding-inline:8px}.utility{font-size:8px}}
