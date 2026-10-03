@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#102224">
+<title>GUILD∞ v0.9 Survival</title>
+<link rel="stylesheet" href="survival-ui-v09.css">
+</head>
+<body>
+<canvas id="c" aria-label="GUILD∞ survival field"></canvas>
+<header id="hud">
+  <div class="topline"><div class="brand">GUILD∞<small>DAY 1 · WILDERNESS CAMP</small></div><div class="phase"><strong id="phase">DAY</strong><small id="phase-time">01:30</small></div></div>
+  <div class="resources">
+    <div class="res"><small>WOOD</small><b id="wood">0</b></div><div class="res"><small>FOOD</small><b id="food">0</b></div><div class="res"><small>SCRAP</small><b id="scrap">0</b></div><div class="res"><small>CRYSTAL</small><b id="crystal">0</b></div><div class="res"><small>PEOPLE</small><b id="people">0</b></div>
+  </div>
+</header>
+<div id="daybar"><div id="dayfill"></div></div><div id="objective">最初の目標：木を伐って WOOD 12 → 作業台を作る</div><div id="save-indicator">SAVE ✓</div>
+<div id="hp-wrap"><div id="hp"></div></div><div id="barricade-wrap">BARRICADE <span id="barricade-label">NONE</span><div id="barricade-track"><div id="barricade-hp"></div></div></div>
+<div id="target-bubble">斧を持っている · 木へ近づいて「伐採」</div>
+<div id="ticker"><span class="mark">◆</span><div><small>SURVIVAL LOG</small><strong id="ticker-text">主人公ひとり。まずは木を集めよう</strong></div></div>
+<div id="quick">
+  <button id="action" class="q attack"><span>AXE</span><small id="action-label">周囲を調べる</small></button>
+  <button id="build-open" class="q"><span>BUILD</span><small>建築 / 修理</small></button>
+  <button id="hire" class="q"><span>HIRE</span><small id="hire-label">未解放</small></button>
+  <button id="boost" class="q hot"><span id="boost-speed">×1</span><small id="boost-label">砂時計 0</small></button>
+</div>
+<nav id="dock"><button class="dock-btn active" data-sheet="craft"><b>⌂</b>クラフト</button><button class="dock-btn" data-sheet="people"><b>♙</b>住民</button><button class="dock-btn" data-sheet="relic"><b>◇</b>レリック</button><button class="dock-btn" data-sheet="logs"><b>≡</b>記録</button></nav>
+<section id="sheet" hidden><div class="sheet-head"><h2 id="sheet-title">CRAFT / BUILD</h2><button id="sheet-close">×</button></div><div id="sheet-body"></div></section>
+<div id="toast"><small id="toast-kicker">DROP</small><strong id="toast-text">SCRAP +1</strong></div>
+<script src="graphics.js"></script><script src="audio-v07.js"></script><script src="survival-core-v09.js"></script>
+</body></html>

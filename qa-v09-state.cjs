@@ -1,0 +1,18 @@
+'use strict';
+const store=new Map();global.localStorage={getItem:k=>store.has(k)?store.get(k):null,setItem:(k,v)=>store.set(k,String(v)),removeItem:k=>store.delete(k)};
+const core=require('./survival-state-v09.js');
+const assert=(v,m)=>{if(!v)throw new Error(m)};
+let s=core.reset();
+assert(s.survivors.length===0,'fresh survivors must be 0');
+assert(s.resources.wood===0&&s.resources.food===0,'fresh resources must be 0');
+assert(s.player.weapon==='axe','fresh weapon must be axe');
+for(const n of s.nodes.filter(n=>n.kind==='tree').slice(0,16))for(let i=0;i<3;i++)core.gather(n.id);
+s=core.getState();assert(s.resources.wood>=60,'wood gather');
+for(const n of s.nodes.filter(n=>n.kind==='bush').slice(0,7))core.gather(n.id);
+assert(core.build('workbench').ok,'workbench');assert(core.build('barricade').ok,'barricade');assert(core.build('bed').ok,'bed');assert(core.build('recruit').ok,'recruit');
+assert(core.hire().ok,'hire');assert(core.getState().survivors.length===1,'one survivor');
+const survivor=core.getState().survivors[0];assert(core.assignRole(survivor.id,'守備').ok,'role assignment');assert(core.getState().survivors[0].role==='守備','guard role persisted in state');
+core.save('test');const saved=store.get(core.KEY);assert(saved&&saved.includes('"version":90'),'autosave payload');
+store.set(core.KEY,'{broken');const recovered=core.load();assert(recovered.survivors.length===1,'backup recovery');assert(recovered.survivors[0].role==='守備','backup preserves role');
+core.reset();for(let i=0;i<690;i++)core.tick(.25);const night=core.getState();assert(night.phase==='night','phase reaches night');assert(night.zombies.length>0,'night spawns zombies');
+console.log('v0.9 state smoke PASS',core.objective());
