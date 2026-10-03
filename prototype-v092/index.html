@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <title>GUILD∞ v0.9.2 BUILDER DELUXE</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <canvas id="world"></canvas>
+
+  <div id="top">
+    <div class="brand pixelpanel"><b>GUILD∞</b><small>BUILDER DELUXE · CC0 ART</small></div>
+    <div class="resources pixelpanel">
+      <div class="r"><small>▰ WOOD</small><b id="wood">0</b></div>
+      <div class="r"><small>◆ STONE</small><b id="stone">0</b></div>
+      <div class="r"><small>✦ FOOD</small><b id="food">0</b></div>
+    </div>
+    <div class="phase pixelpanel"><b id="phase">DAY 1</b><small id="clock">02:00</small></div>
+  </div>
+
+  <div id="quest" class="pixelpanel">近くの資源は自動採取 → 建物を増やして生産を加速</div>
+  <div id="save" class="pixelpanel">SAVE ✓</div>
+
+  <div id="resident" class="pixelpanel">
+    <div class="portraitWrap"><canvas id="portrait" width="64" height="72"></canvas></div>
+    <div class="bio">
+      <div class="name"><span id="rname">TOM</span><span class="badge" id="rrole">LEADER</span></div>
+      <div class="trait" id="rtrait">好奇心旺盛 · せっかち</div>
+      <div class="quote" id="rquote">「次、何建てる？」</div>
+      <div class="bonus" id="rbonus">建設速度 +12% · 自動採取 +5%</div>
+    </div>
+  </div>
+
+  <div id="target" class="pixelpanel">AUTO GATHER · SEARCHING</div>
+  <div id="controls"><button id="cycle">住民</button><button id="music">♪</button></div>
+  <div id="buildDock" class="pixelpanel"></div>
+
+  <div id="toast" class="pixelpanel"><b id="toastT">BUILD!</b><small id="toastS">街が広がった</small></div>
+
+  <script src="./game.js"></script>
+</body>
+</html>
