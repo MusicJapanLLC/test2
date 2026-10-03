@@ -1,0 +1,240 @@
+:root{
+  --ui-bg:#102426ee;
+  --ui-bg-2:#173032f4;
+  --ui-line:#b79a61;
+  --ui-line-dim:#6f6248;
+  --ui-ink:#eadfbe;
+  --ui-muted:#92a69d;
+  --ui-gold:#d7b26f;
+  --ui-hot:#f0c87b;
+  --font-game:ui-monospace,SFMono-Regular,Menlo,Monaco,"Cascadia Mono","Hiragino Kaku Gothic ProN","Yu Gothic UI",monospace;
+}
+
+html,body,button{font-family:var(--font-game)}
+body{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+
+/* Preserve the approved world art. Only HUD / menu composition changes here. */
+#controller.compat-controller{display:none!important}
+
+#hud{
+  padding:calc(env(safe-area-inset-top) + 11px) 14px 8px;
+  background:linear-gradient(180deg,#0d2023f5 0%,#102528dc 64%,transparent 100%);
+}
+.identity{gap:8px;letter-spacing:.14em;color:var(--ui-ink)}
+.identity .guild-word{font-size:17px;line-height:1}
+.identity small{font-size:7px;letter-spacing:.18em;color:#94a9a0;margin-top:6px}
+.identity>b{font-size:12px;color:var(--ui-gold);text-shadow:1px 1px 0 #071214}
+.crest{
+  width:38px;height:38px;padding-top:4px;
+  border:1px solid #b89a5d88;
+  background:linear-gradient(135deg,#183133,#102326);
+  color:var(--ui-gold);
+  box-shadow:inset 0 1px 0 #f5dfad16,0 6px 18px #0003;
+  text-shadow:1px 1px 0 #071214;
+}
+.resources{gap:24px;margin-top:12px}
+.resources small{font-size:7px;letter-spacing:.15em;color:#8fa49b}
+.resources b{font-size:14px;font-weight:650;color:#eee2c1;text-shadow:1px 1px 0 #071214}
+
+#right{
+  top:calc(env(safe-area-inset-top) + 98px);
+  right:14px;
+  gap:5px;
+}
+.utility{
+  min-height:32px;
+  padding:7px 9px;
+  border-radius:0;
+  border:1px solid #917b515e;
+  background:linear-gradient(#183033ef,#102326ef);
+  color:#d8ccaa;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.08em;
+  box-shadow:inset 0 1px 0 #fff1,0 4px 12px #0004;
+}
+.utility:active{transform:translateY(1px);filter:brightness(1.14)}
+.menu-trigger{color:var(--ui-hot);border-color:#b390565f}
+
+#hint{
+  bottom:calc(env(safe-area-inset-bottom) + 12px);
+  font-size:8px;
+  letter-spacing:.08em;
+  color:#cbbf9d;
+  text-shadow:1px 1px 0 #081616,0 0 6px #000;
+}
+
+/* Menu is a compact 16-bit-inspired information panel, not a modern app sheet. */
+#menu{
+  background:linear-gradient(#071315d1,#081617e8);
+  padding:calc(env(safe-area-inset-top) + 14px) 12px calc(env(safe-area-inset-bottom) + 14px);
+  backdrop-filter:blur(2px);
+}
+.menu-shell{
+  width:min(420px,100%);
+  padding:0;
+  overflow:hidden;
+  border:1px solid var(--ui-line);
+  background:
+    linear-gradient(180deg,#203a38,#122a2b 52%,#102426),
+    repeating-linear-gradient(0deg,#ffffff03 0 1px,transparent 1px 3px);
+  box-shadow:
+    inset 0 1px 0 #f5e7bf20,
+    inset 0 -1px 0 #0009,
+    0 18px 70px #000b;
+}
+.menu-kicker{
+  padding:7px 10px 6px;
+  border-bottom:1px solid #6e5e3e66;
+  background:#0c2022;
+  color:#9e8f68;
+  font-size:7px;
+  letter-spacing:.2em;
+}
+.menu-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+  padding:15px 14px 13px;
+}
+.menu-head small{font-size:7px;letter-spacing:.18em;color:#99aaa0}
+.menu-head h1{
+  margin:5px 0 0;
+  font-size:18px;
+  line-height:1.1;
+  font-weight:700;
+  letter-spacing:.13em;
+  color:#eadfbf;
+  text-shadow:1px 1px 0 #071416;
+}
+.menu-status{
+  padding:5px 7px;
+  border:1px solid #856f484f;
+  color:#d1b676;
+  font-size:8px;
+  letter-spacing:.08em;
+  white-space:nowrap;
+}
+.menu-tabs{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border-top:1px solid #4a4a3d66;
+  border-bottom:1px solid #7a684655;
+  background:#0d2123;
+}
+.menu-tab{
+  min-height:35px;
+  border:0;
+  border-right:1px solid #4c493955;
+  background:transparent;
+  color:#8fa097;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.12em;
+  border-radius:0;
+  box-shadow:none;
+}
+.menu-tab:last-child{border-right:0}
+.menu-tab.is-active{
+  color:#f0d59a;
+  background:linear-gradient(#233b38,#172f30);
+  box-shadow:inset 0 -2px 0 #c69f5c;
+}
+.menu-body{min-height:255px;padding:14px}
+.menu-panel{display:none}
+.menu-panel.is-active{display:block}
+.section-label{
+  margin:0 0 8px;
+  color:#b9a16d;
+  font-size:7px;
+  letter-spacing:.2em;
+}
+.menu-copy{
+  margin:0 0 13px;
+  color:#cfd3bd;
+  font-size:11px;
+  line-height:1.8;
+  letter-spacing:.02em;
+}
+.pixel-rule{height:1px;background:#a98e5e4f;margin:12px 0}
+.compact-dl{
+  display:grid;
+  grid-template-columns:64px 1fr;
+  gap:0;
+  margin:0;
+  font-size:10px;
+  line-height:2.25;
+}
+.compact-dl dt{color:#bca36d;letter-spacing:.08em}
+.compact-dl dd{margin:0;color:#aebdb1}
+.save-note{font-size:8px!important;color:#8ea29a!important;letter-spacing:.04em}
+
+/* Existing management actions are reused instead of duplicated. */
+#menu #bottom.town-actions{
+  position:static;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  margin-top:12px;
+}
+#menu .management{
+  min-width:0;
+  padding:10px 8px;
+  border-radius:0;
+  border:1px solid #88724d75;
+  background:linear-gradient(#203a39,#132b2c);
+  box-shadow:inset 0 1px 0 #ffffff0b,0 5px 12px #0003;
+  text-align:left;
+}
+#menu .management span{font-size:8px;letter-spacing:.11em;color:#ddd3b5}
+#menu .management small{font-size:10px;margin-top:6px;color:#d1ae70}
+#menu .management:active{transform:translateY(1px);filter:brightness(1.16)}
+
+.roster-card{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:4px 10px;
+  align-items:end;
+  padding:12px;
+  margin-bottom:12px;
+  border:1px solid #826f4a66;
+  background:#102628;
+}
+.roster-card span{font-size:7px;color:#9aa89e;letter-spacing:.15em}
+.roster-card strong{grid-row:1 / span 2;grid-column:2;font-size:21px;color:#e2c27f;font-weight:700}
+.roster-card small{font-size:9px;color:#c3cbb7}
+
+.ledger-button{
+  border-radius:0;
+  padding:11px 12px;
+  background:#b9995c;
+  color:#102426;
+  border:1px solid #d8bf87;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+}
+.ledger-button.secondary{
+  margin:0;
+  border:0;
+  border-top:1px solid #6d5d3d66;
+  background:#0c2022;
+  color:#d8cfb3;
+}
+
+@media(max-width:420px){
+  #hud{padding-left:12px;padding-right:12px}
+  .identity .guild-word{font-size:16px}
+  .resources{gap:19px}
+  #right{right:12px}
+  .utility{padding:7px 8px}
+  .menu-body{min-height:245px;padding:12px}
+  .menu-tab{font-size:8px}
+}
+
+@media(max-height:600px){
+  #hint{display:none}
+  #right{top:calc(env(safe-area-inset-top) + 70px)}
+  .menu-body{min-height:190px}
+}
