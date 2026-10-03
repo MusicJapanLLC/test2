@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#14211c">
+<title>GUILD∞ — BUILDJOY v1.0 Alpha</title>
+<link rel="stylesheet" href="buildjoy-v10.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+<header id="hud">
+  <div class="brand"><span class="mark">∞</span><span><b>GUILD∞</b><small>BUILDJOY ALPHA</small></span></div>
+  <div class="clock"><b id="day">DAY 1</b><span id="phase">DAY</span><small id="clock">08:00</small></div>
+  <div class="resources">
+    <div><small>WOOD</small><b id="wood">0</b></div>
+    <div><small>STONE</small><b id="stone">0</b></div>
+    <div><small>FOOD</small><b id="food">0</b></div>
+    <div><small>PEOPLE</small><b id="people">0/200</b></div>
+  </div>
+</header>
+
+<div id="objective"><small>NEXT</small><b id="objective-text">木を集めて最初の小屋を建てよう</b></div>
+<div id="warning" hidden></div>
+<div id="ticker"><span class="dot"></span><span id="ticker-text">近づくだけで自動採取 · DRAG TO MOVE</span></div>
+
+<div id="utilities">
+  <button id="sound">♪ OFF</button>
+  <button id="speed">×1</button>
+</div>
+
+<button id="context" hidden><b id="context-main">ATTACK</b><small id="context-sub">近くの敵</small></button>
+
+<section id="dock">
+  <button id="build-open" class="primary"><span>BUILD</span><small>街を広げる</small></button>
+  <button id="workers-open"><span>WORKERS</span><small id="worker-caption">小屋で解禁</small></button>
+  <button id="bag-open"><span>BAG</span><small>DROP / ITEM</small></button>
+  <button id="save-open"><span>SAVE</span><small id="save-status">AUTO</small></button>
+</section>
+
+<section id="sheet" hidden>
+  <div class="sheet-head"><b id="sheet-title">BUILD</b><button id="sheet-close">×</button></div>
+  <div id="build-panel" class="panel-grid">
+    <button data-build="hut"><b>小屋</b><small>W12 · S4<br>人を雇える</small></button>
+    <button data-build="lumber"><b>木材所</b><small>W18 · S6<br>木材効率UP</small></button>
+    <button data-build="quarry"><b>採石所</b><small>W14 · S12<br>石材効率UP</small></button>
+    <button data-build="barricade"><b>防壁</b><small>W10<br>夜の防衛</small></button>
+    <button data-build="lantern"><b>灯火塔</b><small>W8 · S3<br>夜を照らす</small></button>
+  </div>
+  <div id="workers-panel" class="panel-grid" hidden>
+    <p id="workers-lock">まず小屋を建てると雇用が解禁される</p>
+    <button data-hire="wood"><b>木こり</b><small>FOOD 6 · 木材を自動採取</small></button>
+    <button data-hire="stone"><b>採石人</b><small>FOOD 6 · 石材を自動採取</small></button>
+    <button data-hire="food"><b>採集人</b><small>FOOD 5 · 食料を自動採取</small></button>
+    <button data-hire="guard"><b>衛兵</b><small>FOOD 8 · 夜を守る</small></button>
+  </div>
+  <div id="bag-panel" hidden>
+    <div class="bag-grid">
+      <div><small>AXE</small><b>1</b></div>
+      <div><small>HOURGLASS</small><b id="hourglass">1</b></div>
+      <div><small>TICKET</small><b id="ticket">0</b></div>
+      <div><small>GEM</small><b id="gem">0</b></div>
+    </div>
+    <p>砂時計で30秒だけ ×2 → ×3　最大×3</p>
+  </div>
+  <div id="save-panel" hidden>
+    <div class="save-card"><small>LAST SAVE</small><b id="last-save">--:--:--</b><span>1秒heartbeat + mutation save + backup</span></div>
+    <button id="manual-save">今すぐ保存</button>
+  </div>
+</section>
+
+<script src="buildjoy-audio-v10.js"></script>
+<script src="buildjoy-v10.js"></script>
+</body>
+</html>
