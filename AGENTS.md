@@ -2,67 +2,97 @@
 
 このリポジトリで旧GUILD∞を触るAI / Codex / Claude / ChatGPTは、**実装前に必ず以下を最新版で読んでください**
 
-1. `BUILDJOY_CORE_V10.md` — ゲーム性の正本
-2. `REFERENCE_LIBRARY_V11.md` — **品質/参考/ライセンスの最新正本**
-3. `GUILD_RULES.md`
-4. `COLLAB.md`
-5. 自分の担当Issue / PR
+1. `FIVE_PASS_V12.md` ← 最新の品質プロセス
+2. `VISUAL_REFORM_V12.md` ← 最新の見た目/FX/BGM正本
+3. `BUILDJOY_CORE_V10.md` ← ゲーム性の正本
+4. `REFERENCE_LIBRARY_V11.md` ← 参考/ライセンス
+5. `ASSET_CREDITS_V12.md` ← v1.2で実際に使う外部資産
+6. `GUILD_RULES.md`
+7. `COLLAB.md`
+8. 自分の担当Issue / PR
 
 ChatGPT Workが別で作っている新作ゲームには一切触れません
 
-## 最新フィードバック v1.1
+## v1.2 owner feedback
 
-Ownerは一つずつ「顔は？性格は？UIは？」と指摘する状態に疲れている
+v1.1は細部を変えたが、**見た瞬間の品質差が足りない**
 
-今後はAI側が事前に完成品水準を確認してから出す
+Owner要求:
+- 「5周」= audit → reference → visual replacement → FX/audio reform → screenshot/compare の5段階を本当に回す
+- グラフィックは小修正ではなく置換レベルで変える
+- エフェクトを大幅強化
+- BGMを仮シンセから実トラックへ改革
+- Ownerが一つ一つ品質不足を指摘しなくても済む状態までAI側で比較/却下する
 
-必須:
-- 防壁1個を置く方式を廃止 → **1回で集落全体の防壁/perimeterを建設**
-- キャラを色付き四角形で済ませない
-- 顔 / 髪 / 服 / 道具 / 役職差を最低限持つ
-- hired workerは `name / personality / role / trait / visual seed / flavor line` を持つ
-- Worker UIは顔/名前/性格/役割を見せる
-- genericな黒い長方形＋文字だけのUIを減らす
-- pixel-frame / icon / active state / hierarchyを作る
-- v1.0よりテンポを上げる
-- 建設が主役であり、Survivalは補助
+## v1.2 visual rules
 
-## Reference-first rule
+- low-resolution logical scene → nearest-neighbor upscale
+- sprite-forward renderer
+- player: CC0 pixel sprite sheet優先、fallbackあり
+- workers: CC0 sprite base優先、identity/role overlay
+- terrain: CC0 Puny World familyをprototypeで使用
+- richer foreground / foliage / atmosphere / light pools
+- buildings: roof / wall / trim / lit windows / material variation
+- construction: foundation → wall → roof/detail → finish flash
+- palisade: one-build whole perimeter + gate
+- no screen shake
 
-Graphics / UX / Character担当は、作業前に `REFERENCE_LIBRARY_V11.md` のMIT/CC0資料を確認する
+## v1.2 FX rules
 
-参考候補:
-- Solstice Valley (MIT): browser pixel-RPG architecture / day-night / particles / HUD hierarchy
-- Origin 16-bit ARPG (MIT): rarity / loot / progression UI / richer procedural pixel detail
-- Shade Puny Characters / MiniWorld Sprites (CC0): coherent character/world family
-- 7Soul RPG icons (CC0): UI/inventory icon family
+Gather:
+- impact burst
+- debris
+- resource motes flying toward HUD
+- floating value
+- depletion burst
 
-**著作権のある商用ゲーム素材をコピーしない**
-参考は品質・情報設計・テンポ・実装手法に限定
+Build:
+- local dust/timber chips
+- staged rise
+- finish ring / gold sparkle
+- stronger build sound
+- ZERO camera shake
 
-第三者assetを入れる場合は `ASSET_CREDITS.md` に title / author / URL / license / local path を必ず記録
+Rare drop:
+- ring + star burst + distinct sound
 
-## v1.1 Priority
+Night:
+- palette crossfade
+- lantern bloom
+- firefly/ember atmosphere
 
-1. whole-perimeter barricade
-2. character face/personality/detail
-3. worker cards
-4. UI quality pass
-5. faster movement/gather/build tempo
-6. coherent open-source asset family導入
-7. autosave/no-shake regression
+## v1.2 audio rules
 
-## Existing gameplay rules still active
+Prototype music:
+- day: CC0 `Overworld Theme — alternate` by Louswan
+- night/combat: CC0 `8-bit - Slay The Evil` by HydroGene
+- crossfade day/night
+- iOS user-gesture unlock
+- procedural WebAudio remains for low-latency SFX only
+
+## existing gameplay rules still active
 
 - smooth analog drag movement
 - auto gather
 - abundant resources
+- construction-first casual survival
 - first construction fast
 - first worker early
 - autosave mandatory
 - x1 normal / Hourglass x2-x3 / no free x5/x10
-- no screen shake
 - population cap 200
-- late-game target is the approved rich HD-2D/pixel town
+- full perimeter defense
+
+## acceptance
+
+Do not call a visual pass complete unless:
+- v1.1/v1.2 screenshots look like obviously different builds
+- face/silhouette readable at phone size
+- environment no longer reads as colored rectangles
+- gather/build effects are obvious but non-nauseating
+- BGM is an actual track, not only oscillator notes
+- no autosave regression
+- no screen shake
+- provenance documented
 
 作業完了時は Changed / Files / Tests / Known risks / Merge notes / Reference-license notes を残す
