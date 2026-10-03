@@ -1,42 +1,50 @@
-# GUILD∞ AI ENTRYPOINT
+# GUILD∞ LEGACY — AI ENTRYPOINT
 
-このリポジトリでGUILD∞を触るAI / Codex / Claude / ChatGPTは、**実装前に必ず `GUILD_RULES.md` を読んでください**
+**STOP: このbranch群は旧GUILD∞専用です**
 
-その後 `COLLAB.md` を読み、現在の担当境界を確認してください
+ChatGPT Work が新しく作っている新作ゲームには一切触れないでください
 
-## 優先順位
+旧作を触るAI / Codex / Claude / ChatGPTは、実装前に必ず以下を読むこと
 
-1. ドット絵
-2. グラフィック
-3. 操作性 / UI
+1. `GUILD_RULES.md`
+2. `COLLAB.md`
+3. 現在の `legacy/guild-infinity-v05-ui`
+4. 自分の担当PR / Issue
 
-## 現在の方向
+## 最新方針
 
-- ロマンシング サガ系16bit RPGの探索感を高レベル参考にする
-- ブレイブリーデフォルト系のジオラマ / 奥行き感を高レベル参考にする
-- 既存作品の固有アセット、UI、キャラ、音楽、文章、マップはコピーしない
-- GUILD∞独自の `16bitドットRPG × ジオラマ風疑似3D × ギルド都市育成` にする
+- 旧作だけを改善する
+- Workが途中まで触ったHD-2D / drag-input路線から再開
+- 十字キー廃止
+- ABXY常設廃止
+- blocking start screen禁止
+- 開いた瞬間からワールド描画
+- mobileはdrag movement / dynamic drag joystick
+- UIのチープなWeb感を大幅改善
+- 高密度ドット + polygon建物 + 光/影/霧
+- NPCをむやみに増やさない
 
-## 操作の必須変更
+## branch境界
 
-- ヌルヌルしたアナログ移動を最終形にしない
-- 4方向の1マス移動を基本にする
-- 左下に十字キー
-- 右下にA/B/X/Y
-- 人をむやみに増やさない
-- TAP TO STARTのブロッキング画面を復活させない
+旧作の作業は `legacy/*` のみ
 
-## 並行作業
+推奨lane
+- `legacy/agent-input-ui-polish`
+- `legacy/agent-graphics-polish`
+- `legacy/agent-systems`
+- `legacy/agent-qa`
 
-自分の担当以外を勝手に作り直さないでください
+統合先は `legacy/guild-infinity-v05-ui`
 
-担当候補
-- 操作係
-- グラフィック係
-- UI係
-- システム係
-- QA / 捜査係
+新作側のbranch / file / PRへ変更を送らないこと
 
-作業開始前に担当を宣言し、完了時は `GUILD_RULES.md` のhandoff形式で報告してください
+## 完了報告
 
-**ルールの正本は常に `GUILD_RULES.md` です**
+必ず以下を書く
+- Changed
+- Files / Branch
+- Tests
+- Known risks
+- Merge notes
+
+**最新の正本は `GUILD_RULES.md`**
