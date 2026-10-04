@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0b1210">
+<title>GUILD∞ — Rebuild v1.6</title>
+<link rel="stylesheet" href="buildjoy-v16.css">
+</head>
+<body>
+<canvas id="game" aria-label="GUILD infinity v1.6"></canvas>
+<header id="topbar">
+  <div id="day-chip"><b id="day">DAY 1</b><span id="phase">DAY</span><small id="clock">08:00</small><i id="save-dot"></i></div>
+  <div id="resources">
+    <span><small>WOOD</small><b id="wood">0</b><em id="wood-cap">/160</em></span>
+    <span><small>STONE</small><b id="stone">0</b><em id="stone-cap">/100</em></span>
+    <span><small>FOOD</small><b id="food">0</b><em id="food-cap">/100</em></span>
+    <span><small>PEOPLE</small><b id="people">0/0</b><em id="morale">M100</em></span>
+  </div>
+  <div id="utility"><button id="sound">♪</button><button id="speed">×1</button></div>
+</header>
+<div id="rankbar"><b id="rank">RANK E</b><span id="threat">THREAT 1</span><span id="meta">IRON 0 · RENOWN 0</span></div>
+<div id="objective"><small>NEXT</small><b id="objective-text">木を集めて小屋を建てる</b></div>
+<button id="context" hidden><b id="context-main">ATTACK</b><small id="context-sub">近くの敵</small></button>
+<div id="ticker"><i></i><span id="ticker-text">v1.6 REBUILD · 建てて、守って、広げる</span></div>
+<nav id="dock">
+  <button data-panel="build"><span>⌂</span><b>BUILD</b><small>建設 / 強化</small></button>
+  <button data-panel="people"><span>♟</span><b>PEOPLE</b><small id="people-caption">小屋で解禁</small></button>
+  <button data-panel="record"><span>▤</span><b>RECORD</b><small>進行 / 戦績</small></button>
+</nav>
+<section id="sheet" hidden>
+  <div class="sheet-head"><div><small id="sheet-kicker">SETTLEMENT</small><b id="sheet-title">BUILD</b></div><button id="sheet-close">×</button></div>
+  <div id="panel-build">
+    <div class="section-title">BUILD</div>
+    <div class="build-grid">
+      <button data-build="hut"><span>⌂</span><b>HOUSE</b><small>人口枠を増やす</small><em id="cost-hut"></em></button>
+      <button data-build="warehouse"><span>▣</span><b>WAREHOUSE</b><small>資源上限を増やす</small><em id="cost-warehouse"></em></button>
+      <button data-build="watchtower"><span>⌁</span><b>WATCHTOWER</b><small>夜に自動射撃</small><em id="cost-watchtower"></em></button>
+      <button data-build="barracks"><span>⚑</span><b>BARRACKS</b><small>衛兵を解禁</small><em id="cost-barracks"></em></button>
+      <button data-build="guild"><span>∞</span><b>GUILD HALL</b><small>RANKと上限を解放</small><em id="cost-guild"></em></button>
+      <button data-build="lantern"><span>✦</span><b>LANTERN</b><small>夜の視界を広げる</small><em id="cost-lantern"></em></button>
+      <button data-build="lumber"><span>♠</span><b>LUMBER</b><small>木こり効率UP</small><em id="cost-lumber"></em></button>
+      <button data-build="quarry"><span>◆</span><b>QUARRY</b><small>採石効率UP</small><em id="cost-quarry"></em></button>
+      <button data-build="palisade" class="wide"><span>▥</span><b id="wall-label">PALISADE</b><small id="wall-desc">一度で集落を囲う</small><em id="cost-palisade"></em></button>
+    </div>
+    <div class="section-title">UPGRADE</div>
+    <div id="upgrade-grid" class="upgrade-grid"></div>
+  </div>
+  <div id="panel-people" hidden>
+    <div id="people-lock" class="notice">小屋を建てると雇用が解禁される</div>
+    <div class="hire-grid">
+      <button data-hire="wood"><b>木こり</b><small>城外へ出て伐採</small><em>FOOD 6</em></button>
+      <button data-hire="stone"><b>採石人</b><small>城外へ出て採石</small><em>FOOD 6</em></button>
+      <button data-hire="food"><b>採集人</b><small>食料を回収</small><em>FOOD 5</em></button>
+      <button data-hire="guard"><b>衛兵</b><small>夜間防衛</small><em>FOOD 9 · BARRACKS</em></button>
+    </div>
+    <div id="worker-summary"></div>
+  </div>
+  <div id="panel-record" hidden>
+    <div class="record-grid">
+      <span><small>RANK</small><b id="record-rank">E</b></span>
+      <span><small>NIGHTS</small><b id="nights">0</b></span>
+      <span><small>KILLS</small><b id="kills">0</b></span>
+      <span><small>BEST WALL</small><b id="best-wall">Lv.0</b></span>
+      <span><small>IRON</small><b id="iron">0</b></span>
+      <span><small>RENOWN</small><b id="renown">0</b></span>
+    </div>
+    <div id="unlock-list" class="unlock-list"></div>
+  </div>
+</section>
+<div id="boot-note">v1.6 · CLEAN REBUILD / ZERO SCREEN SHAKE</div>
+<script src="buildjoy-v13-audio.js"></script>
+<script src="buildjoy-v16.js"></script>
+</body>
+</html>
