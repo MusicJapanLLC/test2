@@ -1,0 +1,6 @@
+(()=>{'use strict';
+const keys=['guild-infinity-frontier-v14','guild-infinity-frontier-v13'];
+function bounds(level){level=Math.max(1,Math.min(4,Number(level)||1));return{l:-(155+(level-1)*72),r:155+(level-1)*72,t:-(108+(level-1)*52),b:108+(level-1)*52}}
+function slots(level){const B=bounds(level),margin=42,pts=[[0,28],[-60,18],[60,18],[-105,-28],[105,-28],[-105,78],[105,78],[-52,-82],[52,-82],[0,96]];if(level>=2)pts.push([-160,-55],[160,-55],[-160,70],[160,70],[0,-135],[-78,132],[78,132]);if(level>=3)pts.push([-215,-70],[215,-70],[-210,95],[210,95],[-130,-145],[130,-145],[0,165]);if(level>=4)pts.push([-280,-90],[280,-90],[-270,120],[270,120],[-190,-190],[190,-190],[0,-210]);return pts.filter(p=>p[0]>B.l+margin&&p[0]<B.r-margin&&p[1]>B.t+margin&&p[1]<B.b-margin)}
+for(const key of keys){try{const raw=localStorage.getItem(key);if(!raw)continue;const o=JSON.parse(raw);if(!o||!Array.isArray(o.buildings))continue;const level=o.palisade?.built?Math.max(1,Number(o.palisade.level)||1):1,ps=slots(level);o.buildings.forEach((b,i)=>{if(!ps.length)return;const p=ps[i%ps.length];b.slot=i%ps.length;b.x=p[0];b.y=p[1];b.level=Math.max(1,Number(b.level)||1)});localStorage.setItem(key,JSON.stringify(o))}catch(_){}}
+})();

@@ -1,0 +1,1 @@
+v1.5 implementation target: economy rebalance, new buildings, rank progression, enemy archetypes, combat FX, higher difficulty, no screen shake.
