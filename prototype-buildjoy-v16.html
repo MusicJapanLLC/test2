@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#0b1210">
-<title>GUILD∞ — Rebuild v1.6</title>
+<title>GUILD∞ — Rebuild v1.6 Life AI</title>
 <link rel="stylesheet" href="buildjoy-v16.css">
 </head>
 <body>
@@ -19,10 +19,10 @@
   </div>
   <div id="utility"><button id="sound">♪</button><button id="speed">×1</button></div>
 </header>
-<div id="rankbar"><b id="rank">RANK E</b><span id="threat">THREAT 1</span><span id="meta">IRON 0 · RENOWN 0</span></div>
+<div id="rankbar"><b id="rank">RANK E</b><span id="threat">THREAT 1</span><span id="meta">HP 120/120 · IRON 0 · RENOWN 0</span></div>
 <div id="objective"><small>NEXT</small><b id="objective-text">木を集めて小屋を建てる</b></div>
-<button id="context" hidden><b id="context-main">ATTACK</b><small id="context-sub">近くの敵</small></button>
-<div id="ticker"><i></i><span id="ticker-text">v1.6 REBUILD · 建てて、守って、広げる</span></div>
+<button id="context" hidden><b id="context-main">REPAIR</b><small id="context-sub">防壁を修理</small></button>
+<div id="ticker"><i></i><span id="ticker-text">AUTO COMBAT · NPC LIFE AI · DAWN BURN</span></div>
 <nav id="dock">
   <button data-panel="build"><span>⌂</span><b>BUILD</b><small>建設 / 強化</small></button>
   <button data-panel="people"><span>♟</span><b>PEOPLE</b><small id="people-caption">小屋で解禁</small></button>
@@ -38,7 +38,7 @@
       <button data-build="watchtower"><span>⌁</span><b>WATCHTOWER</b><small>夜に自動射撃</small><em id="cost-watchtower"></em></button>
       <button data-build="barracks"><span>⚑</span><b>BARRACKS</b><small>衛兵を解禁</small><em id="cost-barracks"></em></button>
       <button data-build="guild"><span>∞</span><b>GUILD HALL</b><small>RANKと上限を解放</small><em id="cost-guild"></em></button>
-      <button data-build="lantern"><span>✦</span><b>LANTERN</b><small>夜の視界を広げる</small><em id="cost-lantern"></em></button>
+      <button data-build="lantern"><span>✦</span><b>LANTERN</b><small>光の範囲でゾンビ出現を抑止</small><em id="cost-lantern"></em></button>
       <button data-build="lumber"><span>♠</span><b>LUMBER</b><small>木こり効率UP</small><em id="cost-lumber"></em></button>
       <button data-build="quarry"><span>◆</span><b>QUARRY</b><small>採石効率UP</small><em id="cost-quarry"></em></button>
       <button data-build="palisade" class="wide"><span>▥</span><b id="wall-label">PALISADE</b><small id="wall-desc">一度で集落を囲う</small><em id="cost-palisade"></em></button>
@@ -49,10 +49,10 @@
   <div id="panel-people" hidden>
     <div id="people-lock" class="notice">小屋を建てると雇用が解禁される</div>
     <div class="hire-grid">
-      <button data-hire="wood"><b>木こり</b><small>城外へ出て伐採</small><em>FOOD 6</em></button>
-      <button data-hire="stone"><b>採石人</b><small>城外へ出て採石</small><em>FOOD 6</em></button>
-      <button data-hire="food"><b>採集人</b><small>食料を回収</small><em>FOOD 5</em></button>
-      <button data-hire="guard"><b>衛兵</b><small>夜間防衛</small><em>FOOD 9 · BARRACKS</em></button>
+      <button data-hire="wood"><b>木こり</b><small>伐採 / 接敵時は自衛</small><em>FOOD 6</em></button>
+      <button data-hire="stone"><b>採石人</b><small>採石 / 接敵時は自衛</small><em>FOOD 6</em></button>
+      <button data-hire="food"><b>採集人</b><small>採集 / 接敵時は自衛</small><em>FOOD 5</em></button>
+      <button data-hire="guard"><b>衛兵</b><small>広範囲を迎撃</small><em>FOOD 9 · BARRACKS</em></button>
     </div>
     <div id="worker-summary"></div>
   </div>
@@ -68,7 +68,7 @@
     <div id="unlock-list" class="unlock-list"></div>
   </div>
 </section>
-<div id="boot-note">v1.6 · CLEAN REBUILD / ZERO SCREEN SHAKE</div>
+<div id="boot-note">v1.6 LIFE AI · AUTO COMBAT / SUN BURN / LANTERN SAFE ZONE</div>
 <script src="buildjoy-v13-audio.js"></script>
 <script src="buildjoy-v16-1.js"></script>
 <script src="buildjoy-v16-balance.js"></script>
