@@ -38,12 +38,22 @@ function exteriorPatrolPoints(){
   ];
 }
 function guardPatrol(w,index,dt){
+  w.hiddenAtHome=false;
+  if(state.palisade.built&&state.palisade.hp>0){
+    const B=bounds();
+    // Guards explicitly leave through the south gate before entering the exterior patrol loop.
+    if(inside(w.x,w.y,B)){
+      w.state='patrol-exit';
+      const exit={x:0,y:B.b+34};
+      move(w,exit.x,exit.y,62,dt);
+      return;
+    }
+  }
   const pts=exteriorPatrolPoints();
   if(!Number.isFinite(w.patrolIndex))w.patrolIndex=index%pts.length;
   const p=pts[w.patrolIndex%pts.length];
-  const rt=route(w,p.x,p.y);
-  w.state='patrol-outside';w.hiddenAtHome=false;
-  if(move(w,rt.x,rt.y,48,dt)||dist(w,p)<10)w.patrolIndex=(w.patrolIndex+1)%pts.length;
+  w.state='patrol-outside';
+  if(move(w,p.x,p.y,48,dt)||dist(w,p)<10)w.patrolIndex=(w.patrolIndex+1)%pts.length;
 }
 function civilianGoHome(w,dt){
   const h=ensureWorkerHome(w);w.targetId=null;
