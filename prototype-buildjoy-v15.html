@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#101a16">
+<title>GUILD∞ — Frontier v1.5</title>
+<link rel="stylesheet" href="buildjoy-v13.css">
+<link rel="stylesheet" href="buildjoy-v14.css">
+<link rel="stylesheet" href="buildjoy-v15.css">
+</head>
+<body>
+<canvas id="game" aria-label="GUILD∞ Frontier"></canvas>
+<header id="topbar">
+  <div id="day-chip"><b id="day">DAY 1</b><span id="phase">DAY</span><small id="clock">08:00</small><em id="rank">RANK E</em><i id="save-dot" title="autosave"></i></div>
+  <div id="resources">
+    <span><i class="r wood"></i><small>WOOD</small><b id="wood">0</b><em id="wood-cap">/240</em></span>
+    <span><i class="r stone"></i><small>STONE</small><b id="stone">0</b><em id="stone-cap">/160</em></span>
+    <span><i class="r food"></i><small>FOOD</small><b id="food">0</b><em id="food-cap">/140</em></span>
+    <span><i class="r people"></i><small>PEOPLE</small><b id="people">0/0</b><em id="morale">M100</em></span>
+  </div>
+  <div id="utility"><button id="sound">♪</button><button id="speed">×1</button></div>
+</header>
+<div id="night-pressure" hidden><b id="wave-label">WAVE</b><span><i id="wave-fill"></i></span><small id="wall-hp"></small></div>
+<div id="ticker"><i></i><span id="ticker-text">建設と防衛を両立しよう</span></div>
+<button id="context" hidden><b id="context-main">ATTACK</b><small id="context-sub">近くの敵</small></button>
+<nav id="dock">
+  <button data-panel="build" class="active"><span>⌂</span><b>BUILD</b><small>建築 / 強化</small></button>
+  <button data-panel="people"><span>♟</span><b>PEOPLE</b><small id="people-caption">小屋で解禁</small></button>
+  <button data-panel="bag"><span>◆</span><b>BAG</b><small>DROP / ITEM</small></button>
+</nav>
+<section id="sheet" hidden>
+  <div class="sheet-head"><b id="sheet-title">BUILD</b><button id="sheet-close">×</button></div>
+  <div id="panel-build">
+    <div class="progress-strip"><span><small>RANK</small><b id="build-rank">E</b></span><span><small>WALL</small><b id="build-wall">Lv.0</b></span><span><small>BUILDINGS</small><b id="build-count">0</b></span></div>
+    <div class="build-grid">
+      <button data-build="hut"><span class="ico hut">⌂</span><b>小屋</b><small>人口枠を増やす</small></button>
+      <button data-build="warehouse"><span class="ico">▦</span><b>倉庫</b><small>資源上限を拡張</small></button>
+      <button data-build="lumber"><span class="ico lumber">♠</span><b>木材所</b><small>伐採効率UP</small></button>
+      <button data-build="quarry"><span class="ico quarry">◆</span><b>採石所</b><small>採石効率UP</small></button>
+      <button data-build="watchtower"><span class="ico">♜</span><b>見張り台</b><small>敵を自動射撃</small></button>
+      <button data-build="barracks"><span class="ico">⚔</span><b>兵舎</b><small>衛兵を強化</small></button>
+      <button data-build="guildhall"><span class="ico">∞</span><b>ギルド本部</b><small>RANK / 上限解放</small></button>
+      <button data-build="lantern"><span class="ico lantern">✦</span><b>灯火塔</b><small>夜間視界 / 街灯</small></button>
+      <button data-build="palisade" class="wide"><span class="ico wall">▥</span><b>集落防壁</b><small>集落を囲う / 拡張</small></button>
+    </div>
+    <div class="upgrade-zone">
+      <div class="upgrade-label"><small>HOUSE</small><b>住宅を育てる</b></div>
+      <button id="upgrade-hut" class="upgrade-card"><span>↑</span><b>HOUSE LEVEL UP</b><small id="hut-upgrade-desc">小屋を建てると解禁</small></button>
+    </div>
+  </div>
+  <div id="panel-people" hidden>
+    <div class="settlement-stats"><span><small>MORALE</small><b id="people-morale">100</b></span><span><small>DAILY FOOD</small><b id="people-upkeep">0</b></span><span><small>GUARD DMG</small><b id="people-guard">×1.00</b></span></div>
+    <div id="people-lock" class="notice">小屋を建てると雇用が解禁される</div>
+    <div class="hire-grid">
+      <button data-hire="wood"><b>＋ 木こり</b><small>城外で自動伐採</small></button>
+      <button data-hire="stone"><b>＋ 採石人</b><small>城外で自動採掘</small></button>
+      <button data-hire="food"><b>＋ 採集人</b><small>食料を自動採集</small></button>
+      <button data-hire="guard"><b>＋ 衛兵</b><small>兵舎で解禁 / 夜を守る</small></button>
+    </div>
+    <div id="worker-list"></div>
+  </div>
+  <div id="panel-bag" hidden>
+    <div class="bag-grid">
+      <span><small>AXE</small><b>1</b></span>
+      <span><small>HOURGLASS</small><b id="hourglass">1</b></span>
+      <span><small>TICKET</small><b id="ticket">0</b></span>
+      <span><small>GEM</small><b id="gem">0</b></span>
+    </div>
+    <div class="combat-legend"><small>ENEMY</small><span>Walker</span><span>Runner</span><span>Brute</span><span>Spitter</span></div>
+    <p>砂時計で30秒だけ ×2 → ×3　最大×3</p>
+  </div>
+</section>
+<div id="boot-note">v1.5 · MIDGAME / COMBAT / ECONOMY</div>
+<script src="buildjoy-v13-audio.js"></script>
+<script src="buildjoy-v15.js"></script>
+</body>
+</html>
