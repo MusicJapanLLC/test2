@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#0b1210">
-<title>GUILD∞ — Rebuild v1.6 Defense</title>
+<title>GUILD∞ — Rebuild v1.6 Defense Hardening</title>
 <link rel="stylesheet" href="buildjoy-v16.css">
 <link rel="stylesheet" href="buildjoy-v16-completion.css">
 </head>
@@ -23,7 +23,7 @@
 <div id="rankbar"><b id="rank">RANK E</b><span id="threat">THREAT 1</span><span id="meta">HP 120/120 · IRON 0 · RENOWN 0</span></div>
 <div id="objective"><small>NEXT</small><b id="objective-text">木を集めて小屋を建てる</b></div>
 <button id="context" hidden><b id="context-main">REPAIR</b><small id="context-sub">防壁を修理</small></button>
-<div id="ticker"><i></i><span id="ticker-text">DEFENSE · SECTOR GUARDS / FOUR GATES / WALL ARCHERS</span></div>
+<div id="ticker"><i></i><span id="ticker-text">DEFENSE HARDENING · 4 GATES / MORE WATCHTOWERS</span></div>
 <nav id="dock">
   <button data-panel="build"><span>⌂</span><b>BUILD</b><small>建設 / 強化</small></button>
   <button data-panel="people"><span>♟</span><b>PEOPLE</b><small id="people-caption">小屋で解禁</small></button>
@@ -36,13 +36,13 @@
     <div class="build-grid">
       <button data-build="hut"><span>⌂</span><b>HOUSE</b><small>人口枠を増やす · 複数建設可</small><em id="cost-hut"></em></button>
       <button data-build="warehouse"><span>▣</span><b>WAREHOUSE</b><small>資源上限を増やす</small><em id="cost-warehouse"></em></button>
-      <button data-build="watchtower"><span>⌁</span><b>WATCHTOWER</b><small>強化自動射撃 · 木こり護衛を優先</small><em id="cost-watchtower"></em></button>
+      <button data-build="watchtower"><span>⌁</span><b>WATCHTOWER</b><small>強化自動射撃 · 多数配置可能</small><em id="cost-watchtower"></em></button>
       <button data-build="barracks"><span>⚑</span><b>BARRACKS</b><small>衛兵を解禁</small><em id="cost-barracks"></em></button>
       <button data-build="guild"><span>∞</span><b>GUILD HALL</b><small>RANKと上限を解放</small><em id="cost-guild"></em></button>
       <button data-build="lantern"><span>✦</span><b>LANTERN</b><small>安全圏を広げる · 複数建設可</small><em id="cost-lantern"></em></button>
       <button data-build="lumber"><span>♠</span><b>LUMBER</b><small>木こり効率UP</small><em id="cost-lumber"></em></button>
       <button data-build="quarry"><span>◆</span><b>QUARRY</b><small>採石効率UP</small><em id="cost-quarry"></em></button>
-      <button data-build="palisade" class="wide"><span>▥</span><b id="wall-label">防壁 / PALISADE</b><small id="wall-desc">4方向ゲート · Lv2から壁弓が自動防衛</small><em id="cost-palisade"></em></button>
+      <button data-build="palisade" class="wide"><span>▥</span><b id="wall-label">防壁 / PALISADE</b><small id="wall-desc">北・東・南・西の4ゲート · 全て通行可能</small><em id="cost-palisade"></em></button>
     </div>
     <div class="section-title">UPGRADE / TECH</div>
     <div id="upgrade-grid" class="upgrade-grid"></div>
@@ -69,7 +69,7 @@
     <div id="unlock-list" class="unlock-list"></div>
   </div>
 </section>
-<div id="boot-note">v1.6 DEFENSE · 4 GATES / SECTOR GUARDS / WALL ARCHERS</div>
+<div id="boot-note">v1.6 HARDENING · 4 GATES / MORE WATCHTOWERS / RESET</div>
 <script src="buildjoy-v13-audio.js"></script>
 <script src="buildjoy-v16-1.js"></script>
 <script src="buildjoy-v16-balance.js"></script>
@@ -79,5 +79,6 @@
 <script src="buildjoy-v16-routines.js"></script>
 <script src="buildjoy-v16-progression.js"></script>
 <script src="buildjoy-v16-defense.js"></script>
+<script src="buildjoy-v16-hardening.js"></script>
 </body>
 </html>
