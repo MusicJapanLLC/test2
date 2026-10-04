@@ -2,11 +2,11 @@ import { test, expect } from '@playwright/test';
 
 const URL='http://127.0.0.1:4173/prototype-buildjoy-v16.html';
 
-test('v1.6 NPC routines stay stable under progression polish', async ({ page }) => {
+test('v1.6 NPC routines stay stable under progression/defense polish', async ({ page }) => {
   const pageErrors=[];
   page.on('pageerror',err=>pageErrors.push(err.message));
   await page.goto(URL,{waitUntil:'load'});
-  await page.waitForFunction(()=>window.GUILD_ROUTINES?.version==='v16.5-routines'&&window.GUILD_PROGRESSION?.version==='v16.6-progression');
+  await page.waitForFunction(()=>window.GUILD_ROUTINES?.version==='v16.5-routines'&&window.GUILD_PROGRESSION?.version==='v16.6-progression'&&window.GUILD_DEFENSE?.version==='v16.7-defense');
 
   await page.evaluate(()=>{
     state.wood=5000;state.stone=5000;state.food=5000;state.iron=50;state.renown=50;
@@ -54,7 +54,7 @@ test('v1.6 NPC routines stay stable under progression polish', async ({ page }) 
     for(let i=0;i<600;i++){updateWorkers(1/60);if(!inside(w.x,w.y,bounds()))escaped=true}
     return {x:w.x,y:w.y,state:w.state,inside:inside(w.x,w.y,bounds()),escaped};
   });
-  expect(guardPatrol.state).toBe('patrol-inside');
+  expect(guardPatrol.state).toBe('sector-patrol');
   expect(guardPatrol.inside).toBeTruthy();
   expect(guardPatrol.escaped).toBeFalsy();
 
