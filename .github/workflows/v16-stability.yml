@@ -5,6 +5,7 @@ on:
     branches:
       - legacy/v16-stability-fix
       - legacy/v16-npc-routines
+      - legacy/v16-progression-polish
   workflow_dispatch:
 
 jobs:
@@ -26,4 +27,4 @@ jobs:
           python3 -m http.server 4173 >/tmp/guild-v16-http.log 2>&1 &
           sleep 2
       - name: Run stability browser tests
-        run: npx playwright test tests/v16-stability.spec.mjs tests/v16-routines.spec.mjs --reporter=line --workers=1
+        run: npx playwright test tests/v16-stability.spec.mjs tests/v16-routines.spec.mjs tests/v16-progression.spec.mjs --reporter=line --workers=1

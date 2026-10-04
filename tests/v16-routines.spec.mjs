@@ -2,15 +2,15 @@ import { test, expect } from '@playwright/test';
 
 const URL='http://127.0.0.1:4173/prototype-buildjoy-v16.html';
 
-test('v1.6 NPC routines and upgrade polish behave end-to-end', async ({ page }) => {
+test('v1.6 NPC routines stay stable under progression polish', async ({ page }) => {
   const pageErrors=[];
   page.on('pageerror',err=>pageErrors.push(err.message));
   await page.goto(URL,{waitUntil:'load'});
-  await page.waitForFunction(()=>window.GUILD_ROUTINES?.version==='v16.5-routines');
+  await page.waitForFunction(()=>window.GUILD_ROUTINES?.version==='v16.5-routines'&&window.GUILD_PROGRESSION?.version==='v16.6-progression');
 
   await page.evaluate(()=>{
     state.wood=5000;state.stone=5000;state.food=5000;state.iron=50;state.renown=50;
-    state.buildings=[];state.workers=[];state.enemies=[];state.projectiles=[];
+    state.buildings=[];state.workers=[];state.enemies=[];state.projectiles=[];state.progression=null;
     state.palisade={built:true,level:2,hp:620,maxHp:620,builtAt:performance.now()};
     updateHud(true);
   });
@@ -21,16 +21,16 @@ test('v1.6 NPC routines and upgrade polish behave end-to-end', async ({ page }) 
 
   const lanternBefore=await page.evaluate(()=>{
     const b=state.buildings.find(x=>x.type==='lantern');
-    return {id:b.id,level:b.level,radius:window.GUILD_ROUTINES.lanternRadiusFor(b.id)};
+    return {level:b.level,radius:window.GUILD_ROUTINES.lanternRadiusFor(b.id)};
   });
   expect(lanternBefore.level).toBe(1);
 
   await page.evaluate(()=>renderUpgrades());
-  await page.click(`[data-upgrade-id="${lanternBefore.id}"]`);
-  const lanternAfter=await page.evaluate(id=>{
-    const b=state.buildings.find(x=>x.id===id);
-    return {level:b.level,radius:window.GUILD_ROUTINES.lanternRadiusFor(id),fx:b.fxUntil>performance.now()};
-  },lanternBefore.id);
+  await page.click('[data-group-upgrade="lantern"]');
+  const lanternAfter=await page.evaluate(()=>{
+    const b=state.buildings.find(x=>x.type==='lantern');
+    return {level:b.level,radius:window.GUILD_ROUTINES.lanternRadiusFor(b.id),fx:b.fxUntil>performance.now()};
+  });
   expect(lanternAfter.level).toBe(2);
   expect(lanternAfter.radius).toBeGreaterThan(lanternBefore.radius);
   expect(lanternAfter.fx).toBeTruthy();
@@ -49,14 +49,14 @@ test('v1.6 NPC routines and upgrade polish behave end-to-end', async ({ page }) 
 
   const guardPatrol=await page.evaluate(()=>{
     state.enemies=[];state.projectiles=[];state.cycle=.35;state.phase='day';
-    const B=bounds();
-    const w={id:'test-guard',role:'guard',x:0,y:B.b-24,seed:1,targetId:null,work:0,anim:0,cool:0,hp:120,maxHp:120,dead:false,death:0,hit:0};
-    state.workers.push(w);
-    for(let i=0;i<360;i++)updateWorkers(1/60);
-    return {x:w.x,y:w.y,state:w.state,outside:!inside(w.x,w.y,bounds())};
+    const w={id:'test-guard',role:'guard',x:0,y:0,seed:1,targetId:null,work:0,anim:0,cool:0,hp:120,maxHp:120,dead:false,death:0,hit:0};
+    state.workers.push(w);let escaped=false;
+    for(let i=0;i<600;i++){updateWorkers(1/60);if(!inside(w.x,w.y,bounds()))escaped=true}
+    return {x:w.x,y:w.y,state:w.state,inside:inside(w.x,w.y,bounds()),escaped};
   });
-  expect(guardPatrol.state).toBe('patrol-outside');
-  expect(guardPatrol.outside).toBeTruthy();
+  expect(guardPatrol.state).toBe('patrol-inside');
+  expect(guardPatrol.inside).toBeTruthy();
+  expect(guardPatrol.escaped).toBeFalsy();
 
   const remoteYield=await page.evaluate(()=>{
     state.enemies=[];state.cycle=.35;state.phase='day';state.wood=0;
@@ -66,7 +66,7 @@ test('v1.6 NPC routines and upgrade polish behave end-to-end', async ({ page }) 
     tree.alive=true;tree.hp=tree.maxHp;tree.x=650;tree.y=500;tree.respawnAt=0;
     w.x=646;w.y=500;w.targetId=tree.id;w.work=0;
     state.player.x=0;state.player.y=0;
-    for(let i=0;i<150;i++)updateWorkers(1/60);
+    for(let i=0;i<120;i++)updateWorkers(1/60);
     return {wood:state.wood,total:w.totalGathered?.wood||0,lastYield:w.lastYield||0,state:w.state};
   });
   expect(remoteYield.wood).toBeGreaterThan(0);
