@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#0b1210">
-<title>GUILD∞ — Rebuild v1.6 Life AI</title>
+<title>GUILD∞ — Rebuild v1.6 Completion</title>
 <link rel="stylesheet" href="buildjoy-v16.css">
+<link rel="stylesheet" href="buildjoy-v16-completion.css">
 </head>
 <body>
 <canvas id="game" aria-label="GUILD infinity v1.6"></canvas>
@@ -22,7 +23,7 @@
 <div id="rankbar"><b id="rank">RANK E</b><span id="threat">THREAT 1</span><span id="meta">HP 120/120 · IRON 0 · RENOWN 0</span></div>
 <div id="objective"><small>NEXT</small><b id="objective-text">木を集めて小屋を建てる</b></div>
 <button id="context" hidden><b id="context-main">REPAIR</b><small id="context-sub">防壁を修理</small></button>
-<div id="ticker"><i></i><span id="ticker-text">AUTO COMBAT · NPC LIFE AI · DAWN BURN</span></div>
+<div id="ticker"><i></i><span id="ticker-text">AUTO COMBAT · NPC LIFE AI · COMPLETE CORE</span></div>
 <nav id="dock">
   <button data-panel="build"><span>⌂</span><b>BUILD</b><small>建設 / 強化</small></button>
   <button data-panel="people"><span>♟</span><b>PEOPLE</b><small id="people-caption">小屋で解禁</small></button>
@@ -33,15 +34,15 @@
   <div id="panel-build">
     <div class="section-title">BUILD</div>
     <div class="build-grid">
-      <button data-build="hut"><span>⌂</span><b>HOUSE</b><small>人口枠を増やす</small><em id="cost-hut"></em></button>
+      <button data-build="hut"><span>⌂</span><b>HOUSE</b><small>人口枠を増やす · 複数建設可</small><em id="cost-hut"></em></button>
       <button data-build="warehouse"><span>▣</span><b>WAREHOUSE</b><small>資源上限を増やす</small><em id="cost-warehouse"></em></button>
-      <button data-build="watchtower"><span>⌁</span><b>WATCHTOWER</b><small>夜に自動射撃</small><em id="cost-watchtower"></em></button>
+      <button data-build="watchtower"><span>⌁</span><b>WATCHTOWER</b><small>夜に自動射撃 · 複数建設可</small><em id="cost-watchtower"></em></button>
       <button data-build="barracks"><span>⚑</span><b>BARRACKS</b><small>衛兵を解禁</small><em id="cost-barracks"></em></button>
       <button data-build="guild"><span>∞</span><b>GUILD HALL</b><small>RANKと上限を解放</small><em id="cost-guild"></em></button>
-      <button data-build="lantern"><span>✦</span><b>LANTERN</b><small>光の範囲でゾンビ出現を抑止</small><em id="cost-lantern"></em></button>
+      <button data-build="lantern"><span>✦</span><b>LANTERN</b><small>安全圏を広げる · 複数建設可</small><em id="cost-lantern"></em></button>
       <button data-build="lumber"><span>♠</span><b>LUMBER</b><small>木こり効率UP</small><em id="cost-lumber"></em></button>
       <button data-build="quarry"><span>◆</span><b>QUARRY</b><small>採石効率UP</small><em id="cost-quarry"></em></button>
-      <button data-build="palisade" class="wide"><span>▥</span><b id="wall-label">PALISADE</b><small id="wall-desc">一度で集落を囲う</small><em id="cost-palisade"></em></button>
+      <button data-build="palisade" class="wide"><span>▥</span><b id="wall-label">防壁 / PALISADE</b><small id="wall-desc">最優先防衛 · 一度で集落を囲う</small><em id="cost-palisade"></em></button>
     </div>
     <div class="section-title">UPGRADE</div>
     <div id="upgrade-grid" class="upgrade-grid"></div>
@@ -68,11 +69,12 @@
     <div id="unlock-list" class="unlock-list"></div>
   </div>
 </section>
-<div id="boot-note">v1.6 LIFE AI · AUTO COMBAT / SUN BURN / LANTERN SAFE ZONE</div>
+<div id="boot-note">v1.6 COMPLETION · REPEAT BUILD / RESPAWN / LIFE AI</div>
 <script src="buildjoy-v13-audio.js"></script>
 <script src="buildjoy-v16-1.js"></script>
 <script src="buildjoy-v16-balance.js"></script>
 <script src="buildjoy-v16-2.js"></script>
 <script src="buildjoy-v16-3.js"></script>
+<script src="buildjoy-v16-completion.js"></script>
 </body>
 </html>
