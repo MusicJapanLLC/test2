@@ -6,7 +6,7 @@ test('v1.6 progression polish: faster wood, inside guards, group upgrades and wo
   const pageErrors=[];
   page.on('pageerror',err=>pageErrors.push(err.message));
   await page.goto(URL,{waitUntil:'load'});
-  await page.waitForFunction(()=>window.GUILD_PROGRESSION?.version==='v16.6-progression');
+  await page.waitForFunction(()=>window.GUILD_PROGRESSION?.version==='v16.6-progression'&&window.GUILD_DEFENSE?.version==='v16.7-defense');
 
   await page.evaluate(()=>{
     state.wood=8000;state.stone=8000;state.food=4000;state.iron=100;state.renown=100;
@@ -24,7 +24,6 @@ test('v1.6 progression polish: faster wood, inside guards, group upgrades and wo
   expect(cycles.wood).toBeLessThan(cycles.stone);
   expect(cycles.wood).toBeLessThan(cycles.food);
 
-  // Repeat buildings exist, but upgrade UI must expose one group card per type, not one card per instance.
   await page.evaluate(()=>{build('hut');build('hut');build('lantern');build('lantern');renderUpgrades()});
   await expect(page.locator('[data-group-upgrade="hut"]')).toHaveCount(1);
   await expect(page.locator('[data-group-upgrade="lantern"]')).toHaveCount(1);
@@ -54,7 +53,7 @@ test('v1.6 progression polish: faster wood, inside guards, group upgrades and wo
   expect(lanternUpgrade.after.every(x=>x.level===2)).toBeTruthy();
   expect(lanternUpgrade.after[0].r).toBeGreaterThan(lanternUpgrade.before[0].r);
 
-  // Guards now stay inside the palisade during normal patrol.
+  // Guards stay inside but now divide the perimeter into independent patrol sectors.
   const guard=await page.evaluate(()=>{
     state.enemies=[];state.cycle=.35;state.phase='day';
     const w={id:'guard-inside',role:'guard',x:0,y:0,seed:1,targetId:null,work:0,anim:0,cool:0,hp:120,maxHp:120,dead:false,death:0,hit:0};
@@ -63,15 +62,13 @@ test('v1.6 progression polish: faster wood, inside guards, group upgrades and wo
     for(let i=0;i<900;i++){updateWorkers(1/60);if(!inside(w.x,w.y,bounds()))escaped=true}
     return {state:w.state,inside:inside(w.x,w.y,bounds()),escaped,x:w.x,y:w.y};
   });
-  expect(guard.state).toBe('patrol-inside');
+  expect(guard.state).toBe('sector-patrol');
   expect(guard.inside).toBeTruthy();
   expect(guard.escaped).toBeFalsy();
 
-  // Production tech has real numerical effects, not just UI labels.
   const tech=await page.evaluate(()=>{
     state.wood=8000;state.stone=8000;state.food=4000;state.iron=100;
     const beforeCycle=window.GUILD_PROGRESSION.workerCycle('wood');
-    const beforeYield=window.GUILD_PROGRESSION.report();
     const y0=window.GUILD_PROGRESSION.workerYieldMultiplier('wood');
     const ok=window.GUILD_PROGRESSION.upgradeTech('forestry');
     const afterCycle=window.GUILD_PROGRESSION.workerCycle('wood');
