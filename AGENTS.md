@@ -1,98 +1,82 @@
 # GUILD∞ AI ENTRYPOINT
 
-このリポジトリで旧GUILD∞を触るAI / Codex / Claude / ChatGPTは、**実装前に必ず以下を最新版で読んでください**
+旧GUILD∞を触るAI / Codex / Claude / ChatGPTは、実装前に最新版を読む
 
-1. `FIVE_PASS_V12.md` ← 最新の品質プロセス
-2. `VISUAL_REFORM_V12.md` ← 最新の見た目/FX/BGM正本
-3. `BUILDJOY_CORE_V10.md` ← ゲーム性の正本
-4. `REFERENCE_LIBRARY_V11.md` ← 参考/ライセンス
-5. `ASSET_CREDITS_V12.md` ← v1.2で実際に使う外部資産
-6. `GUILD_RULES.md`
-7. `COLLAB.md`
-8. 自分の担当Issue / PR
+1. `V13_CORE_REPAIR_AUDIT.md` ← **最新の不具合/雑さ監査と修正方針**
+2. `BUILDJOY_CORE_V10.md` ← ゲーム性の基礎
+3. `REFERENCE_LIBRARY_V11.md` ← 参考/品質比較用
+4. `GUILD_RULES.md`
+5. `COLLAB.md`
+6. 自分の担当Issue / PR
 
-ChatGPT Workが別で作っている新作ゲームには一切触れません
+ChatGPT Workが別で作っている新作には一切触れない
 
-## v1.2 owner feedback
+## v1.3 owner feedback
 
-v1.1は細部を変えたが、**見た瞬間の品質差が足りない**
+- v1.2で初めてゲームには見えた
+- しかしUIがごちゃごちゃ
+- 外部素材/他ゲームの文法を前に出しすぎてGUILD∞らしさが薄い
+- BGMも借り物感が強い
+- Hutが建てられない/建設が信用できない
+- 人を雇っても働いている実感がない
+- Lanternが1つしか建てられない
+- Ownerが一つずつ欠点を指摘する状態を終わらせる
 
-Owner要求:
-- 「5周」= audit → reference → visual replacement → FX/audio reform → screenshot/compare の5段階を本当に回す
-- グラフィックは小修正ではなく置換レベルで変える
-- エフェクトを大幅強化
-- BGMを仮シンセから実トラックへ改革
-- Ownerが一つ一つ品質不足を指摘しなくても済む状態までAI側で比較/却下する
+## v1.3 non-negotiable
 
-## v1.2 visual rules
+### UI
+Normal playは以下だけを常設:
+- DAY/time
+- WOOD/STONE/FOOD/PEOPLE
+- sound/speed
+- bottom ticker
+- BUILD / PEOPLE / BAG
 
-- low-resolution logical scene → nearest-neighbor upscale
-- sprite-forward renderer
-- player: CC0 pixel sprite sheet優先、fallbackあり
-- workers: CC0 sprite base優先、identity/role overlay
-- terrain: CC0 Puny World familyをprototypeで使用
-- richer foreground / foliage / atmosphere / light pools
-- buildings: roof / wall / trim / lit windows / material variation
-- construction: foundation → wall → roof/detail → finish flash
-- palisade: one-build whole perimeter + gate
-- no screen shake
+巨大brand/rank/objective/save chromeは常設しない
+世界を最優先する
 
-## v1.2 FX rules
+### Identity
+- runtimeで外部sprite/BGMに依存しない
+- 参考資料は品質比較に使うだけ
+- visible copyingを避け、GUILD∞独自の色/形/音へ戻す
 
-Gather:
-- impact burst
-- debris
-- resource motes flying toward HUD
-- floating value
-- depletion burst
+### Systems
+- Hutはrepeatable、1軒ごとにworker capacity +5、global 200
+- Lanternはrepeatable
+- Lumber Yard / Quarryはunique efficiency buildings
+- Palisadeはone-build full perimeter
+- workerはpassive counterではなく、実nodeへ歩き、motion付きで採取し、資源を増やす
+- 同職workerは可能なら別nodeを選ぶ
+- Guardはday patrol / night defense
+- ordinary gather tickごとにstorage writeしない
+- autosave heartbeat + structural mutation save
 
-Build:
-- local dust/timber chips
-- staged rise
-- finish ring / gold sparkle
-- stronger build sound
-- ZERO camera shake
+### Audio
+- borrowed CC0 track runtimeをやめる
+- v1.3はoriginal adaptive score
+- settlement growthでarrangementが増える
+- day/night variation
+- SFXは低遅延 procedural
 
-Rare drop:
-- ring + star burst + distinct sound
-
-Night:
-- palette crossfade
-- lantern bloom
-- firefly/ember atmosphere
-
-## v1.2 audio rules
-
-Prototype music:
-- day: CC0 `Overworld Theme — alternate` by Louswan
-- night/combat: CC0 `8-bit - Slay The Evil` by HydroGene
-- crossfade day/night
-- iOS user-gesture unlock
-- procedural WebAudio remains for low-latency SFX only
-
-## existing gameplay rules still active
-
-- smooth analog drag movement
+### Feel
+- smooth analog drag
 - auto gather
-- abundant resources
-- construction-first casual survival
-- first construction fast
-- first worker early
-- autosave mandatory
-- x1 normal / Hourglass x2-x3 / no free x5/x10
-- population cap 200
-- full perimeter defense
+- zero screen shake
+- build/hire/gatherのlocal FX
+- Hourglass x2/x3 only
 
-## acceptance
+## QA acceptance
 
-Do not call a visual pass complete unless:
-- v1.1/v1.2 screenshots look like obviously different builds
-- face/silhouette readable at phone size
-- environment no longer reads as colored rectangles
-- gather/build effects are obvious but non-nauseating
-- BGM is an actual track, not only oscillator notes
-- no autosave regression
-- no screen shake
-- provenance documented
+- Hut x3 build
+- Lantern x4 build
+- first Hut後にPEOPLE unlock
+- Woodcutterがtreeへ移動→伐採→Wood増加
+- Minerがrockへ移動→Stone増加
+- Gathererがforageへ移動→Food増加
+- same-role workersのtarget分散
+- reloadでbuilding/worker/resource/palisade保持
+- borrowed runtime BGMなし
+- normal playの大半がworld
+- screen shake 0
 
-作業完了時は Changed / Files / Tests / Known risks / Merge notes / Reference-license notes を残す
+作業完了時は `Changed / Files / Tests / Known risks / Merge notes` を残す
