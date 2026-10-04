@@ -10,13 +10,11 @@ test('v1.6 NPC routines and upgrade polish behave end-to-end', async ({ page }) 
 
   await page.evaluate(()=>{
     state.wood=5000;state.stone=5000;state.food=5000;state.iron=50;state.renown=50;
-    // Make the test deterministic and give enough room/rank for defensive structures.
     state.buildings=[];state.workers=[];state.enemies=[];state.projectiles=[];
     state.palisade={built:true,level:2,hp:620,maxHp:620,builtAt:performance.now()};
     updateHud(true);
   });
 
-  // Build a house, lantern and guild foundation for stable rank/UI behavior.
   await page.click('#dock [data-panel="build"]');
   await page.click('[data-build="hut"]');
   await page.click('[data-build="lantern"]');
@@ -27,7 +25,6 @@ test('v1.6 NPC routines and upgrade polish behave end-to-end', async ({ page }) 
   });
   expect(lanternBefore.level).toBe(1);
 
-  // Explicit per-building upgrade card must change both state and safe-zone radius.
   await page.evaluate(()=>renderUpgrades());
   await page.click(`[data-upgrade-id="${lanternBefore.id}"]`);
   const lanternAfter=await page.evaluate(id=>{
@@ -38,11 +35,10 @@ test('v1.6 NPC routines and upgrade polish behave end-to-end', async ({ page }) 
   expect(lanternAfter.radius).toBeGreaterThan(lanternBefore.radius);
   expect(lanternAfter.fx).toBeTruthy();
 
-  // Civilian goes home at night and becomes hidden/sleeping inside assigned house.
   const civilian=await page.evaluate(()=>{
     const hut=state.buildings.find(b=>b.type==='hut');
     const w={id:'test-civilian',role:'wood',x:hut.x+38,y:hut.y+20,seed:2,targetId:null,work:0,anim:0,cool:0,hp:85,maxHp:85,dead:false,death:0,hit:0};
-    state.workers.push(w);state.cycle=.84;state.phase='night';
+    state.workers.push(w);state.enemies=[];state.cycle=.84;state.phase='night';
     for(let i=0;i<180;i++)updateWorkers(1/60);
     return {state:w.state,hidden:w.hiddenAtHome,homeId:w.homeId,hutId:hut.id,d:Math.hypot(w.x-hut.x,w.y-(hut.y+7))};
   });
@@ -51,20 +47,19 @@ test('v1.6 NPC routines and upgrade polish behave end-to-end', async ({ page }) 
   expect(civilian.hidden).toBeTruthy();
   expect(civilian.d).toBeLessThan(20);
 
-  // Guard patrols outside the palisade even with no active enemy.
   const guardPatrol=await page.evaluate(()=>{
+    state.enemies=[];state.projectiles=[];state.cycle=.35;state.phase='day';
     const B=bounds();
     const w={id:'test-guard',role:'guard',x:0,y:B.b-24,seed:1,targetId:null,work:0,anim:0,cool:0,hp:120,maxHp:120,dead:false,death:0,hit:0};
-    state.workers.push(w);state.cycle=.35;state.phase='day';
+    state.workers.push(w);
     for(let i=0;i<360;i++)updateWorkers(1/60);
     return {x:w.x,y:w.y,state:w.state,outside:!inside(w.x,w.y,bounds())};
   });
   expect(guardPatrol.state).toBe('patrol-outside');
   expect(guardPatrol.outside).toBeTruthy();
 
-  // A far-away worker still updates the global resource ledger while the player stays at settlement.
   const remoteYield=await page.evaluate(()=>{
-    state.cycle=.35;state.phase='day';state.wood=0;
+    state.enemies=[];state.cycle=.35;state.phase='day';state.wood=0;
     const w=state.workers.find(x=>x.id==='test-civilian');
     w.hiddenAtHome=false;w.state='idle';w.homeId=state.buildings.find(b=>b.type==='hut').id;
     const tree=state.nodes.find(n=>n.type==='tree'&&n.alive)||state.nodes.find(n=>n.type==='tree');
@@ -78,7 +73,6 @@ test('v1.6 NPC routines and upgrade polish behave end-to-end', async ({ page }) 
   expect(remoteYield.total).toBeGreaterThan(0);
   expect(remoteYield.lastYield).toBeGreaterThan(0);
 
-  // A newly built house gets local construction celebration state without camera shake.
   const buildFx=await page.evaluate(()=>{
     state.wood=5000;state.stone=5000;
     const before=new Set(state.buildings.map(b=>b.id));
