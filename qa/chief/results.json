@@ -1,0 +1,10 @@
+{
+  "checks": 49,
+  "errors": [],
+  "viewports": [
+    "360x640",
+    "390x844",
+    "844x390"
+  ],
+  "notes": "Chromium emulation; no physical iOS test. Town screenshots use seeded state."
+}
