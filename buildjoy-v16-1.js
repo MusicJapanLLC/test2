@@ -2,7 +2,7 @@
 const $=id=>document.getElementById(id),canvas=$('game'),ctx=canvas.getContext('2d',{alpha:false});ctx.imageSmoothingEnabled=false;
 const A=window.FrontierAudio||{enable(){},toggle:async()=>true,setMood(){},sfx(){}};
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t,rnd=(a,b)=>a+Math.random()*(b-a),dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
-const SAVE='guild-infinity-v16-clean',BACKUP=SAVE+'-backup',WORLD={minX:-900,maxX:900,minY:-720,maxY:760};
+const SAVE=document.body.dataset.save||'guild-infinity-v16-clean',BACKUP=SAVE+'-backup',WORLD={minX:-900,maxX:900,minY:-720,maxY:760};
 const RANKS=['E','D','C','B','A','S'],POP_CAP=[20,45,80,130,200,300],WALL_CAP=[1,2,3,4,5,6];
 const BUILD={
  hut:{name:'HOUSE',base:{wood:30,stone:10},repeat:true,max:5,unlock:0},warehouse:{name:'WAREHOUSE',base:{wood:65,stone:42},repeat:false,max:5,unlock:1},watchtower:{name:'WATCHTOWER',base:{wood:80,stone:50,iron:1},repeat:true,max:5,unlock:1},barracks:{name:'BARRACKS',base:{wood:105,stone:72,iron:2},repeat:false,max:5,unlock:2},guild:{name:'GUILD HALL',base:{wood:110,stone:90,renown:4},repeat:false,max:5,unlock:0},lantern:{name:'LANTERN',base:{wood:18,stone:6},repeat:true,max:3,unlock:0},lumber:{name:'LUMBER',base:{wood:55,stone:22},repeat:false,max:3,unlock:0},quarry:{name:'QUARRY',base:{wood:48,stone:38},repeat:false,max:3,unlock:0}
