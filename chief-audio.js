@@ -8,6 +8,13 @@ const scores={
  siege:{title:'労基より先にゾンビ',bpm:138,root:50,scale:[0,2,3,5,7,10],lead:'square',bass:'triangle',melody:[0,0,3,null,2,2,4,3,0,2,5,4,3,2,1,null]},
  parade:{title:'村長だけがノリノリ',bpm:132,root:60,scale:[0,2,4,7,9],lead:'square',bass:'triangle',melody:[0,2,4,4,3,null,2,3,4,2,3,1,0,2,0,null]}
 };
+if(document.body.dataset.world)Object.assign(scores,{
+ forest:{title:'迷いの森にも出張手当',bpm:96,root:55,scale:[0,2,5,7,9],lead:'triangle',bass:'sine',melody:[0,3,null,2,4,null,1,0,2,null,4,3,null,1,2,null]},
+ canyon:{title:'石頭たちの労働歌',bpm:108,root:48,scale:[0,3,5,7,10],lead:'square',bass:'triangle',melody:[0,null,0,2,3,2,null,1,0,0,4,null,3,2,1,null]},
+ marsh:{title:'沼の会議は終わらない',bpm:82,root:58,scale:[0,2,3,7,9],lead:'sine',bass:'sine',melody:[4,null,1,null,0,2,null,3,1,null,4,2,null,0,null,1]},
+ volcano:{title:'判子を押すまで噴火禁止',bpm:128,root:46,scale:[0,2,3,5,7],lead:'square',bass:'triangle',melody:[0,0,2,3,0,4,3,null,0,2,3,4,3,2,1,null]},
+ port:{title:'船酔い村長の旅支度',bpm:112,root:60,scale:[0,2,4,7,9],lead:'triangle',bass:'triangle',melody:[0,2,3,null,4,3,2,0,1,3,4,null,3,2,0,null]}
+});
 let ac,bus,music,fx,timer,scene='morning',step=0,next=0,active=0,enabled=false,lastVoice=-9;const gates={};
 function init(){if(ac)return true;const C=window.AudioContext||window.webkitAudioContext;if(!C)return false;ac=new C();bus=ac.createGain();music=ac.createGain();fx=ac.createGain();const c=ac.createDynamicsCompressor();c.threshold.value=-18;c.ratio.value=4;bus.gain.value=.48;music.gain.value=.7;fx.gain.value=.7;music.connect(bus);fx.connect(bus);bus.connect(c);c.connect(ac.destination);return true}
 function note(midi,t,d,vol,type='triangle',target=music,cut=2200){if(!ac||active>=36)return;active++;const o=ac.createOscillator(),f=ac.createBiquadFilter(),g=ac.createGain();o.type=type;o.frequency.value=440*Math.pow(2,(midi-69)/12);f.type='lowpass';f.frequency.value=cut;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(vol,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(f);f.connect(g);g.connect(target);o.onended=()=>{active--;o.disconnect();f.disconnect();g.disconnect()};o.start(t);o.stop(t+d+.025)}
