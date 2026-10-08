@@ -152,7 +152,7 @@ renderUpgrades=function(){
     const c=techCost(key,L+1);html.push(`<button data-tech-upgrade="${key}" ${hasCost(c)?'':'disabled'}><b>${cfg.label} Lv.${L} → ${L+1}</b><small>${cfg.jp} · ${cfg.desc}</small><em>${fmtCost(c)}</em></button>`)
   }
   const skip=new Set(Object.keys(GROUP_TYPES));
-  for(const b of state.buildings){if(skip.has(b.type))continue;const d=BUILD[b.type];if(!d||b.level>=d.max)continue;const c=costFor(b.type,b.level+1);html.push(`<button data-upgrade-id="${b.id}" ${hasCost(c)?'':'disabled'}><b>${d.name} Lv.${b.level} → ${b.level+1}</b><small>${upgradeBenefit(b.type,b.level+1)}</small><em>${fmtCost(c)}</em></button>`)}
+  for(const b of state.buildings){if(skip.has(b.type))continue;const d=BUILD[b.type];if(!d||b.level>=d.max)continue;const c=costFor(b.type,b.level+1);html.push(`<button data-upgrade-id="${escapeUpgradeId(b.id)}" ${hasCost(c)?'':'disabled'}><b>${d.name} Lv.${b.level} → ${b.level+1}</b><small>${upgradeBenefit(b.type,b.level+1)}</small><em>${fmtCost(c)}</em></button>`)}
   el.innerHTML=html.join('');el.querySelectorAll('[data-group-upgrade]').forEach(btn=>btn.onclick=()=>groupUpgrade(btn.dataset.groupUpgrade));el.querySelectorAll('[data-tech-upgrade]').forEach(btn=>btn.onclick=()=>upgradeTech(btn.dataset.techUpgrade));el.querySelectorAll('[data-upgrade-id]').forEach(btn=>btn.onclick=()=>upgradeBuildingById(btn.dataset.upgradeId));
 };
 

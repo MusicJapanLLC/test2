@@ -33,7 +33,7 @@ const Council=(()=>{
   c.happiness=clamp(c.happiness+(kind===1?-.5:.5),0,100);news(text);
  }
  function tick(dt){if(Pocket.paused()||WorldGame.away||!Number.isFinite(dt)||dt<=0)return;dt=Math.min(dt,300);c.time+=dt;c.defenseCooldown=Math.max(0,c.defenseCooldown-dt);c.defenseRemaining=Math.max(0,c.defenseRemaining-dt);if(c.defenseRemaining===0)c.defenseMode='balanced';if(c.defenseMode==='shelter'){state.player.hp=Math.min(state.player.maxHp,state.player.hp+dt*1.5);for(const worker of state.workers)if(!worker.dead&&!worker.expeditionId)worker.hp=Math.min(worker.maxHp,worker.hp+dt)}
-  if(c.time>=c.nextLife){c.nextLife=c.time+25;lifeEvent()}
+  if(c.time>=c.nextLife){c.nextLife=c.time+25;if(!window.VillageSocial)lifeEvent()}
   if(c.time>=c.nextPetition&&!c.pending.length){const t=templates[Math.floor(c.serial/2)%templates.length],id='petition-'+(++c.serial)+'-'+Math.floor(c.time);c.pending.push(petition(t,id));c.nextPetition=c.time+75;news('陳情到着：'+t.title);toast('陳情が届いた · 村長室で決裁できます');save()}
   const ready=c.delayed.filter(d=>(d.remaining=Math.max(0,d.remaining-dt))===0);if(ready.length){const ids=new Set(ready.map(d=>d.id));c.delayed=c.delayed.filter(d=>!ids.has(d.id));for(const d of ready){const effect=template(d.type).options[d.choice];for(const [k,v] of Object.entries(effect.reward))addRes(k,v);news(effect.news)}save()}
  }
