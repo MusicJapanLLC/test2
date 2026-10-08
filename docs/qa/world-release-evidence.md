@@ -22,3 +22,11 @@ An isolated detached worktree at base `1369006` ran `GUILD_TEST_FILTER=touch GUI
 ## Final scoped review
 
 The final fix `9c11c69` passed 32 lifecycle checks, 36 World UI checks and 5 standalone checks. The independent scoped re-review marked both entitlement-lifecycle and timer-copy findings addressed, with no new or residual findings. Spec PASS; UI quality APPROVE for the documented preview release. Detailed evidence is in `world-payment-lifecycle-report.md` and `world-review.md`.
+
+## Public delivery check
+
+Published game: https://raw.githack.com/MusicJapanLLC/test2/617f99866a5103ab1d3fe64794e6a42aa8e9e71c/prototype-chief-world-standalone.html
+
+PR: https://github.com/MusicJapanLLC/test2/pull/130 (draft; not merged)
+
+The Cloud Browser opened the published URL, passed the host's ordinary external-content notice via “Open the page”, rendered the game, opened the World menu and entered the forest. The actual public desktop-browser frame is `qa/world/public-617f998.jpg`. The existing 360/390/844 screenshots remain the mobile-layout evidence. An automated HTTP fetch received Cloudflare 403/1010; the standard browser route loaded successfully, so this is not reported as a public game outage.
