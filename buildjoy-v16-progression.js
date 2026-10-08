@@ -33,6 +33,7 @@ function ensureProgression(){
     for(const b of state.buildings.filter(b=>b.type===type))b.level=state.progression.groups[cfg.key];
   }
   for(const [key,cfg] of Object.entries(WORK_TECH)){
+    if(document.body.dataset.edition==='chief')cfg.max=25;
     if(!Number.isFinite(state.progression.tech[key]))state.progression.tech[key]=0;
     state.progression.tech[key]=clamp(Math.round(state.progression.tech[key]),0,cfg.max);
   }
@@ -145,7 +146,7 @@ renderUpgrades=function(){
     if(L>=cfg.max){html.push(`<button disabled><b>${cfg.label} ALL Lv.${L} MAX</b><small>${globalBenefit(type,L)}</small><em>${count}棟</em></button>`);continue}
     const c=groupUpgradeCost(type,L+1);html.push(`<button data-group-upgrade="${type}" ${hasCost(c)?'':'disabled'}><b>${cfg.label} ALL Lv.${L} → ${L+1}</b><small>${globalBenefit(type,L+1)}</small><em>${fmtCost(c)} · ${count}棟</em></button>`)
   }
-  html.push('<div class="notice">生産技術 · 最大Lv.8〜10</div>');
+  html.push('<div class="notice">生産技術 · 最大Lv.'+(document.body.dataset.edition==='chief'?'25':'8〜10')+'</div>');
   for(const [key,cfg] of Object.entries(WORK_TECH)){
     const L=techLevel(key);if(L>=cfg.max){html.push(`<button disabled><b>${cfg.label} Lv.${L} MAX</b><small>${cfg.jp} · ${cfg.desc}</small><em>MASTERED</em></button>`);continue}
     const c=techCost(key,L+1);html.push(`<button data-tech-upgrade="${key}" ${hasCost(c)?'':'disabled'}><b>${cfg.label} Lv.${L} → ${L+1}</b><small>${cfg.jp} · ${cfg.desc}</small><em>${fmtCost(c)}</em></button>`)
