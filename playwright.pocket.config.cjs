@@ -1,0 +1,1 @@
+module.exports={testDir:'./tests',testMatch:/v16-.*\.spec\.mjs/,timeout:60000,use:{viewport:{width:390,height:844},launchOptions:{...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{}),args:['--no-sandbox']}},workers:1,reporter:'line'};

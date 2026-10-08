@@ -1,0 +1,63 @@
+'use strict';
+// Pocket is an additive edition of the tested v1.6 engine. No legacy save is read.
+const Pocket=(()=>{
+ const fresh=()=>({claimed:[],caches:[],policies:{harvest:0,hearth:0,guard:0},spent:0,tokens:0,nightPaid:0,gathered:0,whistleUntil:0,pausedAt:0,rally:0});
+ state.pocket={...fresh(),...(state.pocket||{})};
+ for(const n of state.nodes)delete n.pocketHit;
+ for(const w of state.workers){delete w.sayUntil;delete w.say;delete w._pocketSpoke}
+ const p=state.pocket;p.policies={...fresh().policies,...p.policies};
+ for(const k of ['claimed','caches'])if(!Array.isArray(p[k]))p[k]=[];
+ for(const k of ['spent','tokens','nightPaid','gathered','whistleUntil','pausedAt','rally'])if(!Number.isFinite(p[k])||p[k]<0)p[k]=0;
+ for(const k of Object.keys(p.policies))p.policies[k]=clamp(Math.floor(p.policies[k])||0,0,5);
+ let clock=0,chain=0,chainUntil=0,rally=clamp(p.rally,0,5),uiAt=0,discoveryAt=0;const keys=new Set();
+ const policies={harvest:{name:'斧を信じろ',desc:'全員の採集量 +15% / Lv',quote:'会議より伐採のほうが生産的'},hearth:{name:'まかない最強説',desc:'朝ごとに食料 +12・士気 +3 / Lv',quote:'福利厚生は、まず胃袋から'},guard:{name:'腕力で解決',desc:'主人公・衛兵・塔の攻撃力 +12% / Lv',quote:'議事録は斧で書く'}};
+ const caches=[{id:'north',x:40,y:-365,name:'引退した斧',wood:45,iron:2},{id:'east',x:430,y:45,name:'誰かのへそくり',stone:40,renown:2},{id:'south',x:-90,y:470,name:'賞味期限は気合',food:45,hourglass:1},{id:'west',x:-410,y:80,name:'石にも三年分',stone:50,iron:2},{id:'far-east',x:710,y:-420,name:'労働の結晶',wood:70,renown:3},{id:'far-west',x:-690,y:480,name:'村長の裏帳簿',iron:5,hourglass:2}];
+ const milestones=[
+ {id:'first',name:'まず屋根をください',desc:'小屋を1棟建てる',done:()=>state.buildings.some(b=>b.type==='hut'),reward:{food:12}},
+ {id:'crew',name:'ひとり企業、卒業',desc:'村人を1人雇う',done:()=>state.workers.length>=1,reward:{tokens:1}},
+ {id:'wall',name:'ここから先は私有地',desc:'防壁を建てる',done:()=>state.palisade.built,reward:{iron:2,renown:3}},
+ {id:'night',name:'残業の相手はゾンビ',desc:'夜を1回越える',done:()=>state.stats.nights>=1,reward:{wood:35,stone:25}},
+ {id:'five',name:'会社っぽくなってきた',desc:'村人を5人雇う',done:()=>state.workers.length>=5,reward:{food:30,tokens:1}},
+ {id:'rank',name:'村、増資しました',desc:'ギルドを建てる',done:()=>rankIndex()>=1,reward:{iron:3,hourglass:1}},
+ {id:'explore',name:'散歩と言い張る略奪',desc:'落とし物を3つ発見',done:()=>p.caches.length>=3,reward:{tokens:2}},
+ {id:'three',name:'夜勤、慣れてきた',desc:'夜を3回越える',done:()=>state.stats.nights>=3,reward:{iron:5,renown:5}},
+ {id:'town',name:'もはや村ではない',desc:'防壁をLv3へ拡張',done:()=>state.palisade.level>=3,reward:{tokens:2,hourglass:2}}
+ ];
+ function award(r){for(const [k,v] of Object.entries(r)){if(k==='tokens')p.tokens+=v;else if(['wood','stone','food'].includes(k))addRes(k,v);else state[k]=(state[k]||0)+v}}
+ function claim(id){const m=milestones.find(m=>m.id===id);if(!m||!m.done()||p.claimed.includes(id))return false;p.claimed.push(id);award(m.reward);save();A.sfx('hire');toast('達成！ '+m.name);renderVillage();return true}
+ function choosePolicy(id){if(!policies[id]||p.tokens<=0||p.policies[id]>=5)return false;p.tokens--;p.spent++;p.policies[id]++;save();A.sfx('build');toast(policies[id].quote);renderVillage();return true}
+ function clearInput(){input={x:0,y:0,mag:0};pointer=null;keys.clear();state.player.vx=state.player.vy=0}
+ function paused(){return document.hidden||currentPanel!==null}
+ function syncPause(){const now=Date.now();if(paused()){if(!p.pausedAt)p.pausedAt=now;return}if(p.pausedAt){const elapsed=Math.max(0,now-p.pausedAt);if(state.boost>1&&state.boostUntil>p.pausedAt)state.boostUntil+=elapsed;if(p.whistleUntil>p.pausedAt)p.whistleUntil+=elapsed;p.pausedAt=0}}
+
+ function whistle(){if(paused()||Date.now()<p.whistleUntil||state.player.down>0)return false;p.whistleUntil=Date.now()+22000;rally=5;p.rally=5;for(const e of state.enemies){if(e.dead||dist(e,state.player)>115)continue;damageEnemy(e,12,state.player.x,state.player.y);const d=Math.max(1,dist(e,state.player));e.x+=(e.x-state.player.x)/d*30;e.y+=(e.y-state.player.y)/d*30}fxBurst(state.player.x,state.player.y,'#ffe7a4',24,1.5);toast('村長の号令！ 5秒間、採集2倍');A.sfx('hire');save();return true}
+ const el=document.createElement('div');el.innerHTML='<canvas id="pocket-map" width="152" height="134" aria-label="村の地図"></canvas><div id="pocket-progress"></div><div id="chain-chip" hidden></div><button id="whistle" aria-label="村長の号令：近くの敵を押し返し、5秒間採集2倍">号令<small>採集 ×2</small></button>';while(el.firstChild)document.body.appendChild(el.firstChild);
+ $('whistle').onclick=whistle;
+ const originalReset=hardResetGame;hardResetGame=function(reload=true){document.body.dataset.resetting='true';return originalReset(reload)};
+ $('sound').setAttribute('aria-label','音楽と効果音を切り替える');$('speed').setAttribute('aria-label','砂時計で30秒間倍速');$('sheet-close').setAttribute('aria-label','閉じて村へ戻る');
+ $('sheet').setAttribute('role','dialog');$('sheet').setAttribute('aria-label','村のメニュー');
+ const labels=['木材','石材','食料','村人'];document.querySelectorAll('#resources small').forEach((e,i)=>e.textContent=labels[i]);
+ const dockLabels={build:['建てる','街を育てる'],people:['雇う','仕事を任せる'],record:['村のこと','方針 / 実績']};
+ document.querySelectorAll('#dock button').forEach(b=>{const x=dockLabels[b.dataset.panel];b.querySelector('b').textContent=x[0];b.querySelector('small').textContent=x[1]});
+ fmtCost=function(c){return [['wood','木'],['stone','石'],['food','食'],['iron','鉄'],['renown','名声']].filter(([k])=>c[k]).map(([k,l])=>`${l} ${c[k]}`).join(' · ')};
+ const names={hut:'小屋',warehouse:'倉庫',watchtower:'見張り台',barracks:'兵舎',guild:'ギルド',lantern:'灯火',lumber:'木材所',quarry:'採石所'};for(const [k,v] of Object.entries(names))BUILD[k].name=v;
+ const originalOpen=openPanel,originalClose=closeSheet;
+ openPanel=function(name){clearInput();originalOpen(name);syncPause();save();$('sheet-title').textContent=dockLabels[name][0];$('sheet-kicker').textContent='GUILD∞ / おバカ開拓村';if(!$('pause-label')){const tag=document.createElement('span');tag.id='pause-label';tag.textContent='時間停止中';document.querySelector('.sheet-head>div').appendChild(tag)}if(name==='record')renderVillage();$('sheet-close').focus({preventScroll:true})};
+ closeSheet=function(){originalClose();syncPause();clearInput();last=performance.now()};
+ const originalBuild=build;build=function(type){const count=state.buildings.length,wall=state.palisade.level;const result=originalBuild(type);if(count!==state.buildings.length||wall!==state.palisade.level){closeSheet();toast(type==='palisade'?'防壁完成！ ご近所づきあいは門から':'完成！ 不動産だけは増えていく');save()}return result};
+ const originalHire=hire;hire=function(role){const n=state.workers.length;originalHire(role);if(n<state.workers.length){const w=state.workers.at(-1);w.pocketName=['ポン','ヌボ','ムギ','ゴン','モチ','ネム','カブ','マメ'][n%8];w.say='採用理由：来た';w.sayUntil=clock+4;save()}};
+ const originalHit=hitNode;hitNode=function(n,source='player'){if(!n?.alive)return;const key=n.type==='tree'?'wood':n.type==='rock'?'stone':'food',before=state[key];originalHit(n,source);const gain=Math.max(0,state[key]-before);let multiplier=1+p.policies.harvest*.15;if(source==='player'){chain=clock<chainUntil?chain+1:1;chainUntil=clock+2.2;multiplier+=Math.min(.5,Math.floor(chain/5)*.1);if(rally>0)multiplier*=2;p.gathered+=gain;n.pocketHit=clock;fxBurst(n.x,n.y-6,COLORS[key],3,.65)}if(multiplier>1)addRes(key,gain*(multiplier-1));};
+ const originalDamage=damageEnemy;damageEnemy=function(e,dmg,ax,ay,guard){return originalDamage(e,dmg*(1+p.policies.guard*.12),ax,ay,guard)};
+ const originalPhase=phaseTick;phaseTick=function(dt){originalPhase(dt);if(state.stats.nights>p.nightPaid){const n=state.stats.nights-p.nightPaid;p.nightPaid=state.stats.nights;p.tokens+=n;addRes('food',12*p.policies.hearth*n);state.morale=Math.min(100,state.morale+3*p.policies.hearth*n);toast('朝だ！ 村の方針ポイント +'+n+' → 村のこと');save()}};
+ const oldObjective=updateObjective;updateObjective=function(){const next=milestones.find(m=>!p.claimed.includes(m.id));if(next){$('objective-text').textContent=next.done()?'達成！ 「村のこと」で報酬を受取':next.desc;$('pocket-progress').textContent=`開拓記録 ${p.claimed.length}/${milestones.length}  ·  落とし物 ${p.caches.length}/${caches.length}`}else{oldObjective();$('pocket-progress').textContent='開拓記録 完成！ さらに大きな村へ'}};
+ function renderVillage(){let card=$('village-card');if(!card){card=document.createElement('div');card.id='village-card';$('panel-record').prepend(card)}card.innerHTML=`<h3>村長、次はどうする？</h3><p>夜を越えると方針ポイント +1<br>残り <strong>${p.tokens}</strong> pt · それぞれ最大 Lv5</p><div class="policy-list">${Object.entries(policies).map(([k,v])=>`<button data-policy="${k}" ${p.tokens<1||p.policies[k]>=5?'disabled':''}>${v.name} <b>Lv.${p.policies[k]}</b><small>${v.desc}</small></button>`).join('')}</div><h3 style="margin-top:20px">開拓記録</h3>${milestones.map(m=>`<div class="milestone"><div>${m.name}<small>${m.desc}</small><small>${Object.entries(m.reward).map(([k,v])=>( {tokens:'方針',wood:'木',stone:'石',food:'食料',iron:'鉄',renown:'名声',hourglass:'砂時計'}[k]||k)+' +'+v).join(' / ')}</small></div><button data-claim="${m.id}" ${!m.done()||p.claimed.includes(m.id)?'disabled':''}>${p.claimed.includes(m.id)?'受取済':m.done()?'受け取る':'未達成'}</button></div>`).join('')}<div id="pocket-help">画面をドラッグ → 移動<br>木・石・食料のそばで止まる → 自動採集<br>号令 → 5秒間の採集2倍 + 近くの敵を押し返す<br>地図の金色の点 → 落とし物<br>PCは WASD / 矢印・Spaceで号令<br>メニュー中は時間停止・自動保存<br>GUILD∞ POCKET / v2.0</div>`;card.querySelectorAll('[data-policy]').forEach(b=>b.onclick=()=>choosePolicy(b.dataset.policy));card.querySelectorAll('[data-claim]').forEach(b=>b.onclick=()=>claim(b.dataset.claim))}
+ function tick(dt){clock+=dt;rally=Math.max(0,rally-dt);p.rally=rally;if(clock>chainUntil)chain=0;
+  if(clock>discoveryAt){discoveryAt=clock+.25;for(const c of caches){if(p.caches.includes(c.id)||dist(state.player,c)>48)continue;p.caches.push(c.id);const reward={...c};for(const k of ['id','x','y','name'])delete reward[k];award(reward);fxBurst(c.x,c.y,'#fbe59d',26,1.5);toast('発見！ '+c.name);A.sfx('hire');save()}}
+  if(clock>uiAt){uiAt=clock+.15;const remain=Math.max(0,Math.ceil((p.whistleUntil-Date.now())/1000));$('whistle').innerHTML=(remain?`${remain}s`:'号令')+'<small>'+(rally>0?'発動中！':'採集 ×2')+'</small>';$('whistle').disabled=remain>0;const chip=$('chain-chip');chip.hidden=chain<5&&rally<=0;chip.textContent=rally>0?'村長、急にやる気出す！':`${chain} CHAIN · 手が止まらん`;updateHud(true);updateVitalsHud();$('phase').textContent={day:'昼',night:'夜',dawn:'朝',dusk:'夕暮れ'}[state.phase];drawMap()}
+ }
+ function drawMap(){const c=$('pocket-map').getContext('2d'),w=152,h=134;c.clearRect(0,0,w,h);const mx=x=>(x-WORLD.minX)/(WORLD.maxX-WORLD.minX)*w,my=y=>(y-WORLD.minY)/(WORLD.maxY-WORLD.minY)*h;const B=bounds();c.strokeStyle='#b5c591';c.strokeRect(mx(B.l),my(B.t),mx(B.r)-mx(B.l),my(B.b)-my(B.t));for(const a of caches)if(!p.caches.includes(a.id)){c.fillStyle='#ffe495';c.fillRect(mx(a.x)-2,my(a.y)-2,4,4)}for(const e of state.enemies)if(!e.dead){c.fillStyle='#ed8164';c.fillRect(mx(e.x),my(e.y),2,2)}c.fillStyle='#fff8db';c.beginPath();c.arc(mx(state.player.x),my(state.player.y),3,0,Math.PI*2);c.fill()}
+ addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d',' '].includes(e.key)){if(paused()||e.target.closest?.('button,input,textarea,select'))return;e.preventDefault();keys.add(e.key);A.enable();if(e.key===' ')whistle()}if(e.key==='Escape')closeSheet()});addEventListener('keyup',e=>keys.delete(e.key));addEventListener('blur',clearInput);document.addEventListener('visibilitychange',()=>{clearInput();syncPause();last=performance.now();save()});canvas.addEventListener('lostpointercapture',clearInput);
+ loop=function(now){const dt=Math.min(.033,Math.max(0,(now-last)/1000));last=now;try{if(!paused()){if(keys.size){const x=Number(keys.has('d')||keys.has('ArrowRight'))-Number(keys.has('a')||keys.has('ArrowLeft')),y=Number(keys.has('s')||keys.has('ArrowDown'))-Number(keys.has('w')||keys.has('ArrowUp')),m=Math.hypot(x,y);input={x:m?x/m:0,y:m?y/m:0,mag:Math.min(1,m)}}else if(pointer===null)input={x:0,y:0,mag:0};movement(dt);playerGather(dt);updateWorkers(dt);playerAutoCombat();updateEnemies(dt);updateHumanLife(dt);phaseTick(dt);refreshContext();tick(dt)}draw();drawEffects(paused()?0:dt)}catch(e){reportRuntimeError(e,'POCKET')}requestAnimationFrame(loop)};
+ syncPause();renderVillage();updateHud(true);toast(loaded?'おかえり村長！ 今日も木から':'ドラッグで歩く · 木のそばで止まると自動採集');
+ return {version:'2.0',choosePolicy,claim,whistle,tick,paused,clearInput,caches,milestones,get clock(){return clock},get chain(){return chain},get rally(){return rally},state:()=>p};
+})();window.Pocket=Pocket;

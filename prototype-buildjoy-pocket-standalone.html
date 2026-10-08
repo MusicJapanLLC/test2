@@ -1,0 +1,1146 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0b1210">
+<title>おバカ開拓村 | GUILD∞ POCKET</title>
+<style>
+:root{--ink:#090d0c;--panel:#0d1210ef;--line:#5e513d;--gold:#ddb96f;--dim:#8f8573;--text:#e7dcc4;--danger:#bd6258;--ok:#6f9a72}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08100d;color:var(--text);font-family:"Courier New","Hiragino Kaku Gothic ProN","Yu Gothic",monospace}button{font:inherit;color:inherit}#game{position:fixed;inset:0;width:100%;height:100%;touch-action:none;image-rendering:pixelated;background:#13251c}#topbar{position:fixed;z-index:20;top:max(8px,env(safe-area-inset-top));left:8px;right:8px;height:67px;display:grid;grid-template-columns:76px 1fr 76px;border:1px solid #5f523c;background:#0b100eef;box-shadow:0 5px 18px #0008}#day-chip{position:relative;padding:8px;border-right:1px solid #443a2d;display:flex;flex-direction:column;gap:2px}#day-chip>b{font-size:13px;letter-spacing:.06em;color:var(--gold)}#day-chip>span,#day-chip>small{font-size:8px;color:#b2a58e;letter-spacing:.12em}#save-dot{position:absolute;width:6px;height:6px;right:6px;top:7px;background:#78957a;box-shadow:0 0 0 1px #202c22}.flash{animation:pulse .25s linear}@keyframes pulse{50%{filter:brightness(2)}}#resources{display:grid;grid-template-columns:repeat(4,1fr)}#resources>span{min-width:0;padding:8px 7px;border-right:1px solid #332e26;display:grid;grid-template-columns:1fr auto;align-content:center}#resources small{grid-column:1/3;font-size:6px;letter-spacing:.13em;color:#918774}#resources b{font-size:13px;line-height:17px;overflow:hidden;text-overflow:ellipsis}#resources em{align-self:end;font-style:normal;font-size:6px;color:#6f695f}#utility{display:grid;grid-template-columns:1fr 1fr}#utility button{border:0;border-left:1px solid #443a2d;background:#101512;font-size:13px;font-weight:800}#rankbar{position:fixed;z-index:19;top:calc(max(8px,env(safe-area-inset-top)) + 72px);left:12px;right:12px;height:26px;display:flex;align-items:center;gap:10px;padding:0 8px;border-left:2px solid var(--gold);background:#0a0f0dcc;box-shadow:0 2px 9px #0006;font-size:7px;letter-spacing:.1em}#rankbar b{color:var(--gold);font-size:9px}#rankbar #meta{margin-left:auto;color:#9b907d}#objective{position:fixed;z-index:18;top:calc(max(8px,env(safe-area-inset-top)) + 104px);left:12px;max-width:min(76vw,330px);display:flex;align-items:center;gap:8px;padding:7px 10px;background:#11140fdd;border:1px solid #64563f;border-left:4px solid #d1a94e;box-shadow:0 3px 12px #0006}#objective small{font-size:6px;color:#d1a94e;letter-spacing:.13em}#objective b{font-size:8px;font-weight:700}.danger{color:#f2a19b!important}#ticker{position:fixed;z-index:18;left:12px;right:12px;bottom:calc(82px + env(safe-area-inset-bottom));height:35px;display:flex;align-items:center;gap:8px;padding:0 11px;background:#080c0bea;border:1px solid #4e4434;border-left:3px solid #b98443;font-size:8px;color:#c2b49b;letter-spacing:.04em;pointer-events:none}#ticker i{width:7px;height:7px;background:#c79d4f}.ticker-danger{border-left-color:#bb564e!important;color:#f2c2ba!important}#context{position:fixed;z-index:22;right:14px;bottom:calc(128px + env(safe-area-inset-bottom));width:92px;height:50px;border:1px solid #b97c56;background:#27120fe8;box-shadow:0 5px 16px #0008}#context b{display:block;color:#f0a27c;font-size:10px}#context small{font-size:7px;color:#c8a996}#dock{position:fixed;z-index:20;left:0;right:0;bottom:0;height:calc(72px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);display:grid;grid-template-columns:repeat(3,1fr);background:#090d0cf7;border-top:1px solid #645740}#dock button{border:0;border-right:1px solid #3a3329;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}#dock button.active{background:#171812}#dock button>span{font-size:15px;color:#c5ad7a}#dock button>b{font-size:9px;letter-spacing:.08em}#dock button>small{font-size:6px;color:#807768}#sheet{position:fixed;z-index:30;left:8px;right:8px;bottom:calc(78px + env(safe-area-inset-bottom));max-height:64vh;overflow:auto;background:#0b0f0ded;border:1px solid #6a5b42;box-shadow:0 -7px 28px #000c;padding:10px}.sheet-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:7px;border-bottom:1px solid #4c4233}.sheet-head>div{display:flex;flex-direction:column}.sheet-head small{font-size:6px;color:#807768;letter-spacing:.14em}.sheet-head b{font-size:13px;letter-spacing:.08em;color:var(--gold)}#sheet-close{width:32px;height:32px;border:1px solid #5b4d39;background:#151914}.section-title{margin:10px 0 6px;font-size:7px;letter-spacing:.15em;color:#8f816b}.build-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}.build-grid button,.upgrade-grid button,.hire-grid button{position:relative;min-height:68px;border:1px solid #504737;background:#111613;text-align:left;padding:8px 8px 8px 42px}.build-grid button>span{position:absolute;left:8px;top:11px;width:25px;height:25px;display:grid;place-items:center;border:1px solid #65553d;background:#0b0f0d;color:#e3bc6b;font-size:14px}.build-grid button>b,.upgrade-grid button>b,.hire-grid button>b{display:block;font-size:8px;letter-spacing:.05em}.build-grid button>small,.upgrade-grid button>small,.hire-grid button>small{display:block;margin-top:3px;font-size:6px;color:#8f8779;line-height:1.35}.build-grid button>em,.upgrade-grid button>em,.hire-grid button>em{display:block;margin-top:5px;font-style:normal;font-size:6px;color:#d1a85f}.build-grid button.wide{grid-column:1/3}.build-grid button.locked,.upgrade-grid button:disabled,.hire-grid button:disabled{opacity:.35;filter:saturate(.25)}.upgrade-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}.upgrade-grid button{padding-left:9px;min-height:58px}.hire-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}.hire-grid button{padding-left:9px;min-height:58px}.notice{padding:10px;border:1px solid #514635;background:#11140f;font-size:8px;color:#a89a84;margin-bottom:6px}#worker-summary{margin-top:7px;padding:8px;border-top:1px solid #41392d;display:grid;grid-template-columns:repeat(4,1fr);gap:5px}#worker-summary span,.record-grid span{padding:7px;background:#0c100e;border:1px solid #3f382e;text-align:center}#worker-summary small,.record-grid small{display:block;font-size:6px;color:#807768}#worker-summary b,.record-grid b{display:block;margin-top:3px;font-size:10px;color:#d7c5a2}.record-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.unlock-list{margin-top:8px}.unlock-list p{margin:0 0 4px;padding:7px;border-left:2px solid #5d513f;background:#111410;font-size:7px;color:#9f9585}#boot-note{position:fixed;z-index:10;right:8px;bottom:calc(42px + env(safe-area-inset-bottom));font-size:5px;color:#677067;letter-spacing:.1em;pointer-events:none}@media(max-width:420px){#topbar{grid-template-columns:70px 1fr 66px}#resources>span{padding:7px 4px}#resources b{font-size:11px}.build-grid button{min-height:65px}}
+
+</style>
+<style>
+#defense-chip{position:fixed;z-index:19;top:calc(max(8px,env(safe-area-inset-top)) + 136px);left:12px;display:flex;align-items:center;gap:7px;min-height:25px;padding:5px 9px;background:#0b100ed9;border:1px solid #5b513e;border-left:3px solid #77906f;box-shadow:0 3px 10px #0006;pointer-events:none}#defense-chip small{font-size:6px;letter-spacing:.13em;color:#87907f}#defense-chip b{font-size:7px;letter-spacing:.04em;color:#d5c8ad}#defense-chip.danger{border-left-color:#c36556;background:#17100ee8}#defense-chip.danger b{color:#f0b29f}.build-grid .defense-primary{grid-column:1/3!important;min-height:78px!important;border:1px solid #a97747!important;border-left:4px solid #d3a255!important;background:linear-gradient(90deg,#251b12,#121511)!important;box-shadow:inset 0 1px #ffffff0d,0 4px 14px #0005}.build-grid .defense-primary>span{border-color:#a97747!important;color:#f0c875!important}.build-grid .defense-primary>b{font-size:10px!important;color:#f0ce88}.build-grid .defense-primary>small{color:#c1ae8e!important;font-size:7px!important}.build-grid [data-build="hut"]>b,.build-grid [data-build="lantern"]>b,.build-grid [data-build="watchtower"]>b{color:#e4c987}.build-grid [data-build="hut"]::after,.build-grid [data-build="lantern"]::after{content:'REPEAT';position:absolute;right:6px;top:6px;padding:2px 4px;border:1px solid #564d3d;color:#99886d;font-size:5px;letter-spacing:.1em}@media(max-width:420px){#defense-chip{top:calc(max(8px,env(safe-area-inset-top)) + 134px);max-width:72vw}#defense-chip b{font-size:6px}}
+</style>
+<style>
+:root{--gold:#eed59a;--line:#716044;--text:#f2ead7;--dim:#b1b6a2;--panel:#182722fa}button{touch-action:manipulation;cursor:pointer;font-weight:700}button:focus-visible{outline:3px solid #eed59a;outline-offset:2px}button:active{transform:translateY(1px);filter:brightness(1.25)}[hidden]{display:none!important}body{font-family:ui-monospace,'Hiragino Kaku Gothic ProN','Yu Gothic',monospace;font-variant-numeric:tabular-nums}#topbar{top:calc(env(safe-area-inset-top) + 10px);left:12px;right:12px;height:82px;grid-template-columns:63px 1fr;background:#14261ff5;border-color:#748b6880;border-radius:12px;box-shadow:0 4px 0 #071d1880, inset 0 1px #e8f5bf12}#day-chip{justify-content:center;padding:8px;border-color:#8ba17a30}#day-chip>b{font-size:12px}#day-chip>span,#day-chip>small{font-size:10px;letter-spacing:0}#resources>span{padding:9px 5px;border-color:#8ba17a20;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px}#resources small{font-size:10px;letter-spacing:0;color:#bac5a5}#resources b{font-size:19px;line-height:24px}#resources em{font-size:9px;align-self:center;color:#9aaf91}#utility{position:fixed;right:12px;top:calc(env(safe-area-inset-top) + 101px);gap:6px}#utility button{width:44px;height:44px;border:1px solid #9bac7655;border-radius:9px;background:#14261fef;font-size:14px}#rankbar{display:none}#objective{top:calc(env(safe-area-inset-top) + 103px);left:14px;max-width:calc(100vw - 132px);padding:4px 0;background:none;border:none;box-shadow:none;gap:6px;color:#f7e7bc;text-shadow:0 2px #14321e}#objective small{font-size:9px}#objective b{font-size:11px;line-height:1.6}#defense-chip{top:auto!important;bottom:calc(env(safe-area-inset-bottom) + 110px);left:14px;background:#14261fe0;box-shadow:none;border:1px solid #7d9d6650;max-width:calc(100vw - 100px)!important;border-radius:7px;padding:6px 9px;min-height:26px}#defense-chip small{font-size:9px}#defense-chip b{font-size:10px!important}#ticker{bottom:calc(env(safe-area-inset-bottom) + 76px);left:14px;right:14px;height:28px;background:none;border:none;box-shadow:none;padding:0;font-size:10px;text-shadow:0 2px #10251c;color:#e5e4c2;white-space:nowrap;overflow:hidden}#ticker i{width:5px;height:5px;flex-shrink:0}#dock{height:calc(66px + env(safe-area-inset-bottom));padding:0 10px env(safe-area-inset-bottom);border-color:#748b6870;background:#12261ef5;gap:4px}#dock button{border:0;border-radius:8px;margin:5px 0;gap:3px}#dock button.active{background:#344435}#dock button>span{display:none}#dock button>b{font-size:13px;letter-spacing:.06em}#dock button>small{font-size:10px;color:#afba9d}#boot-note{display:none}#context{bottom:calc(env(safe-area-inset-bottom) + 200px);width:85px;height:48px;border-radius:10px}#context b{font-size:13px}#context small{font-size:11px}#sheet{left:10px;right:10px;bottom:calc(74px + env(safe-area-inset-bottom));max-height:calc(100dvh - 180px - env(safe-area-inset-top) - env(safe-area-inset-bottom));padding:14px;border:1px solid #b3a47790;border-radius:16px;background:#14241ffa;box-shadow:0 0 0 200vmax #07140b65,0 12px 40px #000a;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:thin}.sheet-head{position:sticky;top:-14px;z-index:2;background:#14241f;padding:8px 0;border-color:#667453}.sheet-head small{font-size:10px}.sheet-head b{font-size:19px;line-height:1.6}#sheet-close{height:44px;width:44px;border-radius:8px;font-size:22px}.section-title{font-size:11px;margin:16px 0 9px;color:#b4b797}.build-grid,.hire-grid,.upgrade-grid{gap:8px}.build-grid button,.hire-grid button,.upgrade-grid button{min-height:100px!important;padding:13px!important;background:#20352a;border:1px solid #6e805855;border-radius:8px;box-shadow:inset 0 1px #e5efbf0b}.build-grid button>span{display:none}.build-grid button>b,.hire-grid button>b,.upgrade-grid button>b{font-size:12px!important;letter-spacing:0}.build-grid button>small,.hire-grid button>small,.upgrade-grid button>small{font-size:10px!important;line-height:1.6;color:#b1bba4!important}.build-grid button>em,.hire-grid button>em,.upgrade-grid button>em{font-size:11px;margin-top:8px;color:#e5c989}.build-grid .defense-primary{background:#334231!important;border:1px solid #a69765!important}.build-grid button::after{display:none}.notice,.unlock-list p{font-size:11px;line-height:1.7}.record-grid small,#worker-summary small{font-size:10px}.record-grid b,#worker-summary b{font-size:16px}#whistle{position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom) + 140px);z-index:21;border:1px solid #e9ca77a0;border-radius:50%;background:#243b2ff0;width:64px;height:64px;color:#f6de9b;box-shadow:0 4px 0 #12221b;font-size:12px}#whistle small{display:block;font-size:10px;color:#c9cfaa;margin-top:4px}#pocket-map{position:fixed;right:14px;top:calc(env(safe-area-inset-top) + 155px);width:76px;height:67px;z-index:15;background:#14261fa0;border:1px solid #aabd7466;border-radius:8px;image-rendering:pixelated;pointer-events:none}#pocket-progress{position:fixed;left:14px;top:calc(env(safe-area-inset-top) + 137px);font-size:9px;color:#d6e1b5;text-shadow:0 2px #173522;pointer-events:none}#village-card{padding:14px;margin-top:12px;border:1px solid #8e8053;border-radius:10px;background:#2a3928}#village-card h3{margin:0 0 6px;color:#efd69a;font-size:16px}#village-card p{font-size:11px;line-height:1.7;margin:6px 0;color:#c1c9b2}.policy-list{display:grid;gap:7px}.policy-list button,.milestone{width:100%;min-height:60px;border:1px solid #788b5855;background:#233a2b;color:#f0e5c7;border-radius:8px;padding:12px;text-align:left;font-size:12px;line-height:1.5}.policy-list small,.milestone small{display:block;font-size:10px;color:#bdc7af;margin-top:3px}.policy-list button:disabled{opacity:.72}.milestone{margin-top:6px;display:flex;justify-content:space-between;align-items:center;gap:8px}.milestone button{padding:8px;min-height:44px;min-width:64px;border:1px solid #ad995e;background:#455338;border-radius:6px;font-size:11px}.milestone button:disabled{opacity:.45}#pocket-help{font-size:11px;line-height:1.8;border-top:1px solid #59644a;margin-top:14px;padding-top:12px;color:#bfc8ac}#pause-label{font-size:10px;color:#acc997;margin-left:8px}#chain-chip{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 175px);transform:translateX(-50%);z-index:16;color:#ffe8a8;text-shadow:0 2px 3px #193423;font-weight:900;font-size:13px;pointer-events:none}#reset-game{min-height:44px!important;font-size:12px!important}@media(min-width:700px){#topbar{width:430px;left:24px}#objective,#pocket-progress{left:26px}#utility{top:20px;right:24px}#dock{left:50%;right:auto;width:450px;transform:translateX(-50%);border-radius:14px 14px 0 0}#sheet{left:50%;right:auto;width:480px;transform:translateX(-50%);max-height:72dvh}#pocket-map{top:82px;right:24px;width:110px;height:96px}#ticker{left:26px;right:120px}#defense-chip{left:26px}}
+@media(max-height:480px){#topbar{height:65px;width:360px;left:10px;top:8px}#resources b{font-size:16px}#resources small{font-size:9px}#objective{top:80px;left:12px}#pocket-progress{top:108px;left:12px}#dock{height:54px;width:330px;left:50%;right:auto;transform:translateX(-50%)}#dock button>small{display:none}#sheet{top:10px;bottom:62px;max-height:none;left:50%;width:min(480px,90vw);transform:translateX(-50%)}#ticker{bottom:63px}#defense-chip{bottom:92px}#whistle{bottom:78px}#pocket-map{top:76px}#chain-chip{top:130px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+
+</style>
+</head>
+<body data-save="guild-pocket-v2">
+<canvas id="game" aria-label="GUILD infinity v1.6"></canvas>
+<header id="topbar">
+  <div id="day-chip"><b id="day">DAY 1</b><span id="phase">DAY</span><small id="clock">08:00</small><i id="save-dot"></i></div>
+  <div id="resources">
+    <span><small>WOOD</small><b id="wood">0</b><em id="wood-cap">/160</em></span>
+    <span><small>STONE</small><b id="stone">0</b><em id="stone-cap">/100</em></span>
+    <span><small>FOOD</small><b id="food">0</b><em id="food-cap">/100</em></span>
+    <span><small>PEOPLE</small><b id="people">0/0</b><em id="morale">M100</em></span>
+  </div>
+  <div id="utility"><button id="sound">♪</button><button id="speed">×1</button></div>
+</header>
+<div id="rankbar"><b id="rank">RANK E</b><span id="threat">THREAT 1</span><span id="meta">HP 120/120 · IRON 0 · RENOWN 0</span></div>
+<div id="objective"><small>NEXT</small><b id="objective-text">木を集めて小屋を建てる</b></div>
+<button id="context" hidden><b id="context-main">REPAIR</b><small id="context-sub">防壁を修理</small></button>
+<div id="ticker"><i></i><span id="ticker-text">DEFENSE HARDENING · 4 GATES / MORE WATCHTOWERS</span></div>
+<nav id="dock">
+  <button data-panel="build"><span>⌂</span><b>BUILD</b><small>建設 / 強化</small></button>
+  <button data-panel="people"><span>♟</span><b>PEOPLE</b><small id="people-caption">小屋で解禁</small></button>
+  <button data-panel="record"><span>▤</span><b>RECORD</b><small>進行 / 戦績</small></button>
+</nav>
+<section id="sheet" hidden>
+  <div class="sheet-head"><div><small id="sheet-kicker">SETTLEMENT</small><b id="sheet-title">BUILD</b></div><button id="sheet-close">×</button></div>
+  <div id="panel-build">
+    <div class="section-title">建物</div>
+    <div class="build-grid">
+      <button data-build="hut"><span>⌂</span><b>小屋</b><small>人口枠を増やす · 複数建設可</small><em id="cost-hut"></em></button>
+      <button data-build="warehouse"><span>▣</span><b>倉庫</b><small>資源上限を増やす</small><em id="cost-warehouse"></em></button>
+      <button data-build="watchtower"><span>⌁</span><b>見張り台</b><small>強化自動射撃 · 多数配置可能</small><em id="cost-watchtower"></em></button>
+      <button data-build="barracks"><span>⚑</span><b>兵舎</b><small>衛兵を解禁</small><em id="cost-barracks"></em></button>
+      <button data-build="guild"><span>∞</span><b>ギルド</b><small>RANKと上限を解放</small><em id="cost-guild"></em></button>
+      <button data-build="lantern"><span>✦</span><b>灯火</b><small>安全圏を広げる · 複数建設可</small><em id="cost-lantern"></em></button>
+      <button data-build="lumber"><span>♠</span><b>木材所</b><small>木こり効率UP</small><em id="cost-lumber"></em></button>
+      <button data-build="quarry"><span>◆</span><b>採石所</b><small>採石効率UP</small><em id="cost-quarry"></em></button>
+      <button data-build="palisade" class="wide"><span>▥</span><b id="wall-label">防壁 / PALISADE</b><small id="wall-desc">北・東・南・西の4ゲート · 全て通行可能</small><em id="cost-palisade"></em></button>
+    </div>
+    <div class="section-title">設備強化 / 研究</div>
+    <div id="upgrade-grid" class="upgrade-grid"></div>
+  </div>
+  <div id="panel-people" hidden>
+    <div id="people-lock" class="notice">小屋を建てると雇用が解禁される</div>
+    <div class="hire-grid">
+      <button data-hire="wood"><b>木こり</b><small>高速伐採 · 夜は帰宅</small><em>FOOD 6</em></button>
+      <button data-hire="stone"><b>採石人</b><small>昼は採石 · 夜は帰宅</small><em>FOOD 6</em></button>
+      <button data-hire="food"><b>採集人</b><small>昼は採集 · 夜は帰宅</small><em>FOOD 5</em></button>
+      <button data-hire="guard"><b>衛兵</b><small>城壁を分担巡回 · 外敵へ弓迎撃</small><em>FOOD 9 · BARRACKS</em></button>
+    </div>
+    <div id="worker-summary"></div>
+  </div>
+  <div id="panel-record" hidden>
+    <div class="record-grid">
+      <span><small>RANK</small><b id="record-rank">E</b></span>
+      <span><small>NIGHTS</small><b id="nights">0</b></span>
+      <span><small>KILLS</small><b id="kills">0</b></span>
+      <span><small>BEST WALL</small><b id="best-wall">Lv.0</b></span>
+      <span><small>IRON</small><b id="iron">0</b></span>
+      <span><small>RENOWN</small><b id="renown">0</b></span>
+    </div>
+    <div id="unlock-list" class="unlock-list"></div>
+  </div>
+</section>
+<div id="boot-note">v1.6 HARDENING · 4 GATES / MORE WATCHTOWERS / RESET</div>
+<script>
+(()=>{'use strict';let ac=null,master=null,musicGain=null,sfxGain=null,muted=true,mood='day',timer=null,nextTime=0,step=0;const root=window,NOTE=n=>440*Math.pow(2,(n-69)/12);const DAY_CHORDS=[[57,60,64,69],[53,57,60,65],[60,64,67,72],[55,59,62,67]],NIGHT_CHORDS=[[45,48,52,57],[41,45,48,53],[43,47,50,55],[40,43,47,52]],DAY_MELODY=[69,72,76,79,76,72,71,72,69,72,77,76,72,71,69,null,72,74,76,81,79,76,74,72,71,72,74,76,72,69,null,null],NIGHT_MELODY=[64,null,67,69,67,null,64,62,60,null,64,67,65,null,62,60,57,null,60,64,62,null,59,57,55,null,59,60,57,null,null,null];function init(){if(ac)return true;const A=root.AudioContext||root.webkitAudioContext;if(!A)return false;ac=new A({latencyHint:'interactive'});master=ac.createGain();musicGain=ac.createGain();sfxGain=ac.createGain();master.gain.value=.56;musicGain.gain.value=.42;sfxGain.gain.value=.78;const comp=ac.createDynamicsCompressor();comp.threshold.value=-14;comp.knee.value=12;comp.ratio.value=5;comp.attack.value=.01;comp.release.value=.18;musicGain.connect(master);sfxGain.connect(master);master.connect(comp);comp.connect(ac.destination);return true}function oscVoice(midi,t,d,v,type='square',bus=musicGain,cut=2800,detune=0){if(!ac||midi==null)return;const o=ac.createOscillator(),f=ac.createBiquadFilter(),g=ac.createGain();o.type=type;o.frequency.value=NOTE(midi);o.detune.value=detune;f.type='lowpass';f.frequency.setValueAtTime(cut,t);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(f);f.connect(g);g.connect(bus);o.start(t);o.stop(t+d+.03)}function pad(chord,t,d,v){chord.slice(0,3).forEach((n,i)=>oscVoice(n,t,d,v/(i?1.4:1),'triangle',musicGain,1600,(i-1)*4))}function pluck(n,t,d=.12,v=.025){oscVoice(n,t,d,v,'square',musicGain,2100);oscVoice(n+12,t+.006,d*.75,v*.32,'sine',musicGain,3200,-4)}function noise(t,d,v,filter='highpass',freq=2600){if(!ac)return;const len=Math.max(1,Math.floor(ac.sampleRate*d)),buf=ac.createBuffer(1,len,ac.sampleRate),data=buf.getChannelData(0);for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*(1-i/len);const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=buf;f.type=filter;f.frequency.value=freq;g.gain.value=v;s.connect(f);f.connect(g);g.connect(sfxGain);s.start(t)}function drum(t,kind){if(kind==='kick'){const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.setValueAtTime(95,t);o.frequency.exponentialRampToValueAtTime(42,t+.09);g.gain.setValueAtTime(.065,t);g.gain.exponentialRampToValueAtTime(.0001,t+.11);o.connect(g);g.connect(musicGain);o.start(t);o.stop(t+.12)}else if(kind==='hat')noise(t,.03,.008,'highpass',4800);else if(kind==='snare')noise(t,.08,.014,'bandpass',1800)}function currentBuildLevel(){try{const s=root.GUILD_V13?.getState?.();if(!s)return 0;return Math.min(4,(s.buildings?.length||0)+((s.workers?.length||0)>0?1:0))}catch(_){return 0}}function schedule(){if(!ac||muted||ac.state!=='running')return;const isNight=mood==='night',bpm=isNight?88:112,eighth=30/bpm,chords=isNight?NIGHT_CHORDS:DAY_CHORDS,melody=isNight?NIGHT_MELODY:DAY_MELODY;if(nextTime<ac.currentTime-.08)nextTime=ac.currentTime+.03;const progressionLevel=currentBuildLevel();while(nextTime<ac.currentTime+.22){const s=step%32,bar=Math.floor(s/8)%4,slot=s%8,ch=chords[bar];if(slot===0){pad(ch,nextTime,eighth*7.4,isNight?.015:.021);oscVoice(ch[0]-12,nextTime,eighth*3.6,isNight?.026:.031,'triangle',musicGain,900);if(progressionLevel>=1)drum(nextTime,'kick')}if(slot===4&&progressionLevel>=1)drum(nextTime,'kick');if((slot===2||slot===6)&&progressionLevel>=2)drum(nextTime,'snare');if(progressionLevel>=2)drum(nextTime,'hat');const arp=ch[(slot+(bar%2))%4]+12;if(!isNight||slot%2===0)pluck(arp,nextTime,eighth*.72,isNight?.012:.018);const m=melody[s];if(m!=null&&(progressionLevel>=3||(!isNight&&s%4===0)))oscVoice(m,nextTime,eighth*.82,isNight?.017:.022,isNight?'triangle':'square',musicGain,isNight?1500:2300);nextTime+=eighth;step++}}function start(){if(timer!==null)return;nextTime=ac.currentTime+.04;timer=setInterval(schedule,25)}async function enable(){if(!init())return false;try{if(ac.state!=='running')await ac.resume();muted=false;master.gain.cancelScheduledValues(ac.currentTime);master.gain.setTargetAtTime(.56,ac.currentTime,.03);start();return true}catch(_){return false}}async function toggle(){if(muted){await enable();return false}muted=true;if(ac)master.gain.setTargetAtTime(.0001,ac.currentTime,.03);return true}function setMood(next){if(next!=='day'&&next!=='night')return;if(next===mood)return;mood=next;step=0;if(ac&&musicGain){musicGain.gain.cancelScheduledValues(ac.currentTime);musicGain.gain.setTargetAtTime(.17,ac.currentTime,.12);setTimeout(()=>{if(ac&&!muted)musicGain.gain.setTargetAtTime(.42,ac.currentTime,.18)},240)}}function sfx(name){if(!ac||muted||ac.state!=='running')return false;const t=ac.currentTime,v=(n,d=.07,vol=.05,type='square',delay=0,cut=2800)=>oscVoice(n,t+delay,d,vol,type,sfxGain,cut);switch(name){case'chop':v(50,.045,.07,'square',0,1500);v(38,.08,.04,'triangle',.025,800);noise(t+.006,.025,.012,'bandpass',1400);break;case'mine':v(82,.025,.045,'square',0,3500);v(58,.085,.052,'triangle',.02,1300);noise(t,.03,.009,'highpass',3300);break;case'pickup':v(84,.05,.03,'sine');v(91,.065,.035,'sine',.035);break;case'build':v(55,.08,.048,'triangle');v(62,.09,.055,'triangle',.06);v(67,.1,.06,'triangle',.12);v(74,.18,.055,'square',.18,2400);noise(t+.03,.08,.012,'bandpass',900);break;case'hire':v(67,.07,.04,'triangle');v(72,.08,.05,'triangle',.055);v(79,.16,.055,'square',.12,2200);break;case'rare':v(79,.06,.035,'sine');v(86,.07,.045,'sine',.045);v(91,.09,.05,'square',.1,2600);v(98,.18,.04,'sine',.17);break;case'warning':v(45,.16,.04,'triangle');v(40,.2,.04,'triangle',.13);break;case'dawn':v(64,.08,.035,'triangle');v(69,.09,.04,'triangle',.065);v(72,.12,.045,'square',.13,2200);v(76,.18,.04,'triangle',.21);break;case'hit':v(43,.04,.06,'square',0,1300);noise(t,.05,.018,'bandpass',1100);break;case'confirm':v(72,.055,.035,'square');v(79,.07,.035,'square',.04);break;case'cancel':v(65,.06,.028,'triangle');v(58,.08,.028,'triangle',.045);break;default:return false}return true}document.addEventListener('visibilitychange',()=>{if(!ac)return;if(document.hidden&&ac.state==='running')ac.suspend().catch(()=>{});else if(!document.hidden&&!muted&&ac.state==='suspended')ac.resume().catch(()=>{})});root.FrontierAudio=Object.freeze({enable,toggle,setMood,sfx,get isMuted(){return muted}})})();
+</script>
+<script>
+'use strict';
+const $=id=>document.getElementById(id),canvas=$('game'),ctx=canvas.getContext('2d',{alpha:false});ctx.imageSmoothingEnabled=false;
+const A=window.FrontierAudio||{enable(){},toggle:async()=>true,setMood(){},sfx(){}};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t,rnd=(a,b)=>a+Math.random()*(b-a),dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+const SAVE=document.body.dataset.save||'guild-infinity-v16-clean',BACKUP=SAVE+'-backup',WORLD={minX:-900,maxX:900,minY:-720,maxY:760};
+const RANKS=['E','D','C','B','A','S'],POP_CAP=[20,45,80,130,200,300],WALL_CAP=[1,2,3,4,5,6];
+const BUILD={
+ hut:{name:'HOUSE',base:{wood:30,stone:10},repeat:true,max:5,unlock:0},warehouse:{name:'WAREHOUSE',base:{wood:65,stone:42},repeat:false,max:5,unlock:1},watchtower:{name:'WATCHTOWER',base:{wood:80,stone:50,iron:1},repeat:true,max:5,unlock:1},barracks:{name:'BARRACKS',base:{wood:105,stone:72,iron:2},repeat:false,max:5,unlock:2},guild:{name:'GUILD HALL',base:{wood:110,stone:90,renown:4},repeat:false,max:5,unlock:0},lantern:{name:'LANTERN',base:{wood:18,stone:6},repeat:true,max:3,unlock:0},lumber:{name:'LUMBER',base:{wood:55,stone:22},repeat:false,max:3,unlock:0},quarry:{name:'QUARRY',base:{wood:48,stone:38},repeat:false,max:3,unlock:0}
+};
+const ROLE_NAMES={wood:'木こり',stone:'採石人',food:'採集人',guard:'衛兵'};
+const COLORS={wood:'#b87946',stone:'#9b9e92',food:'#c36658',hit:'#f3cda1',blood:'#b65449',heal:'#7ba07a'};
+const state={version:16,day:1,cycle:.17,phase:'day',wood:0,stone:0,food:0,iron:0,renown:0,morale:100,hourglass:1,boost:1,boostUntil:0,player:{x:0,y:120,vx:0,vy:0,dir:'down',walk:0,swing:0},nodes:[],buildings:[],workers:[],enemies:[],projectiles:[],palisade:{built:false,level:0,hp:0,maxHp:0,builtAt:0},stats:{kills:0,nights:0,bestWall:0},lastSaved:0};
+let W=innerWidth,H=innerHeight,D=Math.min(devicePixelRatio||1,2),last=performance.now(),pointer=null,origin={x:0,y:0},input={x:0,y:0,mag:0},dragged=false,currentPanel=null,nightWaveMask=0,lastPhase='day',autoTarget=null,playerWork=0;
+const cam={x:0,y:20},fx=[],floats=[],slashes=[];
+function resize(){W=innerWidth;H=innerHeight;D=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(W*D);canvas.height=Math.round(H*D);canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(D,0,0,D,0,0);ctx.imageSmoothingEnabled=false}addEventListener('resize',resize);resize();
+const sx=x=>W/2+x-cam.x,sy=y=>H/2+y-cam.y;
+function phaseInfo(c=state.cycle){if(c<.07)return['dawn','DAWN'];if(c<.69)return['day','DAY'];if(c<.78)return['dusk','DUSK'];return['night','NIGHT']}
+function rankIndex(){const g=state.buildings.find(b=>b.type==='guild');return clamp(g?.level||0,0,5)}function rank(){return RANKS[rankIndex()]}
+function settlementLevel(){return state.palisade.built?state.palisade.level:1}function bounds(level=settlementLevel()){const L=Math.max(1,level),hw=150+(L-1)*76,hh=108+(L-1)*54,gap=44+L*3;return{l:-hw,r:hw,t:-hh,b:hh,gap}}
+function inside(x,y,B=bounds()){return x>B.l&&x<B.r&&y>B.t&&y<B.b}
+function wallStats(level){const L=clamp(level,1,6),hp=[0,360,620,980,1450,2050,2800][L],wood=[0,70,110,170,250,360,500][L],stone=[0,20,48,90,150,230,340][L],iron=[0,0,0,1,2,4,7][L];return{hp,wood,stone,iron}}
+function capacity(){const w=state.buildings.find(b=>b.type==='warehouse'),L=w?.level||0;return{wood:160+L*220,stone:100+L*150,food:100+L*90}}
+function houseCapacity(){return state.buildings.filter(b=>b.type==='hut').reduce((s,b)=>s+4+b.level*3,0)}function maxWorkers(){return Math.min(POP_CAP[rankIndex()],houseCapacity())}
+function capResource(type){const c=capacity()[type];state[type]=clamp(state[type],0,c)}function addRes(type,n){state[type]+=n;capResource(type)}
+function toast(text,danger=false){$('ticker-text').textContent=text;$('ticker').classList.toggle('ticker-danger',danger);$('ticker').classList.remove('flash');void $('ticker').offsetWidth;$('ticker').classList.add('flash')}
+function savePulse(){$('save-dot')?.classList.add('flash');setTimeout(()=>$('save-dot')?.classList.remove('flash'),160)}
+function costFor(type,nextLevel=1){if(type==='palisade')return wallStats(nextLevel);const d=BUILD[type],count=state.buildings.filter(b=>b.type===type).length,scale=d.repeat?1+count*.24:1;const lvScale=nextLevel>1?1+(nextLevel-1)*.65:1;const c={};for(const [k,v] of Object.entries(d.base))c[k]=Math.ceil(v*scale*lvScale);return c}
+function hasCost(c){return (!c.wood||state.wood>=c.wood)&&(!c.stone||state.stone>=c.stone)&&(!c.food||state.food>=c.food)&&(!c.iron||state.iron>=c.iron)&&(!c.renown||state.renown>=c.renown)}
+function pay(c){for(const k of['wood','stone','food','iron','renown'])if(c[k])state[k]-=c[k]}
+function fmtCost(c){return [['wood','W'],['stone','S'],['food','F'],['iron','I'],['renown','R']].filter(([k])=>c[k]).map(([k,l])=>`${l}${c[k]}`).join(' · ')}
+function threat(){return Math.max(1,Math.floor(state.day*.72)+rankIndex()*2)}
+function updateHud(){const c=capacity();$('wood').textContent=Math.floor(state.wood);$('stone').textContent=Math.floor(state.stone);$('food').textContent=Math.floor(state.food);$('wood-cap').textContent='/'+c.wood;$('stone-cap').textContent='/'+c.stone;$('food-cap').textContent='/'+c.food;$('people').textContent=`${state.workers.length}/${maxWorkers()}`;$('morale').textContent='M'+Math.round(state.morale);$('day').textContent='DAY '+state.day;const[ph,label]=phaseInfo();state.phase=ph;$('phase').textContent=label;const mins=Math.floor(state.cycle*1440),hh=String(Math.floor(mins/60)%24).padStart(2,'0'),mm=String(mins%60).padStart(2,'0');$('clock').textContent=hh+':'+mm;$('rank').textContent='RANK '+rank();$('threat').textContent='THREAT '+threat();$('meta').textContent=`IRON ${state.iron} · RENOWN ${state.renown}`;$('speed').textContent='×'+state.boost;$('people-caption').textContent=maxWorkers()?`${state.workers.length}/${maxWorkers()}`:'小屋で解禁';$('people-lock').hidden=maxWorkers()>0;$('record-rank').textContent=rank();$('nights').textContent=state.stats.nights;$('kills').textContent=state.stats.kills;$('best-wall').textContent='Lv.'+state.stats.bestWall;$('iron').textContent=state.iron;$('renown').textContent=state.renown;updateObjective();updateBuildSheet();updatePeopleSummary()}
+function updateObjective(){let text='木を集めて小屋を建てる';if(state.buildings.some(b=>b.type==='hut'))text='STONEを集めて防壁を完成させる';if(state.palisade.built)text='夜までに衛兵か見張り台を用意する';if(state.stats.nights>=1)text='GUILD HALLを強化してRANK Dへ';if(rankIndex()>=1)text='城壁を拡張し、外の強敵に備える';if(rankIndex()>=2)text='IRONを集めて兵舎と見張り台を強化';if(state.day>=8)text='RANKを上げてさらに大きい街へ';$('objective-text').textContent=text}
+function updateBuildSheet(){for(const t of Object.keys(BUILD)){const el=$('cost-'+t);if(!el)continue;const d=BUILD[t],existing=state.buildings.filter(b=>b.type===t),locked=rankIndex()<d.unlock||(!d.repeat&&existing.length>0);const c=costFor(t,1);el.textContent=locked?(rankIndex()<d.unlock?`RANK ${RANKS[d.unlock]}で解禁`:'建設済み'):fmtCost(c);el.closest('button')?.classList.toggle('locked',locked)}const wl=$('wall-label'),wd=$('wall-desc'),wc=$('cost-palisade'),next=state.palisade.built?state.palisade.level+1:1;if(next>6){wl.textContent='PALISADE MAX';wd.textContent='最大拡張済み';wc.textContent='Lv.6'}else{const rankCap=WALL_CAP[rankIndex()],c=wallStats(next);wl.textContent=state.palisade.built?`PALISADE Lv.${state.palisade.level} → ${next}`:'PALISADE';wd.textContent=next>rankCap?`RANK ${RANKS[Math.min(5,next-1)]}が必要`:'敷地・耐久・見た目が成長';wc.textContent=fmtCost(c)}renderUpgrades();renderUnlocks()}
+function renderUpgrades(){const el=$('upgrade-grid');if(!el)return;const cards=[];for(const b of state.buildings){const d=BUILD[b.type];if(!d||b.level>=d.max)continue;if(cards.some(x=>x.type===b.type))continue;const c=costFor(b.type,b.level+1);cards.push({type:b.type,name:d.name,L:b.level,c})}el.innerHTML=cards.length?cards.map(x=>`<button data-upgrade="${x.type}" ${hasCost(x.c)?'':'disabled'}><b>${x.name} Lv.${x.L} → ${x.L+1}</b><small>${upgradeBenefit(x.type,x.L+1)}</small><em>${fmtCost(x.c)}</em></button>`).join(''):'<div class="notice">建物を建てると強化が解禁</div>';el.querySelectorAll('[data-upgrade]').forEach(b=>b.onclick=()=>upgrade(b.dataset.upgrade))}
+function upgradeBenefit(type,L){if(type==='hut')return`人口枠 +${4+L*3}`;if(type==='warehouse')return'資源上限を大幅拡張';if(type==='watchtower')return'射程・威力・連射UP';if(type==='barracks')return'衛兵攻撃力UP';if(type==='guild')return`RANK ${RANKS[L]} / 上限解放`;if(type==='lantern')return'夜の照明範囲UP';if(type==='lumber')return'木こり効率UP';if(type==='quarry')return'採石効率UP';return'性能UP'}
+function renderUnlocks(){const el=$('unlock-list');if(!el)return;el.innerHTML=[['D','WAREHOUSE / WATCHTOWER / WALL Lv.2'],['C','BARRACKS / WALL Lv.3 / POP 80'],['B','WALL Lv.4 / POP 130'],['A','WALL Lv.5 / POP 200'],['S','WALL Lv.6 / POP 300']].map((x,i)=>`<p>${rankIndex()>i?'✓':'·'} RANK ${x[0]} — ${x[1]}</p>`).join('')}
+function updatePeopleSummary(){const c={wood:0,stone:0,food:0,guard:0};state.workers.forEach(w=>c[w.role]++);$('worker-summary').innerHTML=Object.entries(c).map(([k,v])=>`<span><small>${ROLE_NAMES[k]}</small><b>${v}</b></span>`).join('')}
+function node(id,x,y,type,starter=false){const hp=type==='tree'?18:type==='rock'?26:12;return{id,x,y,type,hp,maxHp:hp,alive:true,respawnAt:0,starter,seed:Math.random()}}
+function outsidePos(pad=80){const B=bounds(),a=Math.random()*Math.PI*2,rx=Math.max(Math.abs(B.l),Math.abs(B.r))+pad+rnd(40,300),ry=Math.max(Math.abs(B.t),Math.abs(B.b))+pad+rnd(40,250);return{x:clamp(Math.cos(a)*rx,WORLD.minX+40,WORLD.maxX-40),y:clamp(Math.sin(a)*ry,WORLD.minY+40,WORLD.maxY-40)}}
+function seedNodes(){let id=0;const starter=[[-52,148,'tree'],[54,150,'tree'],[-105,105,'tree'],[108,108,'tree'],[-118,56,'rock'],[120,60,'rock'],[-32,205,'food'],[75,210,'food']];state.nodes=starter.map(v=>node('n'+id++,...v,true));for(let i=0;i<28;i++){const p=outsidePos();state.nodes.push(node('n'+id++,p.x,p.y,'tree'))}for(let i=0;i<18;i++){const p=outsidePos(95);state.nodes.push(node('n'+id++,p.x,p.y,'rock'))}for(let i=0;i<12;i++){const p=outsidePos(75);state.nodes.push(node('n'+id++,p.x,p.y,'food'))}}
+function relocate(n){const p=outsidePos(90);n.x=p.x;n.y=p.y;n.alive=true;n.hp=n.maxHp;n.respawnAt=0;n.starter=false}
+function clearInside(){if(!state.palisade.built)return;for(const n of state.nodes)if(n.alive&&inside(n.x,n.y))relocate(n)}
+function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h))}function poly(p,c){ctx.fillStyle=c;ctx.beginPath();p.forEach((v,i)=>i?ctx.lineTo(v[0],v[1]):ctx.moveTo(v[0],v[1]));ctx.closePath();ctx.fill()}function shadow(x,y,w,h=6,a=.42){rect(x-w/2,y-h/2,w,h,`rgba(0,0,0,${a})`)}function glow(x,y,r,a=.2){ctx.save();ctx.globalCompositeOperation='screen';const g=ctx.createRadialGradient(x,y,2,x,y,r);g.addColorStop(0,`rgba(255,177,86,${a})`);g.addColorStop(1,'rgba(255,177,86,0)');ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2);ctx.restore()}
+function drawGround(){const ph=state.phase,top=ph==='night'?'#0c1a20':ph==='dusk'?'#31434a':ph==='dawn'?'#3a574e':'#3f604c',bot=ph==='night'?'#14241d':ph==='dusk'?'#504b36':'#4c694e';const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,top);g.addColorStop(1,bot);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);for(let i=0;i<120;i++){const wx=(i*139)%1750-875,wy=(i*91)%1400-700,x=sx(wx),y=sy(wy);if(x<0||x>W||y<0||y>H)continue;rect(x,y,2,1,i%3?'#9aa36a21':'#cab36b18')}const B=bounds();if(state.palisade.built){ctx.fillStyle='rgba(160,125,74,.18)';ctx.fillRect(sx(B.l+6),sy(B.t+6),B.r-B.l-12,B.b-B.t-12)}const cx=sx(0),cy=sy(0);rect(cx-7,cy-175,14,310,'rgba(166,139,84,.12)');rect(cx-210,cy+20,420,12,'rgba(166,139,84,.10)');for(let i=-4;i<=4;i++){rect(cx-82+i*19,cy+17,10,2,'rgba(208,179,112,.10)')}drawBaseCamp()}
+function drawBaseCamp(){const x=sx(0),y=sy(24),t=performance.now()/180;shadow(x,y+14,38,7,.45);for(const a of[-11,0,11]){ctx.save();ctx.translate(x+a,y+9);ctx.rotate(a/38);rect(-9,-2,18,4,'#583824');ctx.restore()}const flick=Math.sin(t)*2;poly([[x-9,y+8],[x-4,y-10-flick],[x,y+2],[x+5,y-18+flick],[x+10,y+8]],'#d9783f');poly([[x-5,y+7],[x,y-8+flick],[x+5,y+7]],'#f4c35f');glow(x,y-2,48,.10);rect(x-52,y-34,4,40,'#62432e');poly([[x-48,y-33],[x-20,y-27],[x-48,y-17]],'#876339');ctx.fillStyle='#d8bb72';ctx.font='900 9px monospace';ctx.textAlign='center';ctx.fillText('∞',x-37,y-22);rect(x+34,y+2,24,16,'#6a4a32');rect(x+36,y+4,20,4,'#b1814e')}
+function drawNode(n){const x=sx(n.x),y=sy(n.y);if(n.type==='tree'){shadow(x,y+20,31);rect(x-5,y-5,10,28,'#5d3c29');poly([[x-23,y-18],[x-13,y-40],[x+3,y-50],[x+20,y-35],[x+23,y-15],[x+8,y-8],[x-16,y-8]],'#183d2d');poly([[x-14,y-30],[x-5,y-46],[x+12,y-43],[x+18,y-27],[x+6,y-18],[x-12,y-19]],'#29533b')}else if(n.type==='rock'){shadow(x,y+10,30);poly([[x-15,y+7],[x-10,y-8],[x-1,y-15],[x+12,y-8],[x+16,y+4],[x+8,y+11],[x-10,y+10]],'#5d6662');poly([[x-8,y-5],[x-1,y-11],[x+8,y-7],[x+10,y-1],[x+2,y+2]],'#8f9187')}else{shadow(x,y+9,25);poly([[x-13,y+8],[x-8,y-7],[x+3,y-11],[x+12,y+5],[x+7,y+11],[x-8,y+11]],'#294936');for(const q of[-7,0,7])rect(x+q-1,y,3,3,'#c85e55')}}
+const PAL=['#d8ad83','#c79067','#e2ba90','#b87e59'];function drawPerson(o,role='wood',enemy=false){const x=sx(o.x),y=sy(o.y),walk=Math.sin((o.anim||0)*2)*1.5,bob=Math.abs(Math.sin(o.anim||0))*1.2;shadow(x,y+17,19,5,.5);if(enemy){const t=o.type||'walker',c=t==='brute'?'#6e6359':t==='runner'?'#6d7d55':t==='spitter'?'#536e68':t==='warden'?'#7b4e53':'#65785e',s=t==='brute'?1.35:t==='warden'?1.55:1;ctx.save();ctx.translate(x,y);ctx.scale(s,s);rect(-7,-11+bob,14,18,o.hit>0?'#d6c5a2':c);rect(-5,-21+bob,10,10,'#aaa28a');rect(-4,-18+bob,2,2,'#391e20');rect(2,-18+bob,2,2,'#391e20');rect(-6,7-bob,4,10+walk,'#3c3432');rect(2,7+bob,4,10-walk,'#3c3432');if(t==='spitter')rect(7,-9+bob,5,5,'#8a9d69');ctx.restore();return}const skin=PAL[(o.seed||0)%PAL.length|0],cloth=role==='guard'?'#52667a':role==='stone'?'#75624f':role==='food'?'#657752':'#8a5d48';rect(x-6,y+6+walk,4,10,'#303637');rect(x+2,y+6-walk,4,10,'#303637');rect(x-8,y-10+bob,16,18,cloth);rect(x-6,y-21+bob,12,10,skin);rect(x-7,y-26+bob,14,6,'#3b2d24');if(role==='guard'){ctx.strokeStyle='#c6ad78';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x+8,y-14);ctx.lineTo(x+8,y+12);ctx.stroke();poly([[x+8,y-18],[x+5,y-12],[x+11,y-12]],'#d6d1bf')}else{ctx.strokeStyle='#795536';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x+7,y-9);ctx.lineTo(x+13,y+3);ctx.stroke();rect(x+11,y-1,6,4,'#abb0aa')}}
+function drawPlayer(){const p=state.player;drawPerson({...p,seed:0},'wood');if(p.swing>0){const x=sx(p.x),y=sy(p.y),a=(1-p.swing)*2.2-.4;ctx.strokeStyle='#d6be89';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x+5,y-5,22,a,a+1.3);ctx.stroke()}}
+function buildingSize(type,L){if(type==='guild')return[86+L*6,58+L*3];if(type==='watchtower')return[38,56+L*5];if(type==='lantern')return[24,48];return[62+L*3,40+L*2]}
+function drawBuilding(b){const x=sx(b.x),y=sy(b.y),L=b.level||1,[w,h]=buildingSize(b.type,L);shadow(x,y+18,w,7,.5);if(b.type==='hut'){rect(x-w/2,y-h/4,w,h/2,'#76583f');poly([[x-w*.58,y-h/4],[x,y-h*.7],[x+w*.58,y-h/4]],L>=4?'#76513b':'#9c6841');rect(x-7,y+2,14,18,'#2e251f');for(let i=0;i<Math.min(3,L);i++)rect(x-w/2+10+i*17,y-8,8,8,'#e1b76d')}else if(b.type==='warehouse'){rect(x-w/2,y-h/4,w,h/2,'#5d4c3d');poly([[x-w*.55,y-h/4],[x,y-h*.62],[x+w*.55,y-h/4]],'#6e5339');rect(x-12,y-1,24,19,'#2f2a23');for(let i=-1;i<=1;i++)rect(x+i*15-5,y-10,10,5,'#b3834c')}else if(b.type==='watchtower'){rect(x-5,y-h*.55,10,h,'#5c4935');rect(x-18,y-h*.58,36,17,'#574638');poly([[x-20,y-h*.58],[x,y-h*.78],[x+20,y-h*.58]],'#85573a');rect(x-4,y-h*.51,8,8,'#e4b861')}else if(b.type==='barracks'){rect(x-w/2,y-h/4,w,h/2,'#645043');poly([[x-w*.56,y-h/4],[x,y-h*.64],[x+w*.56,y-h/4]],'#70463a');rect(x-9,y-1,18,19,'#2d2622');rect(x-23,y-11,11,9,'#bd8b55');rect(x+12,y-11,11,9,'#bd8b55');rect(x-2,y-h*.44,4,15,'#8a3d37')}else if(b.type==='guild'){rect(x-w/2,y-h/4,w,h/2,'#6f543e');rect(x-w*.42,y-h*.48,w*.84,h*.25,'#7f6042');poly([[x-w*.52,y-h*.48],[x,y-h*.75],[x+w*.52,y-h*.48]],'#7d4f38');rect(x-10,y,20,18,'#29221d');rect(x-8,y-h*.42,16,11,'#d3aa61');ctx.fillStyle='#1d2f34';ctx.font='900 10px monospace';ctx.textAlign='center';ctx.fillText('∞',x,y-h*.33)}else if(b.type==='lumber'){rect(x-w/2,y-h/4,w,h/2,'#6d4d38');for(let i=-2;i<=2;i++)rect(x+i*11-4,y+13,8,14,'#4a3325')}else if(b.type==='quarry'){rect(x-w/2,y-2,w,h/2,'#555d59');poly([[x-w/2,y-2],[x-12,y-h*.4],[x+17,y-h*.35],[x+w/2,y-2]],'#737a72')}else if(b.type==='lantern'){rect(x-3,y-28,6,43,'#704c31');rect(x-11,y-34,22,10,'#242a2a');rect(x-7,y-32,14,6,'#e4b059');if(state.phase==='night')glow(x,y-29,70+L*18,.23)}}
+function drawWall(){if(!state.palisade.built)return;const B=bounds(),L=state.palisade.level,stone=L>=4;for(let x=B.l;x<=B.r;x+=14){if(x>-B.gap/2&&x<B.gap/2)continue;drawWallSeg(x,B.t,stone);drawWallSeg(x,B.b,stone)}for(let y=B.t+14;y<B.b;y+=14){drawWallSeg(B.l,y,stone);drawWallSeg(B.r,y,stone)}const gy=sy(B.b),gx=sx(0);rect(gx-B.gap/2-5,gy-20,10,34,stone?'#777970':'#61402a');rect(gx+B.gap/2-5,gy-20,10,34,stone?'#777970':'#61402a');rect(gx-B.gap/2+5,gy-13,B.gap-10,4,'#9a6b43')}
+function drawWallSeg(wx,wy,stone){const x=sx(wx),y=sy(wy);shadow(x,y+8,12,4,.4);if(stone){rect(x-6,y-13,12,27,'#777a72');rect(x-4,y-10,8,22,'#96958b')}else{rect(x-4,y-11,8,24,'#65432c');poly([[x-4,y-11],[x,y-17],[x+4,y-11]],'#8e5f3a')}}
+function fxBurst(x,y,color,n=8,pow=1){for(let i=0;i<n;i++)fx.push({x,y,vx:rnd(-55,55)*pow,vy:rnd(-70,-20)*pow,life:rnd(.3,.65),size:rnd(2,4),color})}function floatText(x,y,text,color='#f0ce88'){floats.push({x,y,text,color,life:.9})}function slash(x,y,angle=0,color='#efc681'){slashes.push({x,y,angle,life:.22,color})}
+function drawEffects(dt){for(let i=fx.length-1;i>=0;i--){const p=fx[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=105*dt;p.life-=dt;if(p.life<=0){fx.splice(i,1);continue}ctx.globalAlpha=clamp(p.life*2,0,1);rect(sx(p.x),sy(p.y),p.size,p.size,p.color);ctx.globalAlpha=1}for(let i=floats.length-1;i>=0;i--){const f=floats[i];f.y-=22*dt;f.life-=dt;if(f.life<=0){floats.splice(i,1);continue}ctx.globalAlpha=clamp(f.life*1.5,0,1);ctx.font='900 9px monospace';ctx.textAlign='center';ctx.fillStyle='#000c';ctx.fillText(f.text,sx(f.x)+1,sy(f.y)+1);ctx.fillStyle=f.color;ctx.fillText(f.text,sx(f.x),sy(f.y));ctx.globalAlpha=1}for(let i=slashes.length-1;i>=0;i--){const s=slashes[i];s.life-=dt;if(s.life<=0){slashes.splice(i,1);continue}ctx.save();ctx.translate(sx(s.x),sy(s.y));ctx.rotate(s.angle);ctx.globalAlpha=s.life/.22;ctx.strokeStyle=s.color;ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,18,-1.1,.7);ctx.stroke();ctx.restore()}}
+
+</script>
+<script>
+'use strict';
+// v1.6 progression hotfix: a clean first-night success must unlock meaningful defense choices.
+BUILD.guild.base.renown=3;
+BUILD.barracks.unlock=1;
+
+</script>
+<script>
+const REPEAT_CAP_MAX={hut:18,lantern:24,watchtower:8};
+const RESOURCE_MIN_ACTIVE={tree:18,rock:12,food:8};
+const RESOURCE_RESPAWN_MS={tree:12000,rock:14000,food:8000};
+function repeatBuildCap(type){if(type==='hut')return Math.min(REPEAT_CAP_MAX.hut,3+settlementLevel()*3);if(type==='lantern')return Math.min(REPEAT_CAP_MAX.lantern,4+settlementLevel()*4);if(type==='watchtower')return Math.min(REPEAT_CAP_MAX.watchtower,2+settlementLevel());return 99}
+function nearestNode(o,type,claimed=new Set()){let best=null,bd=1e9;for(const n of state.nodes){if(!n.alive||n.type!==type||claimed.has(n.id))continue;const d=Math.hypot(o.x-n.x,o.y-n.y);if(d<bd){best=n;bd=d}}return best}
+function respawnNearFrontier(n){const B=bounds(),side=Math.floor(Math.random()*4),margin=58+rnd(0,72);if(side===0){n.x=B.l-margin;n.y=rnd(B.t-70,B.b+70)}else if(side===1){n.x=B.r+margin;n.y=rnd(B.t-70,B.b+70)}else if(side===2){n.x=rnd(B.l-80,B.r+80);n.y=B.t-margin}else{n.x=rnd(B.l-80,B.r+80);n.y=B.b+margin}n.x=clamp(n.x,WORLD.minX+35,WORLD.maxX-35);n.y=clamp(n.y,WORLD.minY+35,WORLD.maxY-35)}
+function reviveNode(n){if(state.palisade.built&&inside(n.x,n.y,bounds()))respawnNearFrontier(n);n.alive=true;n.hp=n.maxHp;n.respawnAt=0;n.starter=false;fxBurst(n.x,n.y,n.type==='tree'?'#5d8352':n.type==='rock'?'#aaa99b':'#9d7157',7,.7)}
+function hitNode(n,source='player'){if(!n?.alive)return;const lm=1+(state.buildings.find(b=>b.type==='lumber')?.level||0)*.12,qm=1+(state.buildings.find(b=>b.type==='quarry')?.level||0)*.12,eff=source==='worker'?(.45+.45*state.morale/100):1;let gain=0;if(n.type==='tree'){gain=(source==='worker'?1.05:1.5)*lm*eff;addRes('wood',gain);floatText(n.x,n.y-18,'+'+gain.toFixed(1),'#d59a5d');fxBurst(n.x,n.y,COLORS.wood,6);A.sfx('chop')}else if(n.type==='rock'){gain=(source==='worker'?.88:1.25)*qm*eff;addRes('stone',gain);floatText(n.x,n.y-15,'+'+gain.toFixed(1),'#c0c1b6');fxBurst(n.x,n.y,COLORS.stone,6);A.sfx('mine')}else{gain=source==='worker'?1.05:1.5;addRes('food',gain);floatText(n.x,n.y-13,'+'+gain.toFixed(1),'#d78678');fxBurst(n.x,n.y,COLORS.food,5);A.sfx('pickup')}const nodeDamage=source==='worker'?(n.type==='rock'?1.25:1):(n.type==='rock'?3:2);n.hp-=nodeDamage;if(n.hp<=0){n.alive=false;n.respawnAt=Date.now()+RESOURCE_RESPAWN_MS[n.type];fxBurst(n.x,n.y,n.type==='tree'?'#6f472f':n.type==='rock'?'#696e69':'#507353',13,1.2);floatText(n.x,n.y-8,`${Math.round(RESOURCE_RESPAWN_MS[n.type]/1000)}s RESPAWN`,'#c9b98f');autoTarget=null}updateHud()}
+function respawnNodes(){const now=Date.now();for(const n of state.nodes)if(!n.alive&&n.respawnAt&&n.respawnAt<=now)reviveNode(n);const active={tree:0,rock:0,food:0};for(const n of state.nodes)if(n.alive)active[n.type]=(active[n.type]||0)+1;for(const type of Object.keys(RESOURCE_MIN_ACTIVE)){let need=RESOURCE_MIN_ACTIVE[type]-(active[type]||0);if(need<=0)continue;for(const n of state.nodes.filter(n=>!n.alive&&n.type===type).sort((a,b)=>(a.respawnAt||0)-(b.respawnAt||0))){if(need<=0)break;reviveNode(n);need--}}}
+function playerGather(dt){respawnNodes();if(input.mag>.2){autoTarget=null;playerWork=0;return}if(!autoTarget||!autoTarget.alive||dist(state.player,autoTarget)>48){let best=null,bd=48;for(const n of state.nodes){if(!n.alive)continue;const d=dist(state.player,n);if(d<bd){best=n;bd=d}}autoTarget=best}if(!autoTarget){playerWork=0;return}playerWork+=dt;if(playerWork>.32){playerWork=0;state.player.swing=1;hitNode(autoTarget,'player')}}
+function buildRadius(type){if(type==='lantern')return 22;if(type==='watchtower')return 31;if(type==='hut')return 38;return 40}
+function buildCandidates(type){const B=bounds(),pad=32,r=buildRadius(type),step=type==='lantern'?40:56,out=[];for(let y=B.t+pad;y<=B.b-pad;y+=step){for(let x=B.l+pad;x<=B.r-pad;x+=step){if(Math.abs(x)<52&&Math.abs(y-24)<68)continue;if(Math.abs(x)<38&&y>B.b-80)continue;let ok=true;for(const b of state.buildings){if(Math.hypot(x-b.x,y-b.y)<r+buildRadius(b.type)+7){ok=false;break}}if(ok)out.push({p:[x,y],i:`${type}:${Math.round(x)}:${Math.round(y)}`,d:Math.hypot(state.player.x-x,state.player.y-y)})}}return out.sort((a,b)=>a.d-b.d)}
+function freeSlot(type){return buildCandidates(type)[0]||null}
+function build(type){A.enable();if(type==='palisade'){const next=state.palisade.built?state.palisade.level+1:1;if(next>6){toast('城壁は最大Lv.6');return}if(next>WALL_CAP[rankIndex()]){toast(`RANK ${RANKS[Math.min(5,next-1)]}で城壁Lv.${next}解禁`);return}const c=wallStats(next);if(!hasCost(c)){toast('城壁素材不足 · '+fmtCost(c),true);return}pay(c);state.palisade={built:true,level:next,hp:c.hp,maxHp:c.hp,builtAt:performance.now()};state.stats.bestWall=Math.max(state.stats.bestWall,next);clearInside();fxBurst(0,0,'#d6a45f',30,1.5);toast(next===1?'防壁完成 · 夜が本番になる':`領土拡張 · 城壁Lv.${next}`);A.sfx('build');closeSheet();save();updateHud();return}const d=BUILD[type];if(!d)return;if(rankIndex()<d.unlock){toast(`RANK ${RANKS[d.unlock]}で解禁`);return}const existing=state.buildings.filter(b=>b.type===type);if(!d.repeat&&existing.length){toast(d.name+'は建設済み');return}if(d.repeat&&existing.length>=repeatBuildCap(type)){toast(`${d.name} 建設上限 ${existing.length}/${repeatBuildCap(type)} · 城壁を拡張`);return}const c=costFor(type,1);if(!hasCost(c)){toast(d.name+' 素材不足 · '+fmtCost(c),true);return}const s=freeSlot(type);if(!s){toast('城内に建築スペースがない · 城壁を拡張');return}pay(c);const b={id:'b'+Date.now()+Math.random(),type,level:1,slot:`${s.i}:${Date.now()}`,x:s.p[0],y:s.p[1],builtAt:performance.now()};state.buildings.push(b);fxBurst(b.x,b.y,'#d7b26e',20,1.25);toast(`${d.name} 完成 · ${existing.length+1}棟`);A.sfx('build');closeSheet();save();updateHud()}
+function upgrade(type){const b=state.buildings.find(x=>x.type===type&&x.level<(BUILD[type]?.max||1));if(!b)return;const c=costFor(type,b.level+1);if(!hasCost(c)){toast('強化素材不足 · '+fmtCost(c),true);return}pay(c);b.level++;b.builtAt=performance.now();fxBurst(b.x,b.y,'#f0cf84',28,1.4);if(type==='guild')toast(`GUILD RANK UP · ${rank()}`);else toast(`${BUILD[type].name} Lv.${b.level}`);A.sfx('build');save();updateHud()}
+function hire(role){if(!maxWorkers()){toast('まずHOUSEを建てる');return}if(state.workers.length>=maxWorkers()){toast('人口上限 · HOUSEかRANKを上げる');return}if(role==='guard'&&!state.buildings.some(b=>b.type==='barracks')){toast('衛兵にはBARRACKSが必要');return}const food=role==='guard'?9:role==='food'?5:6;if(state.food<food){toast(`FOOD ${food} 必要`,true);return}state.food-=food;const h=state.buildings.find(b=>b.type==='hut')||{x:0,y:0},i=state.workers.length;const maxHp=role==='guard'?120:85;state.workers.push({id:'w'+Date.now()+Math.random(),role,x:h.x+rnd(-10,10),y:h.y+22+rnd(-5,7),seed:i%4,targetId:null,work:0,anim:rnd(0,6),cool:0,hp:maxHp,maxHp,dead:false,death:0,hit:0});toast(ROLE_NAMES[role]+' が加入');A.sfx('hire');save();updateHud()}
+function route(o,tx,ty){if(!state.palisade.built||state.palisade.hp<=0)return{x:tx,y:ty};const B=bounds(),a=inside(o.x,o.y,B),b=inside(tx,ty,B);if(a===b)return{x:tx,y:ty};const inGate={x:0,y:B.b-18},outGate={x:0,y:B.b+24};if(a){if(dist(o,inGate)>10)return inGate;return outGate}else{if(dist(o,outGate)>10)return outGate;return inGate}}
+function move(o,tx,ty,speed,dt){const dx=tx-o.x,dy=ty-o.y,d=Math.hypot(dx,dy)||1;o.x+=dx/d*speed*dt;o.y+=dy/d*speed*dt;o.anim=(o.anim||0)+dt*7;return d<speed*dt+2}
+function ensureWorkerVitals(w){if(!Number.isFinite(w.maxHp))w.maxHp=w.role==='guard'?120:85;if(!Number.isFinite(w.hp))w.hp=w.maxHp;if(typeof w.dead!=='boolean')w.dead=false;if(!Number.isFinite(w.death))w.death=0;if(!Number.isFinite(w.hit))w.hit=0;if(!Number.isFinite(w.cool))w.cool=0}
+function nearestWorkerEnemy(w,range){let best=null,bd=range;for(const e of state.enemies){if(e.dead)continue;const d=dist(w,e);if(d<bd){best=e;bd=d}}return best}
+function workerCombat(w,dt){const guard=w.role==='guard',range=guard?220:54,e=nearestWorkerEnemy(w,range);if(!e)return false;w.targetId=null;w.state='combat';const d=dist(w,e);if(guard&&d>30){const rt=route(w,e.x,e.y);move(w,rt.x,rt.y,52,dt);return true}if(!guard&&d>33)return false;if(w.cool<=0){w.cool=guard?.62:.95;w.swing=1;const dmg=guard?(14+(state.buildings.find(b=>b.type==='barracks')?.level||1)*4):5;damageEnemy(e,dmg,w.x,w.y,true)}return true}
+function updateWorkers(dt){const claimed=new Set();for(const w of state.workers)if(w.targetId)claimed.add(w.targetId);for(let i=0;i<state.workers.length;i++){const w=state.workers[i];ensureWorkerVitals(w);if(w.dead)continue;w.cool=Math.max(0,(w.cool||0)-dt);w.hit=Math.max(0,(w.hit||0)-dt);if(workerCombat(w,dt))continue;if(w.role==='guard'){const B=bounds(),tx=clamp(Math.sin(i*2.1+performance.now()/2500)*65,B.l+20,B.r-20),ty=clamp(Math.cos(i*1.4+performance.now()/3000)*45,B.t+20,B.b-20);w.state='patrol';move(w,tx,ty,24,dt);continue}const type=w.role==='wood'?'tree':w.role==='stone'?'rock':'food';let n=state.nodes.find(n=>n.id===w.targetId&&n.alive);if(!n){n=nearestNode(w,type,claimed);w.targetId=n?.id||null;if(n)claimed.add(n.id)}if(!n){w.state='idle';continue}if(dist(w,n)>31){w.state='moving';const rt=route(w,n.x,n.y);move(w,rt.x,rt.y,38,dt)}else{w.state='working';w.work+=dt*(.65+.35*state.morale/100);const cycle=w.role==='stone'?.62:w.role==='wood'?.78:.72;if(w.work>cycle){w.work=0;hitNode(n,'worker');if(!n.alive)w.targetId=null}}}towerCombat(dt)}
+function towerCombat(dt){for(const b of state.buildings.filter(b=>b.type==='watchtower')){b.cool=Math.max(0,(b.cool||0)-dt);if(b.cool>0)continue;const range=145+b.level*28,z=state.enemies.filter(e=>!e.dead&&dist(b,e)<range).sort((a,b2)=>dist(b,a)-dist(b,b2))[0];if(!z)continue;b.cool=Math.max(.36,1.05-b.level*.12);state.projectiles.push({kind:'arrow',x:b.x,y:b.y-38,tx:z.x,ty:z.y,target:z,speed:260,damage:10+b.level*6,life:2});A.sfx('hit')}}
+function enemySpec(type,wave){const T=threat(),base={walker:{hp:55,spd:25,dmg:10},runner:{hp:42,spd:42,dmg:8},brute:{hp:150,spd:18,dmg:25},spitter:{hp:78,spd:22,dmg:15},warden:{hp:360,spd:16,dmg:34}}[type];return{hp:Math.round(base.hp*(1+T*.09+wave*.08)),spd:base.spd*(1+Math.min(.35,T*.02)),dmg:Math.round(base.dmg*(1+T*.07+wave*.06))}}
+function enemyType(i,wave){if(state.day%5===0&&wave===3&&i===0)return'warden';const r=Math.random();if(state.day>=7&&r<.18)return'spitter';if(state.day>=4&&r<.38)return'brute';if(state.day>=2&&r<.62)return'runner';return'walker'}
+
+</script>
+<script>
+function lanternRadius(b){return 130+(b.level||1)*38}
+function spawnSuppressed(x,y){for(const b of state.buildings){if(b.type!=='lantern')continue;if(Math.hypot(x-b.x,y-b.y)<=lanternRadius(b))return true}return false}
+function spawnPoint(i){const B=bounds(),side=i%4;return{x:side===0?B.l-150:side===1?B.r+150:rnd(B.l-180,B.r+180),y:side===2?B.t-140:side===3?B.b+155:rnd(B.t-130,B.b+130)}}
+function spawnWave(wave){const count=Math.min(18,3+wave+Math.floor(state.day*.55)+rankIndex());let spawned=0,blocked=0;for(let i=0;i<count;i++){let p=null;for(let attempt=0;attempt<10;attempt++){const q=spawnPoint(i+attempt);if(!spawnSuppressed(q.x,q.y)){p=q;break}}if(!p){blocked++;continue}const type=enemyType(i,wave),s=enemySpec(type,wave);state.enemies.push({id:'e'+Date.now()+i+Math.random(),type,x:p.x,y:p.y,hp:s.hp,maxHp:s.hp,spd:s.spd,dmg:s.dmg,anim:rnd(0,6),cool:rnd(0,.7),hit:0,dead:false,death:0,seed:i,sunBurn:false,burnFx:0});spawned++}if(spawned)toast(`NIGHT WAVE ${wave+1} · ${spawned}体${blocked?` · 灯火が${blocked}体を抑止`:''}`,true);else toast(`LANTERN SAFE ZONE · WAVE ${wave+1} を完全抑止`);A.setMood('night');A.sfx(blocked?'confirm':'warning')}
+function nearestWallPoint(z){const B=bounds(),x=clamp(z.x,B.l,B.r),y=clamp(z.y,B.t,B.b),a=[{x,y:B.t},{x,y:B.b},{x:B.l,y},{x:B.r,y}];return a.sort((p,q)=>dist(z,p)-dist(z,q))[0]}
+function damageEnemy(e,dmg,ax=e.x,ay=e.y,guard=false){if(e.dead)return;e.hp-=dmg;e.hit=.12;const ang=Math.atan2(e.y-ay,e.x-ax);e.x+=Math.cos(ang)*4;e.y+=Math.sin(ang)*4;slash(e.x,e.y,ang,guard?'#d3d9c6':'#f0c278');fxBurst(e.x,e.y,'#d0b08c',6);floatText(e.x,e.y-22,'-'+Math.round(dmg),'#ffd19b');A.sfx('hit');if(e.hp<=0)killEnemy(e)}
+function killEnemy(e){if(e.dead)return;e.dead=true;e.death=.68;state.stats.kills++;const dropChance=e.type==='brute'?.7:e.type==='warden'?1:e.type==='spitter'?.45:.18;if(Math.random()<dropChance){const n=e.type==='warden'?3:1;state.iron+=n;floatText(e.x,e.y-30,'IRON +'+n,'#a9c4c1')}if(Math.random()<(e.type==='warden'?.9:.12)){state.renown++;floatText(e.x,e.y-40,'RENOWN +1','#e1bd6a')}fxBurst(e.x,e.y,e.sunBurn?'#dc8d4e':'#7b8f6a',18,1.25);toast(`${e.type.toUpperCase()} DOWN`);A.sfx('pickup')}
+function ensureLifeState(){if(!Number.isFinite(state.player.maxHp))state.player.maxHp=120;if(!Number.isFinite(state.player.hp))state.player.hp=state.player.maxHp;if(!Number.isFinite(state.player.attackCd))state.player.attackCd=0;if(!Number.isFinite(state.player.down))state.player.down=0;if(!Number.isFinite(state.player.invuln))state.player.invuln=0;for(const w of state.workers)ensureWorkerVitals(w)}
+function humanAccessible(e,h){if(!state.palisade.built||state.palisade.hp<=0)return true;const B=bounds();return inside(e.x,e.y,B)===inside(h.x,h.y,B)}
+function nearestHuman(e){const candidates=[];if(state.player.down<=0&&humanAccessible(e,state.player))candidates.push({kind:'player',obj:state.player,d:dist(e,state.player)});for(const w of state.workers){ensureWorkerVitals(w);if(w.dead||!humanAccessible(e,w))continue;candidates.push({kind:'worker',obj:w,d:dist(e,w)})}candidates.sort((a,b)=>a.d-b.d);return candidates[0]||null}
+function chooseEnemyTarget(e){const human=nearestHuman(e);if(human&&human.d<260)return{x:human.obj.x,y:human.obj.y,kind:human.kind,obj:human.obj,wall:false};if(state.palisade.built&&state.palisade.hp>0&&!inside(e.x,e.y,bounds())){const p=nearestWallPoint(e);return{...p,kind:'wall',obj:state.palisade,wall:true}}if(human)return{x:human.obj.x,y:human.obj.y,kind:human.kind,obj:human.obj,wall:false};return{x:0,y:20,kind:'settlement',obj:null,wall:false}}
+function damagePlayer(dmg,e){const p=state.player;if(p.down>0||p.invuln>0)return;p.hp=Math.max(0,p.hp-dmg);p.invuln=.18;p.vx+=(p.x-e.x)*.18;p.vy+=(p.y-e.y)*.18;floatText(p.x,p.y-28,'-'+Math.round(dmg),'#ff9f91');fxBurst(p.x,p.y,'#d56f61',7,.8);A.sfx('hit');if(p.hp<=0){p.down=1.35;p.vx=p.vy=0;state.morale=Math.max(0,state.morale-6);toast('PLAYER DOWN · 拠点へ退避',true)}}
+function damageWorker(w,dmg,e){if(w.dead)return;ensureWorkerVitals(w);w.hp=Math.max(0,w.hp-dmg);w.hit=.18;const dx=w.x-e.x,dy=w.y-e.y,d=Math.hypot(dx,dy)||1;w.x+=dx/d*3;w.y+=dy/d*3;floatText(w.x,w.y-25,'-'+Math.round(dmg),'#ffb0a0');fxBurst(w.x,w.y,'#c96a5f',6,.75);A.sfx('hit');if(w.hp<=0){w.dead=true;w.death=.85;w.targetId=null;state.morale=Math.max(0,state.morale-8);toast(`${ROLE_NAMES[w.role]} が倒れた`,true);fxBurst(w.x,w.y,'#9e6a5e',12,1.1)}}
+function updateHumanLife(dt){const p=state.player;p.attackCd=Math.max(0,(p.attackCd||0)-dt);p.invuln=Math.max(0,(p.invuln||0)-dt);if(p.down>0){p.down-=dt;if(p.down<=0){p.x=0;p.y=70;p.hp=Math.ceil(p.maxHp*.7);p.invuln=1.4;toast('主人公が拠点へ戻った · HP 70%')}}for(const w of state.workers){if(w.dead)w.death-=dt}state.workers=state.workers.filter(w=>!w.dead||w.death>0)}
+function playerAutoCombat(){const p=state.player;if(p.down>0||p.attackCd>0)return;let best=null,bd=62;for(const e of state.enemies){if(e.dead)continue;const d=dist(p,e);if(d<bd){best=e;bd=d}}if(!best)return;p.attackCd=.46;p.swing=1;damageEnemy(best,28+rankIndex()*3,p.x,p.y,false)}
+function igniteDawnSurvivors(){let n=0;for(const e of state.enemies){if(e.dead)continue;e.sunBurn=true;e.burnFx=0;n++}if(n){toast(`DAWN · 日光で${n}体が燃え始めた`);A.sfx('warning')}}
+function sunBurn(e,dt){if(!e.sunBurn||e.dead||!(state.phase==='dawn'||state.phase==='day'))return false;e.burnFx=(e.burnFx||0)-dt;const dps=7+e.maxHp*.10;e.hp-=dps*dt;if(e.burnFx<=0){e.burnFx=.24;fxBurst(e.x+rnd(-4,4),e.y-10+rnd(-5,5),'#ef8d46',4,.7);if(Math.random()<.35)floatText(e.x,e.y-28,'BURN','#ffc06d')}if(e.hp<=0)killEnemy(e);return true}
+function fireAtHuman(e,target){const kind=target.kind,id=kind==='worker'?target.obj.id:null;state.projectiles.push({kind:'spit',targetKind:kind,targetId:id,x:e.x,y:e.y-10,tx:target.obj.x,ty:target.obj.y,target:null,speed:130,damage:e.dmg,life:2.2})}
+function updateEnemies(dt){for(const e of state.enemies){if(e.dead){e.death-=dt;e.y+=10*dt;continue}const burning=sunBurn(e,dt);if(e.dead)continue;e.hit=Math.max(0,e.hit-dt);e.cool=Math.max(0,e.cool-dt);e.anim+=dt*e.spd*.16;const target=chooseEnemyTarget(e),d=dist(e,target),speedMul=burning?.58:1;if(e.type==='spitter'&&!target.wall&&(target.kind==='player'||target.kind==='worker')&&d<150&&d>52&&e.cool<=0){e.cool=1.4;fireAtHuman(e,target);continue}if(e.type==='spitter'&&target.wall&&d<145&&e.cool<=0){e.cool=1.35;state.projectiles.push({kind:'spit',targetKind:'wall',targetId:null,x:e.x,y:e.y-10,tx:target.x,ty:target.y,target:null,speed:130,damage:e.dmg,life:2.2});continue}if(d>22){e.x+=(target.x-e.x)/d*e.spd*speedMul*dt;e.y+=(target.y-e.y)/d*e.spd*speedMul*dt}else if(e.cool<=0){e.cool=e.type==='runner'?.58:e.type==='brute'?1.15:.88;if(target.kind==='wall'){state.palisade.hp=Math.max(0,state.palisade.hp-e.dmg);fxBurst(target.x,target.y,'#9c6546',7);floatText(target.x,target.y-10,'-'+e.dmg,'#ef9b86');A.sfx('hit');if(state.palisade.hp<=0)toast('防壁崩壊 · 敵が街へ侵入',true)}else if(target.kind==='player')damagePlayer(e.dmg,e);else if(target.kind==='worker')damageWorker(target.obj,e.dmg,e);else{state.morale=Math.max(0,state.morale-.04*e.dmg)}}}state.enemies=state.enemies.filter(e=>!e.dead||e.death>0);updateProjectiles(dt)}
+function updateProjectiles(dt){for(let i=state.projectiles.length-1;i>=0;i--){const p=state.projectiles[i];p.life-=dt;if(p.life<=0){state.projectiles.splice(i,1);continue}if(p.kind==='arrow'&&p.target&&!p.target.dead){p.tx=p.target.x;p.ty=p.target.y}if(p.kind==='spit'&&p.targetKind==='player'){if(state.player.down>0){state.projectiles.splice(i,1);continue}p.tx=state.player.x;p.ty=state.player.y}if(p.kind==='spit'&&p.targetKind==='worker'){const w=state.workers.find(w=>w.id===p.targetId&&!w.dead);if(!w){state.projectiles.splice(i,1);continue}p.tx=w.x;p.ty=w.y}const dx=p.tx-p.x,dy=p.ty-p.y,d=Math.hypot(dx,dy)||1,step=p.speed*dt;if(d<=step+4){if(p.kind==='arrow'&&p.target&&!p.target.dead)damageEnemy(p.target,p.damage,p.x,p.y,true);else if(p.kind==='spit'){if(p.targetKind==='player')damagePlayer(p.damage,{x:p.x,y:p.y});else if(p.targetKind==='worker'){const w=state.workers.find(w=>w.id===p.targetId&&!w.dead);if(w)damageWorker(w,p.damage,{x:p.x,y:p.y})}else if(p.targetKind==='wall'&&state.palisade.hp>0){state.palisade.hp=Math.max(0,state.palisade.hp-p.damage);fxBurst(p.tx,p.ty,'#7c9c6d',8);floatText(p.tx,p.ty-10,'-'+p.damage,'#9bd08a')}}state.projectiles.splice(i,1);continue}p.x+=dx/d*step;p.y+=dy/d*step}}
+function drawProjectile(p){const x=sx(p.x),y=sy(p.y);if(p.kind==='arrow'){ctx.strokeStyle='#d6c18c';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-5,y);ctx.lineTo(x+5,y);ctx.stroke()}else{rect(x-3,y-3,6,6,'#7fad6f');glow(x,y,18,.09)}}
+function drawEnemy(e){ctx.save();if(e.dead)ctx.globalAlpha=clamp(e.death/.68,0,1);drawPerson(e,null,true);ctx.restore();const x=sx(e.x),y=sy(e.y);if(e.sunBurn&&!e.dead&&(state.phase==='dawn'||state.phase==='day')){glow(x,y-8,25,.08);rect(x-3,y-28,3,7,'#f1a24b');rect(x+2,y-24,3,6,'#d96d3e')}if(!e.dead&&(e.hit>0||e.type==='brute'||e.type==='warden')){const w=e.type==='warden'?40:28;rect(x-w/2,y-34,w,4,'#271d1b');rect(x-w/2,y-34,w*clamp(e.hp/e.maxHp,0,1),4,e.type==='warden'?'#b45858':'#c07b61')}}
+function drawWorkerEntity(w){ctx.save();if(w.dead)ctx.globalAlpha=clamp(w.death/.85,0,1);drawPerson(w,w.role);ctx.restore();if(!w.dead&&Number.isFinite(w.hp)&&w.hp<w.maxHp){const x=sx(w.x),y=sy(w.y)-29;rect(x-11,y,22,3,'#281b19');rect(x-11,y,22*clamp(w.hp/w.maxHp,0,1),3,'#79a26d')}}
+function drawPlayerEntity(){drawPlayer();const p=state.player,x=sx(p.x),y=sy(p.y)-31;if(p.hp<p.maxHp||p.down>0){rect(x-14,y,28,4,'#281b19');rect(x-14,y,28*clamp(p.hp/p.maxHp,0,1),4,p.down>0?'#7a5148':'#79a26d')}}
+function wallCollision(x,y,r=9){if(!state.palisade.built||state.palisade.hp<=0)return false;const B=bounds(),th=9;if(x+r>B.l-th&&x-r<B.r+th){if(y+r>B.t-th&&y-r<B.t+th)return true;if(y+r>B.b-th&&y-r<B.b+th&&!(x>-B.gap/2+r&&x<B.gap/2-r))return true}if(y+r>B.t-th&&y-r<B.b+th){if(x+r>B.l-th&&x-r<B.l+th)return true;if(x+r>B.r-th&&x-r<B.r+th)return true}return false}
+function movement(dt){const p=state.player;if(p.down>0){p.vx=p.vy=0;cam.x=lerp(cam.x,p.x,1-Math.pow(.0005,dt));cam.y=lerp(cam.y,p.y-40,1-Math.pow(.0005,dt));return}const tx=input.x*145,ty=input.y*145,a=input.mag>.04?1-Math.pow(.00002,dt):1-Math.pow(.0003,dt);p.vx=lerp(p.vx,tx,a);p.vy=lerp(p.vy,ty,a);if(Math.abs(p.vx)<.3)p.vx=0;if(Math.abs(p.vy)<.3)p.vy=0;let nx=clamp(p.x+p.vx*dt*state.boost,WORLD.minX,WORLD.maxX),ny=p.y;if(!wallCollision(nx,ny))p.x=nx;else p.vx=0;nx=p.x;ny=clamp(p.y+p.vy*dt*state.boost,WORLD.minY,WORLD.maxY);if(!wallCollision(nx,ny))p.y=ny;else p.vy=0;if(Math.hypot(p.vx,p.vy)>3){p.walk+=dt*10;const ax=Math.abs(p.vx),ay=Math.abs(p.vy);p.dir=ax>ay?(p.vx>0?'right':'left'):(p.vy>0?'down':'up')}p.swing=Math.max(0,p.swing-dt*3.7);cam.x=lerp(cam.x,p.x,1-Math.pow(.0005,dt));cam.y=lerp(cam.y,p.y-40,1-Math.pow(.0005,dt))}
+function repairTarget(){if(!state.palisade.built||state.palisade.hp>=state.palisade.maxHp||state.wood<5)return false;const B=bounds(),q=Math.min(Math.abs(state.player.x-B.l),Math.abs(state.player.x-B.r),Math.abs(state.player.y-B.t),Math.abs(state.player.y-B.b));return q<45}
+function refreshContext(){$('context').hidden=!repairTarget();if(!$('context').hidden){$('context-main').textContent='REPAIR';$('context-sub').textContent='WOOD 5'}}
+function contextAct(){if(!repairTarget())return;state.wood-=5;state.palisade.hp=Math.min(state.palisade.maxHp,state.palisade.hp+90+state.palisade.level*18);fxBurst(state.player.x,state.player.y,'#d7b26e',8);A.sfx('build');toast('防壁を修理');save()}
+function updateVitalsHud(){const m=$('meta');if(m)m.textContent=`HP ${Math.ceil(state.player.hp)}/${state.player.maxHp} · IRON ${state.iron} · RENOWN ${state.renown}`}
+function phaseTick(dt){const prev=state.phase;state.cycle+=dt/125*state.boost;if(state.cycle>=1){state.cycle-=1;state.day++;nightWaveMask=0;state.stats.nights++;igniteDawnSurvivors();const upkeep=Math.ceil(state.workers.filter(w=>!w.dead).length*.72+state.buildings.length*.28);if(state.food>=upkeep){state.food-=upkeep;state.morale=Math.min(100,state.morale+4);toast(`DAWN · FOOD -${upkeep} · 士気回復`)}else{const miss=upkeep-state.food;state.food=0;state.morale=Math.max(25,state.morale-miss*2.2-7);toast(`食料不足 ${miss} · MORALE ${Math.round(state.morale)}`,true)}const survive=Math.max(0,Math.round((state.palisade.maxHp?state.palisade.hp/state.palisade.maxHp:0)*3));state.renown+=survive;A.setMood('day');A.sfx('dawn');save()}const[ph]=phaseInfo();state.phase=ph;if(ph==='night'){const thresholds=[.79,.85,.91,.97];thresholds.forEach((t,i)=>{if(state.cycle>=t&&!(nightWaveMask&(1<<i))){nightWaveMask|=1<<i;spawnWave(i)}})}if(prev!==ph&&ph==='dusk')toast(`DUSK · THREAT ${threat()} · 防衛準備`,true);if(state.boostUntil&&Date.now()>=state.boostUntil){state.boost=1;state.boostUntil=0;toast('砂時計の効果終了')}}
+function draw(){drawGround();const items=[];for(const n of state.nodes)if(n.alive)items.push({y:n.y,fn:()=>drawNode(n)});for(const b of state.buildings)items.push({y:b.y+25,fn:()=>drawBuilding(b)});state.workers.forEach(w=>items.push({y:w.y+16,fn:()=>drawWorkerEntity(w)}));state.enemies.forEach(e=>items.push({y:e.y+16,fn:()=>drawEnemy(e)}));items.push({y:state.player.y+17,fn:drawPlayerEntity});items.sort((a,b)=>a.y-b.y).forEach(o=>o.fn());drawWall();state.projectiles.forEach(drawProjectile);if(state.phase==='night'){ctx.fillStyle='rgba(4,9,15,.26)';ctx.fillRect(0,0,W,H);for(const b of state.buildings)if(b.type==='lantern')glow(sx(b.x),sy(b.y)-28,lanternRadius(b),.16)}}
+function loop(now){const dt=Math.min(.033,(now-last)/1000||0);last=now;movement(dt);playerGather(dt);updateWorkers(dt);playerAutoCombat();updateEnemies(dt);updateHumanLife(dt);phaseTick(dt);refreshContext();updateHud();updateVitalsHud();draw();drawEffects(dt);requestAnimationFrame(loop)}
+function vec(e){let dx=e.clientX-origin.x,dy=e.clientY-origin.y,m=Math.hypot(dx,dy),max=64;if(m<7){input={x:0,y:0,mag:0};return}dragged=true;if(m>max){dx=dx/m*max;dy=dy/m*max;m=max}input={x:dx/max,y:dy/max,mag:m/max}}
+canvas.addEventListener('pointerdown',e=>{if(pointer!==null)return;e.preventDefault();A.enable();pointer=e.pointerId;origin={x:e.clientX,y:e.clientY};dragged=false;input={x:0,y:0,mag:0};try{canvas.setPointerCapture(pointer)}catch(_){}});canvas.addEventListener('pointermove',e=>{if(e.pointerId!==pointer)return;e.preventDefault();vec(e)});function end(e){if(e.pointerId!==pointer)return;pointer=null;input={x:0,y:0,mag:0};save()}canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
+function openPanel(name){currentPanel=name;$('sheet').hidden=false;$('sheet-title').textContent=name.toUpperCase();$('sheet-kicker').textContent=name==='build'?'SETTLEMENT':name==='people'?'ROSTER':'PROGRESS';['build','people','record'].forEach(p=>$('panel-'+p).hidden=p!==name);document.querySelectorAll('#dock button').forEach(b=>b.classList.toggle('active',b.dataset.panel===name));updateHud();A.sfx('confirm')}function closeSheet(){$('sheet').hidden=true;currentPanel=null;document.querySelectorAll('#dock button').forEach(b=>b.classList.remove('active'))}
+document.querySelectorAll('#dock [data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));$('sheet-close').onclick=()=>{closeSheet();A.sfx('cancel')};document.querySelectorAll('[data-build]').forEach(b=>b.onclick=()=>build(b.dataset.build));document.querySelectorAll('[data-hire]').forEach(b=>b.onclick=()=>hire(b.dataset.hire));$('context').onclick=contextAct;$('sound').onclick=async()=>{$('sound').textContent=(await A.toggle())?'♪':'♪×'};$('speed').onclick=()=>{A.enable();if(state.hourglass<=0){toast('砂時計が必要');return}if(state.boost>=3){toast('最大×3');return}state.hourglass--;state.boost++;state.boostUntil=Date.now()+30000;toast(`砂時計 · ×${state.boost} 30秒`);save()};
+function serial(){return JSON.stringify(state)}function save(){if(document.body.dataset.resetting==='true')return false;try{const p=localStorage.getItem(SAVE);if(p)localStorage.setItem(BACKUP,p);state.lastSaved=Date.now();localStorage.setItem(SAVE,serial());savePulse();return true}catch(_){return false}}function apply(o){if(!o||o.version!==16)return false;Object.assign(state,o);state.player={...state.player,...o.player};state.palisade={...state.palisade,...o.palisade};state.stats={...state.stats,...o.stats};for(const k of['nodes','buildings','workers','enemies','projectiles'])state[k]=Array.isArray(o[k])?o[k]:[];return true}function load(){for(const k of[SAVE,BACKUP]){try{const raw=localStorage.getItem(k);if(raw&&apply(JSON.parse(raw)))return true}catch(_){}}return false}
+setInterval(save,1000);addEventListener('pagehide',save);addEventListener('beforeunload',save);document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});const loaded=load();if(!state.nodes.length)seedNodes();for(const k of['wood','stone','food'])capResource(k);ensureLifeState();updateHud();updateVitalsHud();toast(loaded?'AUTO SAVE · 続きから再開':'v1.6 LIFE AI · 小屋→防壁→夜防衛');A.setMood(state.phase==='night'?'night':'day');requestAnimationFrame(t=>{last=t;requestAnimationFrame(loop)});window.GUILD_V16=Object.freeze({state:()=>JSON.parse(serial()),save,build,hire,upgrade,spawnWave});
+
+</script>
+<script>
+'use strict';
+
+// v1.6 stability/debug pass
+// Fix repeat-building, touch freezes and resource respawn without changing Life AI combat.
+const STABILITY_VERSION='v16.4-stability';
+const REPEAT_TYPES=new Set(['hut','lantern','watchtower']);
+const REPEAT_LIMITS={hut:{base:6,perWall:3,max:24},lantern:{base:8,perWall:4,max:32},watchtower:{base:2,perWall:1,max:8}};
+const RESPAWN_MS={tree:10000,rock:12000,food:7000};
+const MIN_NODE_TOTAL={tree:18,rock:12,food:8};
+const FOOTPRINT={hut:26,lantern:10,watchtower:22,warehouse:30,barracks:31,guild:35,lumber:30,quarry:30};
+
+const coreUpdateHud=updateHud;
+const coreUpdateBuildSheet=updateBuildSheet;
+const coreUpdatePeopleSummary=updatePeopleSummary;
+const coreBuild=build;
+const coreLoop=loop;
+const coreHitNode=hitNode;
+let hudLast=0,buildUiLast=0,buildUiSig='',peopleSig='',lastRuntimeError='',lastRuntimeErrorAt=0;
+
+function repeatLimit(type){const cfg=REPEAT_LIMITS[type];if(!cfg)return 1;const wall=Math.max(1,settlementLevel());return Math.min(cfg.max,cfg.base+(wall-1)*cfg.perWall)}
+function footprint(type){return FOOTPRINT[type]||28}
+function candidateGrid(type){
+  const B=bounds(),r=footprint(type),pad=Math.max(18,r+3),step=type==='lantern'?30:type==='watchtower'?48:50,out=[];
+  if(type==='lantern'){
+    const inset=20,edgeStep=48;
+    for(let x=B.l+inset;x<=B.r-inset;x+=edgeStep){out.push({x,y:B.t+inset});if(!(Math.abs(x)<B.gap/2+16))out.push({x,y:B.b-inset})}
+    for(let y=B.t+inset+edgeStep;y<=B.b-inset-edgeStep;y+=edgeStep){out.push({x:B.l+inset,y});out.push({x:B.r-inset,y})}
+  }
+  for(let y=B.t+pad;y<=B.b-pad;y+=step){for(let x=B.l+pad;x<=B.r-pad;x+=step){if(type!=='lantern'&&Math.abs(x)<34&&Math.abs(y-18)<48)continue;if(Math.abs(x)<B.gap/2+15&&y>B.b-58)continue;out.push({x,y})}}
+  const seen=new Set();
+  return out.filter(p=>{const key=`${Math.round(p.x)}:${Math.round(p.y)}`;if(seen.has(key))return false;seen.add(key);for(const b of state.buildings){const min=r+footprint(b.type)+5;if(Math.hypot(p.x-b.x,p.y-b.y)<min)return false}return true}).sort((a,b)=>Math.hypot(state.player.x-a.x,state.player.y-a.y)-Math.hypot(state.player.x-b.x,state.player.y-b.y));
+}
+function findBuildSpot(type){return candidateGrid(type)[0]||null}
+
+function reportRuntimeError(err,where='RUNTIME'){
+  const msg=(err&&err.message)||String(err),now=Date.now();console.error(`[${STABILITY_VERSION}] ${where}`,err);
+  if(msg!==lastRuntimeError||now-lastRuntimeErrorAt>1800){lastRuntimeError=msg;lastRuntimeErrorAt=now;try{toast(`DEBUG ${where} · ${msg.slice(0,70)}`,true)}catch(_){}}
+}
+function forceUiRefresh(){hudLast=0;buildUiLast=0;buildUiSig='';updateHud(true);updateBuildSheet(true);ensureDefenseChip()}
+
+function buildSafe(type){
+  try{
+    A.enable();
+    if(type==='palisade')return coreBuild(type);
+    const d=BUILD[type];if(!d){toast('BUILD ERROR · unknown structure',true);return false}
+    if(rankIndex()<d.unlock){toast(`RANK ${RANKS[d.unlock]}で解禁`);return false}
+    const existing=state.buildings.filter(b=>b.type===type),repeat=REPEAT_TYPES.has(type)||d.repeat===true;
+    if(!repeat&&existing.length){toast(d.name+'は建設済み');return false}
+    if(repeat&&existing.length>=repeatLimit(type)){toast(`${d.name} ${existing.length}/${repeatLimit(type)} · 城壁を拡張すると上限UP`);return false}
+    const c=costFor(type,1);if(!hasCost(c)){toast(`${d.name} 素材不足 · ${fmtCost(c)}`,true);return false}
+    const pos=findBuildSpot(type);if(!pos){toast('城内に空きがない · 城壁を拡張');return false}
+    pay(c);
+    const b={id:'b'+Date.now()+Math.random(),type,level:1,slot:`stable:${type}:${Math.round(pos.x)}:${Math.round(pos.y)}:${Date.now()}`,x:pos.x,y:pos.y,builtAt:performance.now()};
+    state.buildings.push(b);fxBurst(b.x,b.y,'#d7b26e',20,1.25);A.sfx('build');toast(`${d.name} 完成 · ${existing.length+1}/${repeat?repeatLimit(type):1}`);save();forceUiRefresh();return true;
+  }catch(err){reportRuntimeError(err,'BUILD '+type);return false}
+}
+build=buildSafe;
+
+function resourceRespawnPoint(n){if(!(state.palisade.built&&inside(n.x,n.y,bounds())))return;const B=bounds(),side=Math.floor(Math.random()*4),margin=50+rnd(0,70);if(side===0){n.x=B.l-margin;n.y=rnd(B.t-60,B.b+60)}else if(side===1){n.x=B.r+margin;n.y=rnd(B.t-60,B.b+60)}else if(side===2){n.x=rnd(B.l-70,B.r+70);n.y=B.t-margin}else{n.x=rnd(B.l-70,B.r+70);n.y=B.b+margin}n.x=clamp(n.x,WORLD.minX+35,WORLD.maxX-35);n.y=clamp(n.y,WORLD.minY+35,WORLD.maxY-35)}
+function reviveResource(n){resourceRespawnPoint(n);n.alive=true;n.hp=n.maxHp||(n.type==='tree'?18:n.type==='rock'?26:12);n.maxHp=n.maxHp||n.hp;n.respawnAt=0;n.starter=false;fxBurst(n.x,n.y,n.type==='tree'?'#5a7d50':n.type==='rock'?'#a4a498':'#8f6a52',7,.7)}
+function makeFrontierNode(type){const B=bounds(),side=Math.floor(Math.random()*4),margin=75+rnd(0,150);let x=0,y=0;if(side===0){x=B.l-margin;y=rnd(B.t-100,B.b+100)}else if(side===1){x=B.r+margin;y=rnd(B.t-100,B.b+100)}else if(side===2){x=rnd(B.l-120,B.r+120);y=B.t-margin}else{x=rnd(B.l-120,B.r+120);y=B.b+margin}x=clamp(x,WORLD.minX+35,WORLD.maxX-35);y=clamp(y,WORLD.minY+35,WORLD.maxY-35);const hp=type==='tree'?18:type==='rock'?26:12;return{id:`repair-${type}-${Date.now()}-${Math.random()}`,x,y,type,hp,maxHp:hp,alive:true,respawnAt:0,starter:false,seed:Math.random()}}
+function repairResourceLifecycle(){
+  const now=Date.now(),total={tree:0,rock:0,food:0};
+  for(const n of state.nodes){if(!RESPAWN_MS[n.type])continue;total[n.type]++;if(n.alive)continue;if(!Number.isFinite(n.respawnAt)||n.respawnAt<=0)n.respawnAt=now+RESPAWN_MS[n.type];if(n.respawnAt<=now)reviveResource(n)}
+  for(const type of Object.keys(MIN_NODE_TOTAL)){while((total[type]||0)<MIN_NODE_TOTAL[type]){state.nodes.push(makeFrontierNode(type));total[type]=(total[type]||0)+1}}
+}
+respawnNodes=repairResourceLifecycle;
+hitNode=function(n,source='player'){if(!n?.alive)return;const wasAlive=n.alive;coreHitNode(n,source);if(wasAlive&&!n.alive){n.respawnAt=Date.now()+RESPAWN_MS[n.type];floatText(n.x,n.y-9,`${Math.round(RESPAWN_MS[n.type]/1000)}s`,'#d5c59e')}};
+
+function buildUiSignature(){const buildings=state.buildings.map(b=>`${b.type}:${b.level}`).sort().join('|');return `${rankIndex()}|${Math.floor(state.wood)}|${Math.floor(state.stone)}|${Math.floor(state.food)}|${state.iron}|${state.renown}|${state.palisade.level}|${Math.round(state.palisade.hp)}|${buildings}`}
+function decorateBuildUi(){
+  const grid=document.querySelector('.build-grid');if(!grid)return;
+  const wall=grid.querySelector('[data-build="palisade"]');if(wall){if(grid.firstElementChild!==wall)grid.prepend(wall);wall.classList.add('defense-primary');const title=wall.querySelector('b'),small=wall.querySelector('small');if(title)title.textContent=state.palisade.built?`防壁 / PALISADE Lv.${state.palisade.level}`:'防壁 / PALISADE';if(small)small.textContent=state.palisade.built?`HP ${Math.max(0,Math.ceil(state.palisade.hp))}/${state.palisade.maxHp} · 領土防衛`:'最優先防衛 · 一度で集落全体を囲う'}
+  for(const type of REPEAT_TYPES){const btn=grid.querySelector(`[data-build="${type}"]`);if(!btn)continue;const title=btn.querySelector('b'),count=state.buildings.filter(b=>b.type===type).length;if(title)title.textContent=`${BUILD[type].name} ×${count}/${repeatLimit(type)}`;btn.classList.remove('locked')}
+}
+updateBuildSheet=function(force=false){const now=performance.now(),sig=buildUiSignature();if(!force&&sig===buildUiSig&&now-buildUiLast<500)return;if(!force&&now-buildUiLast<220)return;buildUiLast=now;buildUiSig=sig;coreUpdateBuildSheet();decorateBuildUi()};
+updatePeopleSummary=function(){const sig=state.workers.map(w=>`${w.role}:${w.dead?'d':'a'}`).sort().join('|');if(sig===peopleSig)return;peopleSig=sig;coreUpdatePeopleSummary()};
+function ensureDefenseChip(){let chip=document.getElementById('defense-chip');if(!chip){chip=document.createElement('div');chip.id='defense-chip';chip.innerHTML='<small>DEFENSE</small><b id="defense-chip-text">防壁なし</b>';document.body.appendChild(chip)}const text=document.getElementById('defense-chip-text');if(!state.palisade.built){text.textContent='防壁なし · BUILDで建設';chip.classList.add('danger')}else{text.textContent=`WALL Lv.${state.palisade.level} · HP ${Math.max(0,Math.ceil(state.palisade.hp))}/${state.palisade.maxHp}`;chip.classList.toggle('danger',state.palisade.hp<state.palisade.maxHp*.35)}}
+updateHud=function(force=false){const now=performance.now();if(!force&&now-hudLast<100)return;hudLast=now;coreUpdateHud();ensureDefenseChip()};
+
+loop=function(now){try{return coreLoop(now)}catch(err){reportRuntimeError(err,'FRAME');requestAnimationFrame(loop)}};
+window.addEventListener('error',e=>reportRuntimeError(e.error||e.message,'JS'));
+window.addEventListener('unhandledrejection',e=>reportRuntimeError(e.reason,'PROMISE'));
+function safeHandler(fn,label){return function(e){try{return fn.call(this,e)}catch(err){reportRuntimeError(err,label);return false}}}
+document.querySelectorAll('[data-build]').forEach(btn=>{btn.onclick=safeHandler(()=>build(btn.dataset.build),'BUILD TOUCH')});
+document.querySelectorAll('[data-hire]').forEach(btn=>{btn.onclick=safeHandler(()=>hire(btn.dataset.hire),'HIRE TOUCH')});
+document.querySelectorAll('#dock [data-panel]').forEach(btn=>{btn.onclick=safeHandler(()=>{openPanel(btn.dataset.panel);if(btn.dataset.panel==='build')updateBuildSheet(true)},'PANEL TOUCH')});
+const closeBtn=document.getElementById('sheet-close');if(closeBtn)closeBtn.onclick=safeHandler(()=>{closeSheet();A.sfx('cancel')},'CLOSE TOUCH');
+
+function runDiagnostics(){const B=bounds(),hutSpots=candidateGrid('hut').length,lanternSpots=candidateGrid('lantern').length,buttons=[...document.querySelectorAll('[data-build]')].length,result={version:STABILITY_VERSION,hutSpots,lanternSpots,buttons,wall:`${B.l},${B.t},${B.r},${B.b}`,nodes:state.nodes.length};console.info('[GUILD DEBUG]',result);if(hutSpots<2)reportRuntimeError(new Error('HOUSE placement capacity too low'),'SELFTEST');if(lanternSpots<3)reportRuntimeError(new Error('LANTERN placement capacity too low'),'SELFTEST');if(buttons<9)reportRuntimeError(new Error('BUILD buttons missing'),'SELFTEST');return result}
+repairResourceLifecycle();forceUiRefresh();setInterval(repairResourceLifecycle,1000);setTimeout(runDiagnostics,60);
+window.GUILD_DEBUG=Object.freeze({version:STABILITY_VERSION,diagnostics:runDiagnostics,candidateCount:type=>candidateGrid(type).length,repeatLimit,forceUiRefresh,repairResources:repairResourceLifecycle});
+
+</script>
+<script>
+'use strict';
+
+// v1.6 NPC routines / upgrade polish
+// System-only layer on top of v16 stability. No new-game files are touched.
+const ROUTINES_VERSION='v16.5-routines';
+const ROUTINE_REPEAT_UPGRADES=new Set(['hut','lantern','watchtower']);
+const ROUTINE_CORE_BUILD=build;
+const ROUTINE_CORE_DRAW_BUILDING=drawBuilding;
+const ROUTINE_CORE_DRAW_WORKER=drawWorkerEntity;
+const ROUTINE_CORE_UPDATE_WORKERS=updateWorkers;
+let ROUTINE_lastPhase=state.phase;
+
+function routineHouseCapacity(h){return 4+(h.level||1)*3}
+function routineHomeCounts(){const counts=new Map();for(const w of state.workers){if(w.dead||!w.homeId)continue;counts.set(w.homeId,(counts.get(w.homeId)||0)+1)}return counts}
+function ensureWorkerHome(w){
+  const huts=state.buildings.filter(b=>b.type==='hut');
+  if(!huts.length){w.homeId=null;return null}
+  const current=huts.find(h=>h.id===w.homeId);
+  if(current)return current;
+  const counts=routineHomeCounts();
+  const chosen=huts.slice().sort((a,b)=>{
+    const ar=(counts.get(a.id)||0)/Math.max(1,routineHouseCapacity(a));
+    const br=(counts.get(b.id)||0)/Math.max(1,routineHouseCapacity(b));
+    return ar-br||dist(w,a)-dist(w,b);
+  })[0];
+  w.homeId=chosen.id;
+  return chosen;
+}
+function homePoint(w,h){const s=(w.seed||0)%5;return{x:h.x+(s-2)*3,y:h.y+7+((s%2)*2)}}
+function isCivilianHomeTime(){return state.phase==='dusk'||state.phase==='night'}
+
+function exteriorPatrolPoints(){
+  if(!state.palisade.built||state.palisade.hp<=0){return[{x:0,y:150},{x:150,y:80},{x:150,y:-80},{x:0,y:-150},{x:-150,y:-80},{x:-150,y:80}]}
+  const B=bounds(),m=38,g=Math.max(22,B.gap/2+12);
+  return[
+    {x:g,y:B.b+m},{x:B.r+m,y:B.b+m},{x:B.r+m,y:0},{x:B.r+m,y:B.t-m},
+    {x:0,y:B.t-m},{x:B.l-m,y:B.t-m},{x:B.l-m,y:0},{x:B.l-m,y:B.b+m},{x:-g,y:B.b+m}
+  ];
+}
+function guardPatrol(w,index,dt){
+  w.hiddenAtHome=false;
+  if(state.palisade.built&&state.palisade.hp>0){
+    const B=bounds();
+    // Guards explicitly leave through the south gate before entering the exterior patrol loop.
+    if(inside(w.x,w.y,B)){
+      w.state='patrol-exit';
+      const exit={x:0,y:B.b+34};
+      move(w,exit.x,exit.y,62,dt);
+      return;
+    }
+  }
+  const pts=exteriorPatrolPoints();
+  if(!Number.isFinite(w.patrolIndex))w.patrolIndex=index%pts.length;
+  const p=pts[w.patrolIndex%pts.length];
+  w.state='patrol-outside';
+  if(move(w,p.x,p.y,48,dt)||dist(w,p)<10)w.patrolIndex=(w.patrolIndex+1)%pts.length;
+}
+function civilianGoHome(w,dt){
+  const h=ensureWorkerHome(w);w.targetId=null;
+  if(!h){w.state='returning-camp';w.hiddenAtHome=false;const rt=route(w,0,35);move(w,rt.x,rt.y,42,dt);return}
+  const p=homePoint(w,h),d=dist(w,p);
+  if(d>9){w.state='returning-home';w.hiddenAtHome=false;const rt=route(w,p.x,p.y);move(w,rt.x,rt.y,46,dt)}
+  else{w.x=p.x;w.y=p.y;w.state='sleeping';w.hiddenAtHome=true;w.hp=Math.min(w.maxHp,w.hp+4*dt)}
+}
+function workerResourceType(w){return w.role==='wood'?'tree':w.role==='stone'?'rock':'food'}
+function resourceStateKey(type){return type==='tree'?'wood':type==='rock'?'stone':'food'}
+function recordRemoteYield(w,type,before){
+  const key=resourceStateKey(type),delta=Math.max(0,state[key]-before);
+  if(!w.totalGathered)w.totalGathered={wood:0,stone:0,food:0};
+  if(delta>0){w.totalGathered[key]=(w.totalGathered[key]||0)+delta;w.lastYieldAt=Date.now();w.lastYield=delta;w.lastYieldType=key;updateHud(true)}
+  return delta;
+}
+
+// Replace worker simulation so civilians have a home/night rhythm and guards are real exterior patrol NPCs.
+updateWorkers=function(dt){
+  if(ROUTINE_lastPhase!==state.phase){
+    if(state.phase==='dusk')toast('DUSK · 村人は帰宅、衛兵は外周警戒');
+    if((state.phase==='dawn'||state.phase==='day')&&(ROUTINE_lastPhase==='night'||ROUTINE_lastPhase==='dusk'))toast('DAWN · 村人が仕事へ戻る');
+    ROUTINE_lastPhase=state.phase;
+  }
+  const claimed=new Set();for(const w of state.workers)if(w.targetId)claimed.add(w.targetId);
+  for(let i=0;i<state.workers.length;i++){
+    const w=state.workers[i];ensureWorkerVitals(w);ensureWorkerHome(w);if(w.dead)continue;
+    w.cool=Math.max(0,(w.cool||0)-dt);w.hit=Math.max(0,(w.hit||0)-dt);
+
+    if(w.role==='guard'){
+      if(workerCombat(w,dt))continue;
+      guardPatrol(w,i,dt);continue;
+    }
+
+    if(isCivilianHomeTime()){
+      const threat=nearestWorkerEnemy(w,30);
+      if(threat&&workerCombat(w,dt)){w.hiddenAtHome=false;continue}
+      civilianGoHome(w,dt);continue;
+    }
+
+    w.hiddenAtHome=false;
+    if(workerCombat(w,dt))continue;
+    const type=workerResourceType(w);
+    let n=state.nodes.find(n=>n.id===w.targetId&&n.alive);
+    if(!n){n=nearestNode(w,type,claimed);w.targetId=n?.id||null;if(n)claimed.add(n.id)}
+    if(!n){w.state='idle';continue}
+    if(dist(w,n)>31){w.state='moving';const rt=route(w,n.x,n.y);move(w,rt.x,rt.y,40,dt)}
+    else{
+      w.state='working';w.work=(w.work||0)+dt*(.68+.32*state.morale/100);
+      const cycle=w.role==='stone'?.55:w.role==='wood'?.68:.64;
+      if(w.work>cycle){
+        w.work=0;const key=resourceStateKey(type),before=state[key];hitNode(n,'worker');recordRemoteYield(w,type,before);if(!n.alive)w.targetId=null;
+      }
+    }
+  }
+  towerCombat(dt);
+};
+
+drawWorkerEntity=function(w){if(w.hiddenAtHome&&!w.dead)return;ROUTINE_CORE_DRAW_WORKER(w)};
+
+function lanternDetailed(b){
+  const x=sx(b.x),y=sy(b.y),L=clamp(b.level||1,1,3);shadow(x,y+16,24+L*4,5,.46);
+  if(L>=3){rect(x-8,y+9,16,7,'#6f6b5f');rect(x-6,y+4,12,6,'#8a826f')}
+  rect(x-3,y-31-L*4,6,48+L*4,'#704c31');rect(x-1,y-29-L*4,2,43+L*4,'#9d6b3f');
+  if(L===1){rect(x-11,y-38,22,10,'#242a2a');rect(x-7,y-36,14,6,'#e4b059')}
+  else{
+    rect(x-19,y-39-L*3,38,4,'#5f472f');
+    for(const side of[-1,1]){const lx=x+side*16;rect(lx-6,y-44-L*3,12,11,'#252b2b');rect(lx-4,y-42-L*3,8,7,L===3?'#ffd078':'#e4b059');if(state.phase==='night'||state.phase==='dusk')glow(lx,y-38-L*3,42+L*12,.16)}
+    if(L===3){poly([[x-6,y-46],[x,y-54],[x+6,y-46]],'#b58a50');rect(x-2,y-50,4,6,'#eac978')}
+  }
+  if(state.phase==='night'||state.phase==='dusk')glow(x,y-32,lanternRadius(b),.10+.025*L);
+}
+function buildingCelebrationAura(b){
+  const until=b.fxUntil||0;if(until<=performance.now())return;
+  const t=clamp((until-performance.now())/850,0,1),x=sx(b.x),y=sy(b.y),[w,h]=buildingSize(b.type,b.level||1);
+  ctx.save();ctx.globalAlpha=t*.75;ctx.strokeStyle=b.fxKind==='upgrade'?'#ffd77f':'#efbf69';ctx.lineWidth=2;ctx.strokeRect(Math.round(x-w*.62),Math.round(y-h*.72),Math.round(w*1.24),Math.round(h*1.12));ctx.restore();
+}
+drawBuilding=function(b){if(b.type==='lantern')lanternDetailed(b);else ROUTINE_CORE_DRAW_BUILDING(b);buildingCelebrationAura(b)};
+
+function celebrateBuilding(b,kind='build'){
+  if(!b)return;b.fxUntil=performance.now()+850;b.fxKind=kind;
+  const color=kind==='upgrade'?'#ffd982':'#d7b26e';fxBurst(b.x,b.y,color,26,1.4);floatText(b.x,b.y-38,kind==='upgrade'?`LEVEL ${b.level}!`:'BUILD!','#ffe0a0');A.sfx('build');
+  setTimeout(()=>{try{fxBurst(b.x,b.y,color,16,1.05);if(kind==='upgrade')A.sfx('confirm')}catch(_){}},170);
+}
+
+// Make every repeatable building upgrade target explicit. This fixes the misleading Lantern "Lv did not change" behavior.
+function upgradeBuildingById(id){
+  const b=state.buildings.find(x=>x.id===id);if(!b)return false;const d=BUILD[b.type];if(!d||b.level>=d.max)return false;
+  const c=costFor(b.type,b.level+1);if(!hasCost(c)){toast('強化素材不足 · '+fmtCost(c),true);return false}
+  pay(c);b.level++;b.builtAt=performance.now();celebrateBuilding(b,'upgrade');
+  if(b.type==='guild')toast(`GUILD RANK UP · ${rank()}`);else if(b.type==='lantern')toast(`LANTERN Lv.${b.level} · SAFE RADIUS ${Math.round(lanternRadius(b))}`);else toast(`${d.name} Lv.${b.level}`);
+  save();forceUiRefresh();return true;
+}
+upgrade=function(type){const b=state.buildings.find(x=>x.type===type&&x.level<(BUILD[type]?.max||1));return b?upgradeBuildingById(b.id):false};
+renderUpgrades=function(){
+  const el=$('upgrade-grid');if(!el)return;const cards=[];const indexes={};
+  for(const b of state.buildings){const d=BUILD[b.type];if(!d||b.level>=d.max)continue;indexes[b.type]=(indexes[b.type]||0)+1;
+    if(!ROUTINE_REPEAT_UPGRADES.has(b.type)&&cards.some(x=>x.type===b.type))continue;
+    const c=costFor(b.type,b.level+1);cards.push({id:b.id,type:b.type,name:d.name,index:indexes[b.type],L:b.level,c});
+  }
+  el.innerHTML=cards.length?cards.map(x=>`<button data-upgrade-id="${x.id}" ${hasCost(x.c)?'':'disabled'}><b>${x.name}${ROUTINE_REPEAT_UPGRADES.has(x.type)?` #${x.index}`:''} Lv.${x.L} → ${x.L+1}</b><small>${upgradeBenefit(x.type,x.L+1)}</small><em>${fmtCost(x.c)}</em></button>`).join(''):'<div class="notice">建物を建てると強化が解禁</div>';
+  el.querySelectorAll('[data-upgrade-id]').forEach(btn=>btn.onclick=()=>upgradeBuildingById(btn.dataset.upgradeId));
+};
+
+// Add satisfying local construction/expansion feedback without camera shake.
+build=function(type){
+  const beforeIds=new Set(state.buildings.map(b=>b.id)),beforeWall=state.palisade.level;
+  const result=ROUTINE_CORE_BUILD(type);
+  if(type==='palisade'){
+    if(state.palisade.level>beforeWall){fxBurst(0,0,'#d2ab70',46,1.7);floatText(0,-28,state.palisade.level===1?'DEFENSE COMPLETE!':`TERRITORY Lv.${state.palisade.level}!`,'#ffe0a0');A.sfx('build');setTimeout(()=>A.sfx('confirm'),180)}
+    return result;
+  }
+  const added=state.buildings.find(b=>!beforeIds.has(b.id));if(added)celebrateBuilding(added,'build');return result;
+};
+
+function repairRoutineState(){for(const w of state.workers){ensureWorkerVitals(w);ensureWorkerHome(w);if(!w.totalGathered)w.totalGathered={wood:0,stone:0,food:0};if(typeof w.hiddenAtHome!=='boolean')w.hiddenAtHome=false}forceUiRefresh()}
+repairRoutineState();
+
+window.GUILD_ROUTINES=Object.freeze({
+  version:ROUTINES_VERSION,
+  assignHomes:repairRoutineState,
+  upgradeById:upgradeBuildingById,
+  lanternRadiusFor:id=>{const b=state.buildings.find(x=>x.id===id);return b?lanternRadius(b):0},
+  patrolPoints:()=>exteriorPatrolPoints().map(p=>({...p})),
+  workerReport:()=>state.workers.map(w=>({id:w.id,role:w.role,state:w.state,homeId:w.homeId,hidden:!!w.hiddenAtHome,totalGathered:{...(w.totalGathered||{})}}))
+});
+
+</script>
+<script>
+'use strict';
+
+// v1.6 progression / economy polish
+// Owner feedback: woodcutter speed, guards inside walls, group-wide upgrades,
+// and deeper production-efficiency progression. Loaded after routines.js.
+const PROGRESSION_VERSION='v16.6-progression';
+const PROG_CORE_BUILD=build;
+const PROG_CORE_HIT_NODE=hitNode;
+
+const GROUP_TYPES={
+  hut:{key:'housing',label:'RESIDENTIAL',max:BUILD.hut.max},
+  lantern:{key:'lantern',label:'LANTERN NETWORK',max:BUILD.lantern.max},
+  watchtower:{key:'watchtower',label:'WATCHTOWER NETWORK',max:BUILD.watchtower.max}
+};
+const WORK_TECH={
+  forestry:{label:'FORESTRY',jp:'林業技術',max:10,desc:'木こりの伐採速度・WOOD収穫量UP'},
+  masonry:{label:'MASONRY',jp:'採石技術',max:10,desc:'採石人の採掘速度・STONE収穫量UP'},
+  foraging:{label:'FORAGING',jp:'採集技術',max:10,desc:'採集人の採集速度・FOOD収穫量UP'},
+  logistics:{label:'LOGISTICS',jp:'運搬技術',max:8,desc:'全作業員の移動速度UP'},
+  tooling:{label:'TOOLING',jp:'工具整備',max:8,desc:'全採取職の作業間隔を短縮'}
+};
+
+function ensureProgression(){
+  if(!state.progression||typeof state.progression!=='object')state.progression={};
+  if(!state.progression.groups)state.progression.groups={};
+  if(!state.progression.tech)state.progression.tech={};
+  for(const [type,cfg] of Object.entries(GROUP_TYPES)){
+    if(!Number.isFinite(state.progression.groups[cfg.key])){
+      const levels=state.buildings.filter(b=>b.type===type).map(b=>b.level||1);
+      state.progression.groups[cfg.key]=levels.length?Math.max(...levels):1;
+    }
+    state.progression.groups[cfg.key]=clamp(Math.round(state.progression.groups[cfg.key]),1,cfg.max);
+    for(const b of state.buildings.filter(b=>b.type===type))b.level=state.progression.groups[cfg.key];
+  }
+  for(const [key,cfg] of Object.entries(WORK_TECH)){
+    if(!Number.isFinite(state.progression.tech[key]))state.progression.tech[key]=0;
+    state.progression.tech[key]=clamp(Math.round(state.progression.tech[key]),0,cfg.max);
+  }
+}
+function groupLevel(type){ensureProgression();const cfg=GROUP_TYPES[type];return cfg?state.progression.groups[cfg.key]:1}
+function techLevel(key){ensureProgression();return state.progression.tech[key]||0}
+function syncGroup(type){const L=groupLevel(type);for(const b of state.buildings.filter(b=>b.type===type))b.level=L;return L}
+function scaleCost(c,m){const out={};for(const [k,v] of Object.entries(c))if(v)out[k]=Math.max(1,Math.ceil(v*m));return out}
+function groupUpgradeCost(type,next){
+  const count=Math.max(1,state.buildings.filter(b=>b.type===type).length);
+  return scaleCost(costFor(type,next),1.22+Math.max(0,count-1)*.16);
+}
+function techCost(key,next){
+  const L=Math.max(1,next),iron=L>=5?Math.floor((L-3)/2):0;
+  if(key==='forestry')return{wood:55+L*38,stone:18+L*16,...(iron?{iron}: {})};
+  if(key==='masonry')return{wood:28+L*23,stone:65+L*45,...(iron?{iron}: {})};
+  if(key==='foraging')return{wood:42+L*26,stone:22+L*15,food:22+L*18,...(iron?{iron}: {})};
+  if(key==='logistics')return{wood:70+L*42,stone:48+L*31,food:18+L*15,...(L>=4?{iron:Math.floor(L/3)}:{})};
+  return{wood:62+L*34,stone:58+L*34,...(L>=4?{iron:Math.floor(L/3)}:{})};
+}
+function workerYieldMultiplier(role){
+  const tool=techLevel('tooling');
+  if(role==='wood')return 1+techLevel('forestry')*.12+tool*.035;
+  if(role==='stone')return 1+techLevel('masonry')*.12+tool*.035;
+  if(role==='food')return 1+techLevel('foraging')*.10+tool*.03;
+  return 1;
+}
+function workerCycle(role){
+  // Woodcutter intentionally becomes the snappiest baseline gatherer.
+  const base=role==='wood'?.40:role==='stone'?.52:.58;
+  const specific=role==='wood'?techLevel('forestry'):role==='stone'?techLevel('masonry'):techLevel('foraging');
+  return base/(1+specific*.07+techLevel('tooling')*.04);
+}
+function workerMoveSpeed(role){const base=role==='guard'?43:42;return base*(1+techLevel('logistics')*.055)}
+
+// Worker yield tech is applied after the tested resource lifecycle wrapper.
+hitNode=function(n,source='player'){
+  if(source!=='worker')return PROG_CORE_HIT_NODE(n,source);
+  const key=n?.type==='tree'?'wood':n?.type==='rock'?'stone':'food',role=n?.type==='tree'?'wood':n?.type==='rock'?'stone':'food';
+  const before=state[key];PROG_CORE_HIT_NODE(n,source);const baseGain=Math.max(0,state[key]-before),mult=workerYieldMultiplier(role);
+  if(baseGain>0&&mult>1){const bonus=baseGain*(mult-1);addRes(key,bonus);if(Math.random()<.22)floatText(n.x,n.y-27,'EFF +'+bonus.toFixed(1),'#e7ce84')}
+};
+
+function insideGuardPoints(){
+  if(!state.palisade.built||state.palisade.hp<=0)return[{x:0,y:75},{x:75,y:35},{x:75,y:-35},{x:0,y:-75},{x:-75,y:-35},{x:-75,y:35}];
+  const B=bounds(),m=28,g=Math.max(20,B.gap/2+8);
+  return[
+    {x:-g,y:B.b-m},{x:g,y:B.b-m},{x:B.r-m,y:B.b-m},{x:B.r-m,y:0},{x:B.r-m,y:B.t+m},
+    {x:0,y:B.t+m},{x:B.l+m,y:B.t+m},{x:B.l+m,y:0},{x:B.l+m,y:B.b-m}
+  ];
+}
+function nearestInsideGuardEnemy(w,range){
+  const protectedWall=state.palisade.built&&state.palisade.hp>0;let best=null,bd=range;
+  for(const e of state.enemies){if(e.dead)continue;if(protectedWall&&!inside(e.x,e.y,bounds()))continue;const d=dist(w,e);if(d<bd){best=e;bd=d}}
+  return best;
+}
+function guardInsideCombat(w,dt){
+  const e=nearestInsideGuardEnemy(w,170);if(!e)return false;w.targetId=null;w.state='combat';w.hiddenAtHome=false;const d=dist(w,e);
+  if(d>30){move(w,e.x,e.y,workerMoveSpeed('guard')*1.18,dt);return true}
+  if(w.cool<=0){w.cool=.62;w.swing=1;const dmg=14+(state.buildings.find(b=>b.type==='barracks')?.level||1)*4;damageEnemy(e,dmg,w.x,w.y,true)}return true;
+}
+function guardPatrolInside(w,index,dt){
+  const pts=insideGuardPoints();if(!Number.isFinite(w.patrolIndex))w.patrolIndex=index%pts.length;const p=pts[w.patrolIndex%pts.length];
+  w.state='patrol-inside';w.hiddenAtHome=false;if(move(w,p.x,p.y,workerMoveSpeed('guard'),dt)||dist(w,p)<9)w.patrolIndex=(w.patrolIndex+1)%pts.length;
+}
+function civilianGoHomeFast(w,dt){
+  const h=ensureWorkerHome(w);w.targetId=null;if(!h){w.state='returning-camp';w.hiddenAtHome=false;move(w,0,35,workerMoveSpeed(w.role)*1.28,dt);return}
+  const p=homePoint(w,h),d=dist(w,p);if(d>9){w.state='returning-home';w.hiddenAtHome=false;const rt=route(w,p.x,p.y);move(w,rt.x,rt.y,workerMoveSpeed(w.role)*1.38,dt)}else{w.x=p.x;w.y=p.y;w.state='sleeping';w.hiddenAtHome=true;w.hp=Math.min(w.maxHp,w.hp+4*dt)}
+}
+
+// Replace routine update once more: same life cycle/remote ledger, tuned production,
+// but guards stay inside the palisade and civilians return faster at dusk.
+updateWorkers=function(dt){
+  if(ROUTINE_lastPhase!==state.phase){if(state.phase==='dusk')toast('DUSK · 村人は帰宅、衛兵は城内警戒');if((state.phase==='dawn'||state.phase==='day')&&(ROUTINE_lastPhase==='night'||ROUTINE_lastPhase==='dusk'))toast('DAWN · 村人が仕事へ戻る');ROUTINE_lastPhase=state.phase}
+  const claimed=new Set();for(const w of state.workers)if(w.targetId)claimed.add(w.targetId);
+  for(let i=0;i<state.workers.length;i++){
+    const w=state.workers[i];ensureWorkerVitals(w);ensureWorkerHome(w);if(w.dead)continue;w.cool=Math.max(0,(w.cool||0)-dt);w.hit=Math.max(0,(w.hit||0)-dt);
+    if(w.role==='guard'){if(guardInsideCombat(w,dt))continue;guardPatrolInside(w,i,dt);continue}
+    if(isCivilianHomeTime()){
+      const threat=nearestWorkerEnemy(w,30);if(threat&&inside(threat.x,threat.y,bounds())&&workerCombat(w,dt)){w.hiddenAtHome=false;continue}
+      civilianGoHomeFast(w,dt);continue;
+    }
+    w.hiddenAtHome=false;if(workerCombat(w,dt))continue;
+    const type=workerResourceType(w);let n=state.nodes.find(n=>n.id===w.targetId&&n.alive);
+    if(!n){n=nearestNode(w,type,claimed);w.targetId=n?.id||null;if(n)claimed.add(n.id)}
+    if(!n){w.state='idle';continue}
+    if(dist(w,n)>31){w.state='moving';const rt=route(w,n.x,n.y);move(w,rt.x,rt.y,workerMoveSpeed(w.role),dt)}
+    else{w.state='working';w.work=(w.work||0)+dt*(.70+.30*state.morale/100);if(w.work>workerCycle(w.role)){w.work=0;const key=resourceStateKey(type),before=state[key];hitNode(n,'worker');recordRemoteYield(w,type,before);if(!n.alive)w.targetId=null}}
+  }
+  towerCombat(dt);
+};
+
+function groupUpgrade(type){
+  ensureProgression();const cfg=GROUP_TYPES[type],current=groupLevel(type);if(!cfg||current>=cfg.max)return false;
+  const next=current+1,c=groupUpgradeCost(type,next);if(!hasCost(c)){toast('全体強化素材不足 · '+fmtCost(c),true);return false}
+  pay(c);state.progression.groups[cfg.key]=next;syncGroup(type);for(const b of state.buildings.filter(b=>b.type===type))celebrateBuilding(b,'upgrade');
+  toast(`${cfg.label} ALL Lv.${next} · ${state.buildings.filter(b=>b.type===type).length}棟へ適用`);A.sfx('confirm');save();forceUiRefresh();return true;
+}
+function upgradeTech(key){
+  ensureProgression();const cfg=WORK_TECH[key],current=techLevel(key);if(!cfg||current>=cfg.max)return false;const next=current+1,c=techCost(key,next);
+  if(!hasCost(c)){toast(cfg.jp+' 素材不足 · '+fmtCost(c),true);return false}pay(c);state.progression.tech[key]=next;floatText(state.player.x,state.player.y-38,`${cfg.label} Lv.${next}!`,'#ffe09a');fxBurst(state.player.x,state.player.y,'#d8b66c',22,1.15);toast(`${cfg.jp} Lv.${next} · ${cfg.desc}`);A.sfx('confirm');save();forceUiRefresh();return true;
+}
+function globalBenefit(type,L){if(type==='hut')return`全HOUSE人口枠 Lv.${L} / 新設HOUSEにも適用`;if(type==='lantern')return`全LANTERN安全圏UP / 半径 ${Math.round(130+L*38)}`;return`全WATCHTOWER 射程・威力・連射 Lv.${L}`}
+
+renderUpgrades=function(){
+  ensureProgression();const el=$('upgrade-grid');if(!el)return;const html=[];
+  html.push('<div class="notice">街全体アップグレード · 同種建物すべてに一括適用</div>');
+  for(const type of ['hut','lantern','watchtower']){
+    const count=state.buildings.filter(b=>b.type===type).length;if(!count)continue;const cfg=GROUP_TYPES[type],L=groupLevel(type);
+    if(L>=cfg.max){html.push(`<button disabled><b>${cfg.label} ALL Lv.${L} MAX</b><small>${globalBenefit(type,L)}</small><em>${count}棟</em></button>`);continue}
+    const c=groupUpgradeCost(type,L+1);html.push(`<button data-group-upgrade="${type}" ${hasCost(c)?'':'disabled'}><b>${cfg.label} ALL Lv.${L} → ${L+1}</b><small>${globalBenefit(type,L+1)}</small><em>${fmtCost(c)} · ${count}棟</em></button>`)
+  }
+  html.push('<div class="notice">生産技術 · 最大Lv.8〜10</div>');
+  for(const [key,cfg] of Object.entries(WORK_TECH)){
+    const L=techLevel(key);if(L>=cfg.max){html.push(`<button disabled><b>${cfg.label} Lv.${L} MAX</b><small>${cfg.jp} · ${cfg.desc}</small><em>MASTERED</em></button>`);continue}
+    const c=techCost(key,L+1);html.push(`<button data-tech-upgrade="${key}" ${hasCost(c)?'':'disabled'}><b>${cfg.label} Lv.${L} → ${L+1}</b><small>${cfg.jp} · ${cfg.desc}</small><em>${fmtCost(c)}</em></button>`)
+  }
+  const skip=new Set(Object.keys(GROUP_TYPES));
+  for(const b of state.buildings){if(skip.has(b.type))continue;const d=BUILD[b.type];if(!d||b.level>=d.max)continue;const c=costFor(b.type,b.level+1);html.push(`<button data-upgrade-id="${b.id}" ${hasCost(c)?'':'disabled'}><b>${d.name} Lv.${b.level} → ${b.level+1}</b><small>${upgradeBenefit(b.type,b.level+1)}</small><em>${fmtCost(c)}</em></button>`)}
+  el.innerHTML=html.join('');el.querySelectorAll('[data-group-upgrade]').forEach(btn=>btn.onclick=()=>groupUpgrade(btn.dataset.groupUpgrade));el.querySelectorAll('[data-tech-upgrade]').forEach(btn=>btn.onclick=()=>upgradeTech(btn.dataset.techUpgrade));el.querySelectorAll('[data-upgrade-id]').forEach(btn=>btn.onclick=()=>upgradeBuildingById(btn.dataset.upgradeId));
+};
+
+// New repeatable buildings inherit the current global tier automatically.
+build=function(type){const before=new Set(state.buildings.map(b=>b.id)),result=PROG_CORE_BUILD(type);if(GROUP_TYPES[type]){const added=state.buildings.find(b=>!before.has(b.id)&&b.type===type);if(added){added.level=groupLevel(type);save();forceUiRefresh()}}return result};
+
+function progressionReport(){ensureProgression();return{version:PROGRESSION_VERSION,groups:{...state.progression.groups},tech:{...state.progression.tech},woodCycle:workerCycle('wood'),stoneCycle:workerCycle('stone'),guardMode:'inside'}}
+ensureProgression();syncGroup('hut');syncGroup('lantern');syncGroup('watchtower');save();forceUiRefresh();
+window.GUILD_PROGRESSION=Object.freeze({version:PROGRESSION_VERSION,report:progressionReport,groupUpgrade,upgradeTech,workerCycle,workerYieldMultiplier,insideGuardPoints:()=>insideGuardPoints().map(p=>({...p}))});
+
+</script>
+<script>
+'use strict';
+
+// v1.6 defense / gate / guard-sector polish
+// Loaded after progression.js. Keeps the current game and tightens defense behavior only.
+const DEFENSE_VERSION='v16.7-defense';
+const DEFENSE_CORE_CONTEXT=contextAct;
+
+function fourGateDefs(B=bounds()){
+  const half=Math.max(18,B.gap*.42);
+  return[
+    {id:'south',side:'south',x:0,y:B.b,in:{x:0,y:B.b-22},out:{x:0,y:B.b+25},half},
+    {id:'north',side:'north',x:0,y:B.t,in:{x:0,y:B.t+22},out:{x:0,y:B.t-25},half},
+    {id:'west',side:'west',x:B.l,y:0,in:{x:B.l+22,y:0},out:{x:B.l-25,y:0},half},
+    {id:'east',side:'east',x:B.r,y:0,in:{x:B.r-22,y:0},out:{x:B.r+25,y:0},half}
+  ];
+}
+function nearestGateFor(o,tx,ty){
+  const B=bounds(),a=inside(o.x,o.y,B),gates=fourGateDefs(B);let best=gates[0],score=Infinity;
+  for(const g of gates){const from=a?g.in:g.out,to=a?g.out:g.in;const s=Math.hypot(o.x-from.x,o.y-from.y)+Math.hypot(tx-to.x,ty-to.y);if(s<score){score=s;best=g}}
+  return best;
+}
+route=function(o,tx,ty){
+  if(!state.palisade.built||state.palisade.hp<=0)return{x:tx,y:ty};
+  const B=bounds(),a=inside(o.x,o.y,B),b=inside(tx,ty,B);if(a===b)return{x:tx,y:ty};
+  const g=nearestGateFor(o,tx,ty),from=a?g.in:g.out,to=a?g.out:g.in;
+  if(Math.hypot(o.x-from.x,o.y-from.y)>11)return from;
+  return to;
+};
+
+function pointInGateOpening(x,y,B=bounds(),pad=0){
+  for(const g of fourGateDefs(B)){
+    const open=Math.max(8,g.half-pad);
+    if((g.side==='north'||g.side==='south')&&Math.abs(x-g.x)<open&&Math.abs(y-g.y)<18)return true;
+    if((g.side==='east'||g.side==='west')&&Math.abs(y-g.y)<open&&Math.abs(x-g.x)<18)return true;
+  }
+  return false;
+}
+wallCollision=function(x,y,r=9){
+  if(!state.palisade.built||state.palisade.hp<=0)return false;
+  const B=bounds(),th=9;if(pointInGateOpening(x,y,B,r*.35))return false;
+  if(x+r>B.l-th&&x-r<B.r+th){if(y+r>B.t-th&&y-r<B.t+th)return true;if(y+r>B.b-th&&y-r<B.b+th)return true}
+  if(y+r>B.t-th&&y-r<B.b+th){if(x+r>B.l-th&&x-r<B.l+th)return true;if(x+r>B.r-th&&x-r<B.r+th)return true}
+  return false;
+};
+
+function wallPerimeterPoints(){
+  const B=bounds(),m=25,pts=[],xs=[.12,.26,.40,.60,.74,.88].map(t=>lerp(B.l+m,B.r-m,t)),ys=[.12,.26,.40,.60,.74,.88].map(t=>lerp(B.t+m,B.b-m,t));
+  for(const x of xs)if(Math.abs(x)>B.gap*.55)pts.push({x,y:B.t+m,side:'north'});
+  for(const y of ys)if(Math.abs(y)>B.gap*.55)pts.push({x:B.r-m,y,side:'east'});
+  for(const x of xs.slice().reverse())if(Math.abs(x)>B.gap*.55)pts.push({x,y:B.b-m,side:'south'});
+  for(const y of ys.slice().reverse())if(Math.abs(y)>B.gap*.55)pts.push({x:B.l+m,y,side:'west'});
+  return pts.length?pts:[{x:0,y:0,side:'center'}];
+}
+function guardRoster(){return state.workers.filter(w=>w.role==='guard'&&!w.dead)}
+function guardAssignment(w){
+  const guards=guardRoster(),idx=Math.max(0,guards.findIndex(g=>g.id===w.id)),pts=wallPerimeterPoints(),count=Math.max(1,guards.length);
+  const start=Math.floor(idx*pts.length/count),end=Math.max(start,Math.floor((idx+1)*pts.length/count)-1),out=[];
+  for(let i=start;i<=end;i++)out.push(pts[i%pts.length]);
+  if(out.length===1)out.push(pts[(start+1)%pts.length]);
+  return out;
+}
+function guardThreat(w,assigned){
+  const B=bounds(),wallAlive=state.palisade.built&&state.palisade.hp>0;let best=null,score=Infinity;
+  for(const e of state.enemies){if(e.dead)continue;const d=dist(w,e);if(wallAlive){const nearAssigned=assigned.some(p=>Math.hypot(e.x-p.x,e.y-p.y)<220),insideEnemy=inside(e.x,e.y,B);if(!insideEnemy&&!nearAssigned)continue}
+    let civilianDanger=300;for(const c of state.workers){if(c.dead||c.role==='guard')continue;civilianDanger=Math.min(civilianDanger,dist(e,c))}
+    const s=d*.45+civilianDanger; if(s<score){score=s;best=e}
+  }
+  return best;
+}
+function guardDefendSector(w,dt){
+  const assigned=guardAssignment(w);if(!assigned.length)return false;const target=guardThreat(w,assigned),B=bounds(),wallAlive=state.palisade.built&&state.palisade.hp>0;
+  if(target){const targetInside=inside(target.x,target.y,B);w.targetId=target.id;w.hiddenAtHome=false;
+    if(!wallAlive||targetInside){w.state='intercept';const d=dist(w,target);if(d>30){move(w,target.x,target.y,workerMoveSpeed('guard')*1.32,dt);return true}if(w.cool<=0){w.cool=.44;w.swing=1;damageEnemy(target,22+(state.buildings.find(b=>b.type==='barracks')?.level||1)*6,w.x,w.y,true)}return true}
+    if(dist(w,target)<215){w.state='guard-fire';if(w.cool<=0){w.cool=.58;state.projectiles.push({kind:'arrow',x:w.x,y:w.y-14,tx:target.x,ty:target.y,target,speed:350,damage:18+(state.buildings.find(b=>b.type==='barracks')?.level||1)*5,life:1.4});A.sfx('hit')}return true}
+  }
+  const p=assigned[(w.guardStep||0)%assigned.length];w.state='sector-patrol';w.targetId=null;w.hiddenAtHome=false;if(move(w,p.x,p.y,workerMoveSpeed('guard')*.98,dt)||dist(w,p)<9)w.guardStep=((w.guardStep||0)+1)%assigned.length;return true;
+}
+
+updateWorkers=function(dt){
+  if(ROUTINE_lastPhase!==state.phase){if(state.phase==='dusk')toast('DUSK · 村人は帰宅、衛兵は担当区画を警戒');if((state.phase==='dawn'||state.phase==='day')&&(ROUTINE_lastPhase==='night'||ROUTINE_lastPhase==='dusk'))toast('DAWN · 村人が仕事へ戻る');ROUTINE_lastPhase=state.phase}
+  const claimed=new Set();for(const w of state.workers)if(w.targetId&&w.role!=='guard')claimed.add(w.targetId);
+  for(const w of state.workers){ensureWorkerVitals(w);ensureWorkerHome(w);if(w.dead)continue;w.cool=Math.max(0,(w.cool||0)-dt);w.hit=Math.max(0,(w.hit||0)-dt);
+    if(w.role==='guard'){guardDefendSector(w,dt);continue}
+    if(isCivilianHomeTime()){const threat=nearestWorkerEnemy(w,30);if(threat&&inside(threat.x,threat.y,bounds())&&workerCombat(w,dt)){w.hiddenAtHome=false;continue}civilianGoHomeFast(w,dt);continue}
+    w.hiddenAtHome=false;if(workerCombat(w,dt))continue;const type=workerResourceType(w);let n=state.nodes.find(n=>n.id===w.targetId&&n.alive);
+    if(!n){n=nearestNode(w,type,claimed);w.targetId=n?.id||null;if(n)claimed.add(n.id)}if(!n){w.state='idle';continue}
+    if(dist(w,n)>31){w.state='moving';const rt=route(w,n.x,n.y);move(w,rt.x,rt.y,workerMoveSpeed(w.role),dt)}else{w.state='working';w.work=(w.work||0)+dt*(.70+.30*state.morale/100);if(w.work>workerCycle(w.role)){w.work=0;const key=resourceStateKey(type),before=state[key];hitNode(n,'worker');recordRemoteYield(w,type,before);if(!n.alive)w.targetId=null}}
+  }
+  towerCombat(dt);
+};
+
+function enemyPriorityForDefense(e){let civilian=999;for(const w of state.workers){if(w.dead||w.role==='guard')continue;civilian=Math.min(civilian,dist(e,w))}return civilian*.86+Math.hypot(e.x,e.y)*.14}
+function bestDefenseTarget(origin,range){return state.enemies.filter(e=>!e.dead&&dist(origin,e)<range).sort((a,b)=>enemyPriorityForDefense(a)-enemyPriorityForDefense(b)||dist(origin,a)-dist(origin,b))[0]||null}
+function fireDefenseArrow(origin,target,damage,speed=390){state.projectiles.push({kind:'arrow',x:origin.x,y:origin.y-18,tx:target.x,ty:target.y,target,speed,damage,life:1.8});A.sfx('hit')}
+
+towerCombat=function(dt){
+  for(const b of state.buildings.filter(b=>b.type==='watchtower')){b.cool=Math.max(0,(b.cool||0)-dt);if(b.cool>0)continue;const L=b.level||1,range=220+L*38,z=bestDefenseTarget(b,range);if(!z)continue;b.cool=Math.max(.22,.68-L*.075);fireDefenseArrow({x:b.x,y:b.y-22},z,22+L*11,430+L*18)}
+  wallArcherCombat(dt);
+};
+function wallArcherCombat(dt){
+  if(!state.palisade.built||state.palisade.hp<=0||state.palisade.level<2)return;
+  if(!Number.isFinite(state.palisade.archerCool))state.palisade.archerCool=0;state.palisade.archerCool=Math.max(0,state.palisade.archerCool-dt);if(state.palisade.archerCool>0)return;
+  const B=bounds(),L=state.palisade.level,posts=[{x:0,y:B.t+3},{x:B.r-3,y:0},{x:0,y:B.b-3},{x:B.l+3,y:0}];let best=null,post=null,score=Infinity;
+  for(const p of posts){const z=bestDefenseTarget(p,185+L*20);if(!z)continue;const s=enemyPriorityForDefense(z);if(s<score){score=s;best=z;post=p}}
+  if(!best)return;state.palisade.archerCool=Math.max(.32,.92-L*.085);fireDefenseArrow(post,best,10+L*5,400+L*15);
+}
+
+// Repairing a destroyed wall should never trap workers: snap anyone touching the rebuilt edge to the nearest gate lane.
+function normalizeWallCrossers(){if(!state.palisade.built||state.palisade.hp<=0)return;const B=bounds();for(const w of state.workers){if(w.dead)continue;const nearEdge=Math.min(Math.abs(w.x-B.l),Math.abs(w.x-B.r),Math.abs(w.y-B.t),Math.abs(w.y-B.b))<15;if(!nearEdge)continue;const target=w.role==='guard'?{x:0,y:0}:(state.nodes.find(n=>n.id===w.targetId&&n.alive)||{x:w.x,y:w.y});const g=nearestGateFor(w,target.x,target.y),side=inside(w.x,w.y,B)?g.in:g.out;w.x=side.x;w.y=side.y}}
+contextAct=function(){const before=state.palisade.hp;DEFENSE_CORE_CONTEXT();if(before<=0&&state.palisade.hp>0)normalizeWallCrossers()};
+const contextBtn=$('context');if(contextBtn)contextBtn.onclick=contextAct;
+
+// Four visible openings match collision/routing exactly.
+drawWall=function(){
+  if(!state.palisade.built)return;const B=bounds(),L=state.palisade.level,stone=L>=4,gates=fourGateDefs(B),half=gates[0].half;
+  for(let x=B.l;x<=B.r;x+=14){if(Math.abs(x)>half)drawWallSeg(x,B.t,stone);if(Math.abs(x)>half)drawWallSeg(x,B.b,stone)}
+  for(let y=B.t+14;y<B.b;y+=14){if(Math.abs(y)>half)drawWallSeg(B.l,y,stone);if(Math.abs(y)>half)drawWallSeg(B.r,y,stone)}
+  for(const g of gates){const gx=sx(g.x),gy=sy(g.y),c=stone?'#777970':'#61402a',beam=stone?'#a3a398':'#9a6b43';if(g.side==='north'||g.side==='south'){rect(gx-g.half-5,gy-19,10,36,c);rect(gx+g.half-5,gy-19,10,36,c);rect(gx-g.half+5,gy-13,g.half*2-10,4,beam)}else{rect(gx-19,gy-g.half-5,36,10,c);rect(gx-19,gy+g.half-5,36,10,c);rect(gx-13,gy-g.half+5,4,g.half*2-10,beam)}}
+  if(L>=2)for(const p of[{x:0,y:B.t+3},{x:B.r-3,y:0},{x:0,y:B.b-3},{x:B.l+3,y:0}]){const x=sx(p.x),y=sy(p.y);rect(x-5,y-18,10,10,'#4b3828');rect(x-2,y-22,4,7,'#d8bd78')}
+};
+
+function defenseReport(){const guards=guardRoster();return{version:DEFENSE_VERSION,gates:fourGateDefs().map(g=>g.id),guardCount:guards.length,assignments:guards.map(g=>({id:g.id,points:guardAssignment(g).length,state:g.state})),wallArchers:state.palisade.level>=2,watchtowers:state.buildings.filter(b=>b.type==='watchtower').map(b=>({level:b.level,damage:22+(b.level||1)*11,range:220+(b.level||1)*38}))}}
+window.GUILD_DEFENSE=Object.freeze({version:DEFENSE_VERSION,report:defenseReport,gates:()=>fourGateDefs().map(g=>({...g})),guardAssignment:id=>{const g=state.workers.find(w=>w.id===id);return g?guardAssignment(g).map(p=>({...p})):[]},wallCollision:(x,y,r=9)=>wallCollision(x,y,r),normalizeWallCrossers});
+
+</script>
+<script>
+'use strict';
+
+// v1.6 defense hardening
+// Owner feedback: wall archers were overpowered, watchtower count was too low,
+// civilians still got stuck on rebuilt walls, and a clean reset was missing.
+const HARDENING_VERSION='v16.8-hardening';
+const HARD_CORE_UPDATE_WORKERS=updateWorkers;
+const HARD_CORE_CONTEXT=contextAct;
+
+// More watchtowers, but defense still requires actual construction investment.
+if(typeof REPEAT_LIMITS==='object'&&REPEAT_LIMITS.watchtower){
+  REPEAT_LIMITS.watchtower.base=4;
+  REPEAT_LIMITS.watchtower.perWall=2;
+  REPEAT_LIMITS.watchtower.max=16;
+}
+
+function hardGateById(id,B=bounds()){return fourGateDefs(B).find(g=>g.id===id)||fourGateDefs(B)[0]}
+function hardTargetForWorker(w){
+  if(w.role==='guard')return null;
+  if(isCivilianHomeTime()){
+    const h=ensureWorkerHome(w);return h?homePoint(w,h):{x:0,y:35};
+  }
+  const n=state.nodes.find(n=>n.id===w.targetId&&n.alive);return n?{x:n.x,y:n.y}:null;
+}
+function hardStartTransit(o,tx,ty,B){
+  const originInside=inside(o.x,o.y,B),targetInside=inside(tx,ty,B),g=nearestGateFor(o,tx,ty);
+  o._gateTransit={gateId:g.id,originInside,targetInside,stage:'approach',started:performance.now()};
+  return o._gateTransit;
+}
+
+// Stable gate routing: once an NPC commits to a gate it keeps that gate until it
+// has fully crossed the wall. This prevents frame-to-frame gate switching/oscillation.
+route=function(o,tx,ty){
+  if(!state.palisade.built||state.palisade.hp<=0){if(o&&o._gateTransit)delete o._gateTransit;return{x:tx,y:ty}}
+  const B=bounds(),targetInside=inside(tx,ty,B),nowInside=inside(o.x,o.y,B);
+  let tr=o._gateTransit;
+  if(nowInside===targetInside&&!tr)return{x:tx,y:ty};
+  if(!tr||tr.targetInside!==targetInside)tr=hardStartTransit(o,tx,ty,B);
+  const g=hardGateById(tr.gateId,B),entry=tr.originInside?g.in:g.out,exit=tr.originInside?g.out:g.in;
+  if(tr.stage==='approach'){
+    if(Math.hypot(o.x-entry.x,o.y-entry.y)>10)return{x:entry.x,y:entry.y};
+    tr.stage='cross';
+  }
+  const crossed=inside(o.x,o.y,B)===tr.targetInside;
+  if(crossed){delete o._gateTransit;return{x:tx,y:ty}}
+  // Keep the movement vector perpendicular to the wall while inside the gate throat.
+  if(g.side==='north'||g.side==='south')return{x:g.x,y:exit.y};
+  return{x:exit.x,y:g.y};
+};
+
+function hardNearWall(o,B=bounds()){return Math.min(Math.abs(o.x-B.l),Math.abs(o.x-B.r),Math.abs(o.y-B.t),Math.abs(o.y-B.b))<24}
+function hardSnapToGateLane(o,target){
+  if(!state.palisade.built||state.palisade.hp<=0)return false;
+  const B=bounds(),g=nearestGateFor(o,target.x,target.y),p=inside(o.x,o.y,B)?g.in:g.out;
+  o.x=p.x;o.y=p.y;delete o._gateTransit;o._gateWatch=null;
+  return true;
+}
+function hardMaintainWorkerTraffic(dt){
+  if(!state.palisade.built||state.palisade.hp<=0){for(const w of state.workers)delete w._gateTransit;return}
+  const B=bounds();
+  for(const w of state.workers){
+    if(w.dead||w.role==='guard')continue;
+    const target=hardTargetForWorker(w);if(!target){w._gateWatch=null;continue}
+    const crossing=inside(w.x,w.y,B)!==inside(target.x,target.y,B);
+    if(!crossing){w._gateWatch=null;delete w._gateTransit;continue}
+    // If a worker somehow reaches a solid wall section, force its next waypoint to a gate.
+    if(hardNearWall(w,B)&&!pointInGateOpening(w.x,w.y,B,2)){
+      const g=nearestGateFor(w,target.x,target.y),p=inside(w.x,w.y,B)?g.in:g.out;
+      w._gateTransit={gateId:g.id,originInside:inside(w.x,w.y,B),targetInside:inside(target.x,target.y,B),stage:'approach',started:performance.now()};
+      // Gentle correction along the wall rather than teleporting every frame.
+      const dx=p.x-w.x,dy=p.y-w.y,d=Math.hypot(dx,dy)||1,step=Math.min(d,workerMoveSpeed(w.role)*dt*1.35);
+      w.x+=dx/d*step;w.y+=dy/d*step;
+    }
+    if(!w._gateWatch)w._gateWatch={x:w.x,y:w.y,t:0,stuck:0};
+    const q=w._gateWatch;q.t+=dt;
+    if(q.t>=.45){
+      const moved=Math.hypot(w.x-q.x,w.y-q.y);q.stuck=moved<2.2?q.stuck+q.t:0;q.x=w.x;q.y=w.y;q.t=0;
+      if(q.stuck>1.15){hardSnapToGateLane(w,target);floatText(w.x,w.y-24,'GATE ROUTE','#d7c58c')}
+    }
+  }
+}
+
+updateWorkers=function(dt){HARD_CORE_UPDATE_WORKERS(dt);hardMaintainWorkerTraffic(dt)};
+
+// Watchtowers remain strong; the automatic wall-mounted archers are removed entirely.
+towerCombat=function(dt){
+  for(const b of state.buildings.filter(b=>b.type==='watchtower')){
+    b.cool=Math.max(0,(b.cool||0)-dt);if(b.cool>0)continue;
+    const L=b.level||1,range=220+L*38,z=bestDefenseTarget(b,range);if(!z)continue;
+    b.cool=Math.max(.22,.68-L*.075);fireDefenseArrow({x:b.x,y:b.y-22},z,22+L*11,430+L*18);
+  }
+};
+
+// Keep four visible gates, but remove the former wall-archer posts from the wall art.
+drawWall=function(){
+  if(!state.palisade.built)return;const B=bounds(),L=state.palisade.level,stone=L>=4,gates=fourGateDefs(B),half=gates[0].half;
+  for(let x=B.l;x<=B.r;x+=14){if(Math.abs(x)>half)drawWallSeg(x,B.t,stone);if(Math.abs(x)>half)drawWallSeg(x,B.b,stone)}
+  for(let y=B.t+14;y<B.b;y+=14){if(Math.abs(y)>half)drawWallSeg(B.l,y,stone);if(Math.abs(y)>half)drawWallSeg(B.r,y,stone)}
+  for(const g of gates){
+    const gx=sx(g.x),gy=sy(g.y),c=stone?'#777970':'#61402a',beam=stone?'#a3a398':'#9a6b43';
+    if(g.side==='north'||g.side==='south'){
+      rect(gx-g.half-5,gy-19,10,36,c);rect(gx+g.half-5,gy-19,10,36,c);rect(gx-g.half+5,gy-13,g.half*2-10,4,beam);
+    }else{
+      rect(gx-19,gy-g.half-5,36,10,c);rect(gx-19,gy+g.half-5,36,10,c);rect(gx-13,gy-g.half+5,4,g.half*2-10,beam);
+    }
+  }
+};
+
+function hardNormalizeAfterRepair(){
+  if(!state.palisade.built||state.palisade.hp<=0)return;
+  const B=bounds();
+  for(const w of state.workers){
+    if(w.dead||w.role==='guard')continue;const target=hardTargetForWorker(w)||{x:0,y:0};
+    const embedded=wallCollision(w.x,w.y,7)||(hardNearWall(w,B)&&!pointInGateOpening(w.x,w.y,B,1));
+    if(embedded)hardSnapToGateLane(w,target);
+  }
+  if(wallCollision(state.player.x,state.player.y,8)){
+    const g=nearestGateFor(state.player,0,0),p=inside(state.player.x,state.player.y,B)?g.in:g.out;state.player.x=p.x;state.player.y=p.y;
+  }
+}
+contextAct=function(){
+  const before=state.palisade.hp;HARD_CORE_CONTEXT();
+  if(before<=0&&state.palisade.hp>0){hardNormalizeAfterRepair();toast('防壁修復 · 4ゲートの通路を再確保')}
+};
+const hardContextBtn=$('context');if(hardContextBtn)hardContextBtn.onclick=contextAct;
+
+function hardInstallUi(){
+  const wallDesc=$('wall-desc');if(wallDesc)wallDesc.textContent='北・東・南・西の4ゲート · 全て通行可能';
+  const ticker=$('ticker-text');if(ticker)ticker.textContent='DEFENSE HARDENING · 4 GATES / MORE WATCHTOWERS / NO WALL ARCHERS';
+  const panel=$('panel-record');if(panel&&!$('reset-game')){
+    const wrap=document.createElement('div');wrap.style.cssText='margin:14px 0 4px;padding:12px;border:1px solid #6c4d43;background:#221b19';
+    const label=document.createElement('div');label.textContent='SYSTEM';label.style.cssText='font:800 9px monospace;letter-spacing:.16em;color:#9f8f76;margin-bottom:8px';
+    const btn=document.createElement('button');btn.id='reset-game';btn.type='button';btn.textContent='RESET SAVE DATA';btn.style.cssText='width:100%;padding:12px;border:1px solid #9b5e50;background:#3a201d;color:#f1c2ad;font:900 11px monospace;letter-spacing:.08em';
+    const note=document.createElement('small');note.textContent='現在の街・住民・進行を最初からやり直す';note.style.cssText='display:block;margin-top:7px;color:#9d8d7c;font:9px monospace';
+    wrap.append(label,btn,note);panel.appendChild(wrap);
+    let armUntil=0;
+    btn.onclick=()=>{const now=Date.now();if(now>armUntil){armUntil=now+4000;btn.textContent='もう一度押すと完全RESET';btn.style.background='#5a2822';setTimeout(()=>{if(Date.now()>armUntil&&btn.isConnected){btn.textContent='RESET SAVE DATA';btn.style.background='#3a201d'}},4100);return}hardResetGame(true)};
+  }
+}
+function hardResetGame(reload=true){
+  try{localStorage.removeItem(SAVE);localStorage.removeItem(BACKUP)}catch(_){ }
+  if(reload)location.reload();return true;
+}
+
+hardInstallUi();forceUiRefresh();
+window.GUILD_HARDENING=Object.freeze({
+  version:HARDENING_VERSION,
+  resetNow:hardResetGame,
+  watchtowerLimit:()=>({base:REPEAT_LIMITS.watchtower.base,perWall:REPEAT_LIMITS.watchtower.perWall,max:REPEAT_LIMITS.watchtower.max,current:repeatLimit('watchtower')}),
+  normalizeTraffic:hardNormalizeAfterRepair,
+  route:(o,x,y)=>route(o,x,y),
+  report:()=>({version:HARDENING_VERSION,wallArchers:false,gates:fourGateDefs().map(g=>g.id),watchtowerMax:REPEAT_LIMITS.watchtower.max})
+});
+
+</script>
+<script>
+'use strict';
+
+// Deterministic worker gate traversal. Loaded after hardening.js.
+const GATEFIX_VERSION='v16.9-gatefix';
+
+function gfStep(o,tx,ty,speed,dt){
+  const dx=tx-o.x,dy=ty-o.y,d=Math.hypot(dx,dy),step=Math.max(0,speed*dt);
+  if(d<=step+1.5){o.x=tx;o.y=ty;o.anim=(o.anim||0)+dt*7;return true}
+  if(d>0){o.x+=dx/d*step;o.y+=dy/d*step;o.anim=(o.anim||0)+dt*7}
+  return false;
+}
+function gfBegin(w,tx,ty,B){
+  const g=nearestGateFor(w,tx,ty),originInside=inside(w.x,w.y,B),targetInside=inside(tx,ty,B);
+  w._gateTransit={gateId:g.id,originInside,targetInside,stage:'approach'};return w._gateTransit;
+}
+function gfMove(w,tx,ty,speed,dt){
+  if(!state.palisade.built||state.palisade.hp<=0){delete w._gateTransit;return gfStep(w,tx,ty,speed,dt)}
+  const B=bounds(),nowInside=inside(w.x,w.y,B),targetInside=inside(tx,ty,B);let tr=w._gateTransit;
+  if(nowInside===targetInside&&!tr)return gfStep(w,tx,ty,speed,dt);
+  if(!tr||tr.targetInside!==targetInside)tr=gfBegin(w,tx,ty,B);
+  const g=hardGateById(tr.gateId,B),entry=tr.originInside?g.in:g.out,exit=tr.originInside?g.out:g.in;
+  if(tr.stage==='approach'){
+    if(gfStep(w,entry.x,entry.y,speed*1.08,dt)){tr.stage='cross';w.x=entry.x;w.y=entry.y}
+    return false;
+  }
+  if(gfStep(w,exit.x,exit.y,speed*1.18,dt)){
+    w.x=exit.x;w.y=exit.y;delete w._gateTransit;return false;
+  }
+  return false;
+}
+function gfGoHome(w,dt){
+  const h=ensureWorkerHome(w);w.targetId=null;
+  if(!h){w.state='returning-camp';w.hiddenAtHome=false;gfMove(w,0,35,workerMoveSpeed(w.role)*1.3,dt);return}
+  const p=homePoint(w,h),d=dist(w,p);
+  if(d>9){w.state='returning-home';w.hiddenAtHome=false;gfMove(w,p.x,p.y,workerMoveSpeed(w.role)*1.4,dt)}
+  else{w.x=p.x;w.y=p.y;delete w._gateTransit;w.state='sleeping';w.hiddenAtHome=true;w.hp=Math.min(w.maxHp,w.hp+4*dt)}
+}
+
+// Replace only the civilian movement path; combat, guard sectors, yields and tower logic stay intact.
+updateWorkers=function(dt){
+  if(ROUTINE_lastPhase!==state.phase){
+    if(state.phase==='dusk')toast('DUSK · 村人は4ゲートから帰宅、衛兵は担当区画を警戒');
+    if((state.phase==='dawn'||state.phase==='day')&&(ROUTINE_lastPhase==='night'||ROUTINE_lastPhase==='dusk'))toast('DAWN · 村人が4ゲートから仕事へ戻る');
+    ROUTINE_lastPhase=state.phase;
+  }
+  const claimed=new Set();for(const w of state.workers)if(w.targetId&&w.role!=='guard')claimed.add(w.targetId);
+  for(const w of state.workers){
+    ensureWorkerVitals(w);ensureWorkerHome(w);if(w.dead)continue;w.cool=Math.max(0,(w.cool||0)-dt);w.hit=Math.max(0,(w.hit||0)-dt);
+    if(w.role==='guard'){guardDefendSector(w,dt);continue}
+    if(isCivilianHomeTime()){
+      const threat=nearestWorkerEnemy(w,30);if(threat&&inside(threat.x,threat.y,bounds())&&workerCombat(w,dt)){w.hiddenAtHome=false;continue}
+      gfGoHome(w,dt);continue;
+    }
+    w.hiddenAtHome=false;if(workerCombat(w,dt))continue;
+    const type=workerResourceType(w);let n=state.nodes.find(n=>n.id===w.targetId&&n.alive);
+    if(!n){n=nearestNode(w,type,claimed);w.targetId=n?.id||null;if(n)claimed.add(n.id)}
+    if(!n){delete w._gateTransit;w.state='idle';continue}
+    if(dist(w,n)>31){w.state='moving';gfMove(w,n.x,n.y,workerMoveSpeed(w.role),dt)}
+    else{
+      delete w._gateTransit;w.state='working';w.work=(w.work||0)+dt*(.70+.30*state.morale/100);
+      if(w.work>workerCycle(w.role)){w.work=0;const key=resourceStateKey(type),before=state[key];hitNode(n,'worker');recordRemoteYield(w,type,before);if(!n.alive)w.targetId=null}
+    }
+  }
+  towerCombat(dt);
+};
+
+window.GUILD_GATEFIX=Object.freeze({version:GATEFIX_VERSION,move:(w,x,y,s,dt)=>gfMove(w,x,y,s,dt)});
+
+</script>
+<script>
+'use strict';
+// Pocket is an additive edition of the tested v1.6 engine. No legacy save is read.
+const Pocket=(()=>{
+ const fresh=()=>({claimed:[],caches:[],policies:{harvest:0,hearth:0,guard:0},spent:0,tokens:0,nightPaid:0,gathered:0,whistleUntil:0,pausedAt:0,rally:0});
+ state.pocket={...fresh(),...(state.pocket||{})};
+ for(const n of state.nodes)delete n.pocketHit;
+ for(const w of state.workers){delete w.sayUntil;delete w.say;delete w._pocketSpoke}
+ const p=state.pocket;p.policies={...fresh().policies,...p.policies};
+ for(const k of ['claimed','caches'])if(!Array.isArray(p[k]))p[k]=[];
+ for(const k of ['spent','tokens','nightPaid','gathered','whistleUntil','pausedAt','rally'])if(!Number.isFinite(p[k])||p[k]<0)p[k]=0;
+ for(const k of Object.keys(p.policies))p.policies[k]=clamp(Math.floor(p.policies[k])||0,0,5);
+ let clock=0,chain=0,chainUntil=0,rally=clamp(p.rally,0,5),uiAt=0,discoveryAt=0;const keys=new Set();
+ const policies={harvest:{name:'斧を信じろ',desc:'全員の採集量 +15% / Lv',quote:'会議より伐採のほうが生産的'},hearth:{name:'まかない最強説',desc:'朝ごとに食料 +12・士気 +3 / Lv',quote:'福利厚生は、まず胃袋から'},guard:{name:'腕力で解決',desc:'主人公・衛兵・塔の攻撃力 +12% / Lv',quote:'議事録は斧で書く'}};
+ const caches=[{id:'north',x:40,y:-365,name:'引退した斧',wood:45,iron:2},{id:'east',x:430,y:45,name:'誰かのへそくり',stone:40,renown:2},{id:'south',x:-90,y:470,name:'賞味期限は気合',food:45,hourglass:1},{id:'west',x:-410,y:80,name:'石にも三年分',stone:50,iron:2},{id:'far-east',x:710,y:-420,name:'労働の結晶',wood:70,renown:3},{id:'far-west',x:-690,y:480,name:'村長の裏帳簿',iron:5,hourglass:2}];
+ const milestones=[
+ {id:'first',name:'まず屋根をください',desc:'小屋を1棟建てる',done:()=>state.buildings.some(b=>b.type==='hut'),reward:{food:12}},
+ {id:'crew',name:'ひとり企業、卒業',desc:'村人を1人雇う',done:()=>state.workers.length>=1,reward:{tokens:1}},
+ {id:'wall',name:'ここから先は私有地',desc:'防壁を建てる',done:()=>state.palisade.built,reward:{iron:2,renown:3}},
+ {id:'night',name:'残業の相手はゾンビ',desc:'夜を1回越える',done:()=>state.stats.nights>=1,reward:{wood:35,stone:25}},
+ {id:'five',name:'会社っぽくなってきた',desc:'村人を5人雇う',done:()=>state.workers.length>=5,reward:{food:30,tokens:1}},
+ {id:'rank',name:'村、増資しました',desc:'ギルドを建てる',done:()=>rankIndex()>=1,reward:{iron:3,hourglass:1}},
+ {id:'explore',name:'散歩と言い張る略奪',desc:'落とし物を3つ発見',done:()=>p.caches.length>=3,reward:{tokens:2}},
+ {id:'three',name:'夜勤、慣れてきた',desc:'夜を3回越える',done:()=>state.stats.nights>=3,reward:{iron:5,renown:5}},
+ {id:'town',name:'もはや村ではない',desc:'防壁をLv3へ拡張',done:()=>state.palisade.level>=3,reward:{tokens:2,hourglass:2}}
+ ];
+ function award(r){for(const [k,v] of Object.entries(r)){if(k==='tokens')p.tokens+=v;else if(['wood','stone','food'].includes(k))addRes(k,v);else state[k]=(state[k]||0)+v}}
+ function claim(id){const m=milestones.find(m=>m.id===id);if(!m||!m.done()||p.claimed.includes(id))return false;p.claimed.push(id);award(m.reward);save();A.sfx('hire');toast('達成！ '+m.name);renderVillage();return true}
+ function choosePolicy(id){if(!policies[id]||p.tokens<=0||p.policies[id]>=5)return false;p.tokens--;p.spent++;p.policies[id]++;save();A.sfx('build');toast(policies[id].quote);renderVillage();return true}
+ function clearInput(){input={x:0,y:0,mag:0};pointer=null;keys.clear();state.player.vx=state.player.vy=0}
+ function paused(){return document.hidden||currentPanel!==null}
+ function syncPause(){const now=Date.now();if(paused()){if(!p.pausedAt)p.pausedAt=now;return}if(p.pausedAt){const elapsed=Math.max(0,now-p.pausedAt);if(state.boost>1&&state.boostUntil>p.pausedAt)state.boostUntil+=elapsed;if(p.whistleUntil>p.pausedAt)p.whistleUntil+=elapsed;p.pausedAt=0}}
+
+ function whistle(){if(paused()||Date.now()<p.whistleUntil||state.player.down>0)return false;p.whistleUntil=Date.now()+22000;rally=5;p.rally=5;for(const e of state.enemies){if(e.dead||dist(e,state.player)>115)continue;damageEnemy(e,12,state.player.x,state.player.y);const d=Math.max(1,dist(e,state.player));e.x+=(e.x-state.player.x)/d*30;e.y+=(e.y-state.player.y)/d*30}fxBurst(state.player.x,state.player.y,'#ffe7a4',24,1.5);toast('村長の号令！ 5秒間、採集2倍');A.sfx('hire');save();return true}
+ const el=document.createElement('div');el.innerHTML='<canvas id="pocket-map" width="152" height="134" aria-label="村の地図"></canvas><div id="pocket-progress"></div><div id="chain-chip" hidden></div><button id="whistle" aria-label="村長の号令：近くの敵を押し返し、5秒間採集2倍">号令<small>採集 ×2</small></button>';while(el.firstChild)document.body.appendChild(el.firstChild);
+ $('whistle').onclick=whistle;
+ const originalReset=hardResetGame;hardResetGame=function(reload=true){document.body.dataset.resetting='true';return originalReset(reload)};
+ $('sound').setAttribute('aria-label','音楽と効果音を切り替える');$('speed').setAttribute('aria-label','砂時計で30秒間倍速');$('sheet-close').setAttribute('aria-label','閉じて村へ戻る');
+ $('sheet').setAttribute('role','dialog');$('sheet').setAttribute('aria-label','村のメニュー');
+ const labels=['木材','石材','食料','村人'];document.querySelectorAll('#resources small').forEach((e,i)=>e.textContent=labels[i]);
+ const dockLabels={build:['建てる','街を育てる'],people:['雇う','仕事を任せる'],record:['村のこと','方針 / 実績']};
+ document.querySelectorAll('#dock button').forEach(b=>{const x=dockLabels[b.dataset.panel];b.querySelector('b').textContent=x[0];b.querySelector('small').textContent=x[1]});
+ fmtCost=function(c){return [['wood','木'],['stone','石'],['food','食'],['iron','鉄'],['renown','名声']].filter(([k])=>c[k]).map(([k,l])=>`${l} ${c[k]}`).join(' · ')};
+ const names={hut:'小屋',warehouse:'倉庫',watchtower:'見張り台',barracks:'兵舎',guild:'ギルド',lantern:'灯火',lumber:'木材所',quarry:'採石所'};for(const [k,v] of Object.entries(names))BUILD[k].name=v;
+ const originalOpen=openPanel,originalClose=closeSheet;
+ openPanel=function(name){clearInput();originalOpen(name);syncPause();save();$('sheet-title').textContent=dockLabels[name][0];$('sheet-kicker').textContent='GUILD∞ / おバカ開拓村';if(!$('pause-label')){const tag=document.createElement('span');tag.id='pause-label';tag.textContent='時間停止中';document.querySelector('.sheet-head>div').appendChild(tag)}if(name==='record')renderVillage();$('sheet-close').focus({preventScroll:true})};
+ closeSheet=function(){originalClose();syncPause();clearInput();last=performance.now()};
+ const originalBuild=build;build=function(type){const count=state.buildings.length,wall=state.palisade.level;const result=originalBuild(type);if(count!==state.buildings.length||wall!==state.palisade.level){closeSheet();toast(type==='palisade'?'防壁完成！ ご近所づきあいは門から':'完成！ 不動産だけは増えていく');save()}return result};
+ const originalHire=hire;hire=function(role){const n=state.workers.length;originalHire(role);if(n<state.workers.length){const w=state.workers.at(-1);w.pocketName=['ポン','ヌボ','ムギ','ゴン','モチ','ネム','カブ','マメ'][n%8];w.say='採用理由：来た';w.sayUntil=clock+4;save()}};
+ const originalHit=hitNode;hitNode=function(n,source='player'){if(!n?.alive)return;const key=n.type==='tree'?'wood':n.type==='rock'?'stone':'food',before=state[key];originalHit(n,source);const gain=Math.max(0,state[key]-before);let multiplier=1+p.policies.harvest*.15;if(source==='player'){chain=clock<chainUntil?chain+1:1;chainUntil=clock+2.2;multiplier+=Math.min(.5,Math.floor(chain/5)*.1);if(rally>0)multiplier*=2;p.gathered+=gain;n.pocketHit=clock;fxBurst(n.x,n.y-6,COLORS[key],3,.65)}if(multiplier>1)addRes(key,gain*(multiplier-1));};
+ const originalDamage=damageEnemy;damageEnemy=function(e,dmg,ax,ay,guard){return originalDamage(e,dmg*(1+p.policies.guard*.12),ax,ay,guard)};
+ const originalPhase=phaseTick;phaseTick=function(dt){originalPhase(dt);if(state.stats.nights>p.nightPaid){const n=state.stats.nights-p.nightPaid;p.nightPaid=state.stats.nights;p.tokens+=n;addRes('food',12*p.policies.hearth*n);state.morale=Math.min(100,state.morale+3*p.policies.hearth*n);toast('朝だ！ 村の方針ポイント +'+n+' → 村のこと');save()}};
+ const oldObjective=updateObjective;updateObjective=function(){const next=milestones.find(m=>!p.claimed.includes(m.id));if(next){$('objective-text').textContent=next.done()?'達成！ 「村のこと」で報酬を受取':next.desc;$('pocket-progress').textContent=`開拓記録 ${p.claimed.length}/${milestones.length}  ·  落とし物 ${p.caches.length}/${caches.length}`}else{oldObjective();$('pocket-progress').textContent='開拓記録 完成！ さらに大きな村へ'}};
+ function renderVillage(){let card=$('village-card');if(!card){card=document.createElement('div');card.id='village-card';$('panel-record').prepend(card)}card.innerHTML=`<h3>村長、次はどうする？</h3><p>夜を越えると方針ポイント +1<br>残り <strong>${p.tokens}</strong> pt · それぞれ最大 Lv5</p><div class="policy-list">${Object.entries(policies).map(([k,v])=>`<button data-policy="${k}" ${p.tokens<1||p.policies[k]>=5?'disabled':''}>${v.name} <b>Lv.${p.policies[k]}</b><small>${v.desc}</small></button>`).join('')}</div><h3 style="margin-top:20px">開拓記録</h3>${milestones.map(m=>`<div class="milestone"><div>${m.name}<small>${m.desc}</small><small>${Object.entries(m.reward).map(([k,v])=>( {tokens:'方針',wood:'木',stone:'石',food:'食料',iron:'鉄',renown:'名声',hourglass:'砂時計'}[k]||k)+' +'+v).join(' / ')}</small></div><button data-claim="${m.id}" ${!m.done()||p.claimed.includes(m.id)?'disabled':''}>${p.claimed.includes(m.id)?'受取済':m.done()?'受け取る':'未達成'}</button></div>`).join('')}<div id="pocket-help">画面をドラッグ → 移動<br>木・石・食料のそばで止まる → 自動採集<br>号令 → 5秒間の採集2倍 + 近くの敵を押し返す<br>地図の金色の点 → 落とし物<br>PCは WASD / 矢印・Spaceで号令<br>メニュー中は時間停止・自動保存<br>GUILD∞ POCKET / v2.0</div>`;card.querySelectorAll('[data-policy]').forEach(b=>b.onclick=()=>choosePolicy(b.dataset.policy));card.querySelectorAll('[data-claim]').forEach(b=>b.onclick=()=>claim(b.dataset.claim))}
+ function tick(dt){clock+=dt;rally=Math.max(0,rally-dt);p.rally=rally;if(clock>chainUntil)chain=0;
+  if(clock>discoveryAt){discoveryAt=clock+.25;for(const c of caches){if(p.caches.includes(c.id)||dist(state.player,c)>48)continue;p.caches.push(c.id);const reward={...c};for(const k of ['id','x','y','name'])delete reward[k];award(reward);fxBurst(c.x,c.y,'#fbe59d',26,1.5);toast('発見！ '+c.name);A.sfx('hire');save()}}
+  if(clock>uiAt){uiAt=clock+.15;const remain=Math.max(0,Math.ceil((p.whistleUntil-Date.now())/1000));$('whistle').innerHTML=(remain?`${remain}s`:'号令')+'<small>'+(rally>0?'発動中！':'採集 ×2')+'</small>';$('whistle').disabled=remain>0;const chip=$('chain-chip');chip.hidden=chain<5&&rally<=0;chip.textContent=rally>0?'村長、急にやる気出す！':`${chain} CHAIN · 手が止まらん`;updateHud(true);updateVitalsHud();$('phase').textContent={day:'昼',night:'夜',dawn:'朝',dusk:'夕暮れ'}[state.phase];drawMap()}
+ }
+ function drawMap(){const c=$('pocket-map').getContext('2d'),w=152,h=134;c.clearRect(0,0,w,h);const mx=x=>(x-WORLD.minX)/(WORLD.maxX-WORLD.minX)*w,my=y=>(y-WORLD.minY)/(WORLD.maxY-WORLD.minY)*h;const B=bounds();c.strokeStyle='#b5c591';c.strokeRect(mx(B.l),my(B.t),mx(B.r)-mx(B.l),my(B.b)-my(B.t));for(const a of caches)if(!p.caches.includes(a.id)){c.fillStyle='#ffe495';c.fillRect(mx(a.x)-2,my(a.y)-2,4,4)}for(const e of state.enemies)if(!e.dead){c.fillStyle='#ed8164';c.fillRect(mx(e.x),my(e.y),2,2)}c.fillStyle='#fff8db';c.beginPath();c.arc(mx(state.player.x),my(state.player.y),3,0,Math.PI*2);c.fill()}
+ addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d',' '].includes(e.key)){if(paused()||e.target.closest?.('button,input,textarea,select'))return;e.preventDefault();keys.add(e.key);A.enable();if(e.key===' ')whistle()}if(e.key==='Escape')closeSheet()});addEventListener('keyup',e=>keys.delete(e.key));addEventListener('blur',clearInput);document.addEventListener('visibilitychange',()=>{clearInput();syncPause();last=performance.now();save()});canvas.addEventListener('lostpointercapture',clearInput);
+ loop=function(now){const dt=Math.min(.033,Math.max(0,(now-last)/1000));last=now;try{if(!paused()){if(keys.size){const x=Number(keys.has('d')||keys.has('ArrowRight'))-Number(keys.has('a')||keys.has('ArrowLeft')),y=Number(keys.has('s')||keys.has('ArrowDown'))-Number(keys.has('w')||keys.has('ArrowUp')),m=Math.hypot(x,y);input={x:m?x/m:0,y:m?y/m:0,mag:Math.min(1,m)}}else if(pointer===null)input={x:0,y:0,mag:0};movement(dt);playerGather(dt);updateWorkers(dt);playerAutoCombat();updateEnemies(dt);updateHumanLife(dt);phaseTick(dt);refreshContext();tick(dt)}draw();drawEffects(paused()?0:dt)}catch(e){reportRuntimeError(e,'POCKET')}requestAnimationFrame(loop)};
+ syncPause();renderVillage();updateHud(true);toast(loaded?'おかえり村長！ 今日も木から':'ドラッグで歩く · 木のそばで止まると自動採集');
+ return {version:'2.0',choosePolicy,claim,whistle,tick,paused,clearInput,caches,milestones,get clock(){return clock},get chain(){return chain},get rally(){return rally},state:()=>p};
+})();window.Pocket=Pocket;
+
+</script>
+<script>
+'use strict';
+// Code-drawn original art. Cosmetic animation never modifies simulation coordinates.
+(()=>{
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const oldGround=drawGround,oldBuilding=drawBuilding,oldNode=drawNode,oldPerson=drawPerson;
+ const visible=(x,y,pad=90)=>sx(x)>-pad&&sx(x)<W+pad&&sy(y)>-pad&&sy(y)<H+pad;
+ const time=()=>reduced?0:performance.now()/1000;
+ const grass=[];for(let i=0;i<650;i++)grass.push({x:((i*137.37)%1800)-900,y:((i*97.13)%1480)-720,k:i%7});
+ drawGround=function(){
+  oldGround();const night=state.phase==='night',t=time();
+  // Meandering woodland paths and tiny grass tufts provide spatial memory.
+  ctx.save();ctx.lineWidth=22;ctx.lineCap='round';ctx.strokeStyle=night?'#655b3a20':'#b2a66f28';ctx.beginPath();ctx.moveTo(sx(-600),sy(100));ctx.bezierCurveTo(sx(-180),sy(80),sx(80),sy(-60),sx(600),sy(180));ctx.stroke();
+  for(const g of grass){if(!visible(g.x,g.y,10))continue;const x=sx(g.x),y=sy(g.y),s=Math.sin(t*.8+g.x)*1.2;ctx.fillStyle=night?'#5a775232':g.k<2?'#b0c78044':'#1e472e45';ctx.fillRect(x,y,2,3+g.k);ctx.fillRect(x-2+s,y-2,2,4);if(g.k===0){rect(x+3,y-2,2,2,night?'#abbc6155':'#e6ce8077')}}
+  // River at the southern frontier, outside the initial settlement.
+  const river=sy(660);if(river>-100&&river<H+100){ctx.fillStyle=night?'#173f46':'#477a79';ctx.fillRect(0,river,W,95);for(let i=0;i<35;i++){const x=((i*83+t*8)% (W+100))-50;rect(x,river+8+(i*17)%73,12+i%3*8,1,night?'#6bafa33b':'#b5d3bd55')}}
+  for(const c of Pocket.caches){if(!visible(c.x,c.y))continue;const x=sx(c.x),y=sy(c.y),done=state.pocket.caches.includes(c.id);shadow(x,y+10,26,7,.3);rect(x-13,y-6,26,18,done?'#4a533d':'#8d6338');rect(x-15,y-10,30,9,done?'#616c4c':'#c39a51');rect(x-2,y-8,4,19,done?'#7b855b':'#f2da88');if(!done){const bob=Math.sin(t*2)*3;rect(x-2,y-28+bob,4,8,'#fff3bd');rect(x-2,y-17+bob,4,3,'#fff3bd');glow(x,y,37,.06)}}ctx.restore();
+ };
+ drawNode=function(n){if(!visible(n.x,n.y))return;const x=sx(n.x),y=sy(n.y),t=time();ctx.save();const hit=Pocket.clock-(n.pocketHit||-100);if(hit>=0&&hit<.22&&!reduced){ctx.translate(x,y);ctx.rotate(Math.sin(hit*38)*.08*(1-hit/.22));ctx.translate(-x,-y)}
+  oldNode(n);
+  if(n.type==='tree'){const v=Math.floor((n.seed||0)*3);poly([[x-22,y-25],[x-14,y-46],[x+2,y-59],[x+20,y-41],[x+25,y-21],[x+4,y-15]],['#355b3c','#416443','#305940'][v]);poly([[x-14,y-40],[x-3,y-54],[x+13,y-44],[x+15,y-36],[x+3,y-31]],'#789052');rect(x-3,y-11,3,30,'#aa8150');rect(x-9,y+17,19,3,'#493e2b');for(let i=0;i<4;i++)rect(x-14+i*8,y-27+(i%2)*5,4,2,'#8ba35b70')}
+  else if(n.type==='rock'){poly([[x-10,y-7],[x-1,y-16],[x+11,y-8],[x+6,y-4],[x-3,y-4]],'#b5b6a0');rect(x+6,y+2,6,2,'#414f4b');rect(x-9,y+7,3,2,'#9ba48c')}
+  else{for(let i=0;i<5;i++){rect(x-10+i*5,y-4+(i%2)*4,4,4,'#e58965');rect(x-10+i*5,y-5+(i%2)*4,2,1,'#ffe0a0')}}
+  if(n.hp<n.maxHp){rect(x-13,y+24,26,3,'#183124');rect(x-13,y+24,26*n.hp/n.maxHp,3,'#d9d08a')}
+  ctx.restore();
+ };
+ drawBuilding=function(b){if(!visible(b.x,b.y,140))return;const x=sx(b.x),y=sy(b.y),L=b.level||1;oldBuilding(b);const [w,h]=buildingSize(b.type,L);if(['hut','warehouse','barracks','guild'].includes(b.type)){
+  rect(x+w/2-8,y-h/4,8,h/2,'#3a4132');rect(x-w/2,y+h/4,w,3,'#ba986040');rect(x-9,y+18,18,3,'#8b7954');
+  for(let j=0;j<3;j++)rect(x-w/2+5,y-h/4+8+j*6,w-14,1,'#d9b07720');
+  rect(x+w*.25,y-h*.53,7,16,'#545449');rect(x+w*.25-1,y-h*.53,9,3,'#a09671');
+  if(!reduced){for(let i=0;i<3;i++){const f=(time()*.35+i/3)%1;ctx.globalAlpha=(1-f)*.2;rect(x+w*.25+Math.sin(time()+i)*6,y-h*.53-f*26,5+f*7,5+f*6,'#eee0c0');ctx.globalAlpha=1}}
+  if(state.phase==='night'||state.phase==='dusk')glow(x,y-3,45+L*4,.09);
+ }
+ if(b.type==='lumber'){for(let i=0;i<4;i++){rect(x-24+i*12,y+16,10,8,'#ac8050');rect(x-22+i*12,y+18,6,4,'#dfbc79')}}
+ if(b.type==='watchtower'){rect(x-4,y-h*.5-5,8,8,'#dec398');rect(x-5,y-h*.5-8,10,4,'#6f8990')}
+ if(dist(state.player,b)<95){ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillStyle='#122a20';ctx.fillText(`${BUILD[b.type]?.name||''} ${L}`,x+1,y+34);ctx.fillStyle='#f0e5b8';ctx.fillText(`${BUILD[b.type]?.name||''} ${L}`,x,y+33)}
+ };
+ drawPerson=function(o,role='wood',enemy=false){if(!visible(o.x,o.y,65))return;const x=sx(o.x),y=sy(o.y),t=time(),bob=reduced?0:Math.abs(Math.sin(o.anim||0))*1.2;ctx.save();if(enemy){oldPerson(o,role,true);if(o.type==='runner'){rect(x-8,y-27,16,4,'#b86c4e');rect(x+6,y-24,5,2,'#e6a06f')}else if(o.type==='brute'){rect(x-11,y-29,22,5,'#a78c55');rect(x-5,y-34,11,5,'#dec080')}else if(o.type==='warden'){rect(x-12,y-39,24,6,'#c09b54');for(let i=-1;i<=1;i++)rect(x+i*8-2,y-45,4,8,'#f1ce74')}ctx.restore();return}
+ const moving=Math.abs(o.vx||0)+Math.abs(o.vy||0)>5||o.state==='moving'||o.state==='returning-home',walk=moving||o.anim?Math.sin((o.anim||o.walk||0)*2)*2:0;
+ shadow(x,y+17,21,5,.35);rect(x-7,y+7+walk,5,9,'#283d37');rect(x+2,y+7-walk,5,9,'#283d37');rect(x-8,y+14+walk,7,3,'#4e4935');rect(x+2,y+14-walk,7,3,'#4e4935');
+ const cloth=role==='guard'?'#738c97':role==='food'?'#8a9f62':role==='stone'?'#ac9373':'#bd8a55';rect(x-8,y-7+bob,16,16,cloth);rect(x-3,y-6+bob,6,12,'#ead7a2');rect(x-9,y+7,18,3,'#65523b');
+ rect(x-9,y-23+bob,18,16,'#deb88a');rect(x-7,y-22+bob,14,12,'#f1d1a1');rect(x-5,y-17+bob,2,3,'#2e382e');rect(x+4,y-17+bob,2,3,'#2e382e');rect(x-1,y-10+bob,4,1,'#966b53');
+ if(role==='guard'){rect(x-11,y-26+bob,22,7,'#7c9598');rect(x-2,y-30+bob,4,5,'#d2b56f');rect(x+11,y-15,3,31,'#9d8253');poly([[x+12,y-21],[x+8,y-13],[x+16,y-13]],'#dfdfbb')}
+ else{rect(x-10,y-28+bob,20,6,role==='stone'?'#d0b266':'#70573b');rect(x-13,y-23+bob,26,3,role==='stone'?'#ecd58b':'#ad9758');const working=o.state==='working',a=working?Math.sin(t*11)*.7:0;ctx.save();ctx.translate(x+10,y-5);ctx.rotate(a);rect(0,0,3,17,'#86643e');rect(-2,-3,11,6,role==='food'?'#af764c':'#bbcebd');ctx.restore()}
+ ctx.restore();
+ };
+ const originalDraw=draw;draw=function(){originalDraw();const x=sx(state.player.x),y=sy(state.player.y),t=time();
+  // A small pennant identifies the player without a permanent giant arrow.
+  poly([[x-4,y-42],[x+5,y-42],[x+.5,y-36]],'#f8df8e');
+  if(Pocket.rally>0){ctx.strokeStyle='#ffe2a87a';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,y+14,35+Math.sin(t*5)*4,13,0,0,Math.PI*2);ctx.stroke()}
+  let spoken=false;
+  for(const w of state.workers){if(w.dead||w.hiddenAtHome||!visible(w.x,w.y))continue;if(w.sayUntil>Pocket.clock&&!spoken){bubble(w,w.say);spoken=true}else if(Math.floor(Pocket.clock)%14===0&&dist(w,state.player)<130&&!w._pocketSpoke){w._pocketSpoke=true;w.say=['これ労災おりる？','木にも都合がある','定時って概念ある？','村長も働いてる…','石、重くない？','福利厚生：焚き火'][Math.floor((w.seed||0)+Pocket.clock/14)%6];w.sayUntil=Pocket.clock+3}else if(Math.floor(Pocket.clock)%14!==0)w._pocketSpoke=false}
+  if(pointer!==null&&!Pocket.paused()){ctx.save();ctx.strokeStyle='#f1e7b652';ctx.lineWidth=2;ctx.beginPath();ctx.arc(origin.x,origin.y,34,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#f1e7b677';ctx.beginPath();ctx.arc(origin.x+input.x*26,origin.y+input.y*26,10,0,Math.PI*2);ctx.fill();ctx.restore()}
+ };
+ function bubble(w,text){const x=sx(w.x),y=sy(w.y)-51;ctx.font='10px monospace';const width=ctx.measureText(text).width+16;ctx.fillStyle='#f5edcc';ctx.fillRect(x-width/2,y-13,width,21);poly([[x-3,y+8],[x+4,y+8],[x,y+12]],'#f5edcc');ctx.textAlign='center';ctx.fillStyle='#354333';ctx.fillText(text,x,y+1)}
+})();
+
+</script>
+</body>
+</html>
