@@ -1,0 +1,37 @@
+/* Optional, permanent purchases. Only server-verified entitlements affect play. */
+(()=>{'use strict';
+ const KEY='chief-world-purchase-identity-v1', API=(document.querySelector('meta[name="chief-payment-api"]')?.content||'').replace(/\/$/,'');
+ const catalog=[{sku:'supporter',name:'村長への差し入れ',amount:300,description:'王冠と「太っ腹村長」の称号　攻撃力は増えません'},{sku:'golden_seal',name:'黄金の決裁印',amount:980,description:'村長の攻撃4倍＋黄金の衝撃波　承認が物理になる'},{sku:'mayor_mech',name:'村長ロボ',amount:1980,description:'15秒間、攻撃6倍とダメージ80%軽減　45秒ごとに出動'}];
+ let serviceMode='preview',pollTimer=null;
+ const checkoutReturn=API&&new URLSearchParams(location.search).get('checkout')==='success',pendingUntil=checkoutReturn?Date.now()+30000:0;
+ let returnStatus=checkoutReturn?'決済から戻りました / 購入情報の反映を確認中（最大30秒、その後も自動確認）':'',pending=!!checkoutReturn,returnBaseline=null;
+ let mode='preview',status='未接続 / 販売準備中',owned=new Set(),busy=false,identity=null,mech=0,cooldown=0,pulse=0,playerAttack=false;
+ try{identity=JSON.parse(localStorage.getItem(KEY)||'null');if(!identity||typeof identity.token!=='string')identity=null}catch{}
+ const changed=()=>window.dispatchEvent(new Event('chief-shop-change'));
+ // One verification chain at a time; hidden tabs never poll. Return URLs only request verification.
+ function settleReturn(){if(pending&&Date.now()>=pendingUntil){pending=false;returnStatus='購入反映待ちの場合は自動確認を続けます / 購入情報の更新でも確認できます';changed()}}
+ function schedule(){clearTimeout(pollTimer);pollTimer=null;settleReturn();if(!API||document.hidden)return;pollTimer=setTimeout(()=>{pollTimer=null;settleReturn();refresh()},pending?Math.min(2000,Math.max(0,pendingUntil-Date.now())):30000)}
+ function revalidate(){if(!API||document.hidden)return false;return refresh()}
+ function verifiedReturn(){if(!pending)return;const keys=[...owned].sort().join(',');if(returnBaseline===null)returnBaseline=keys;else if(keys!==returnBaseline){pending=false;returnStatus='購入情報を更新しました / サーバー確認済み'}settleReturn()}
+
+ async function request(path,body,auth=true){if(!API)throw new Error('unconfigured');const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);try{const r=await fetch(API+path,{method:body===undefined?'GET':'POST',headers:{...(body===undefined?{}:{'Content-Type':'application/json'}),...(auth&&identity?{Authorization:'Bearer '+identity.token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)}),signal:controller.signal,credentials:'omit'});const data=await r.json();if(!r.ok)throw new Error(data.error||'network');return data}finally{clearTimeout(timer)}}
+ function keep(data){identity={token:data.token,playerId:data.playerId};localStorage.setItem(KEY,JSON.stringify(identity))}
+ async function refresh(){if(!API||busy)return false;clearTimeout(pollTimer);pollTimer=null;busy=true;changed();try{const c=await request('/api/catalog',undefined,false);mode=serviceMode=['preview','test','live'].includes(c.mode)?c.mode:'preview';if(identity){const e=await request('/api/entitlements');if(e.mode!==mode)throw new Error('mode_changed');owned=new Set((mode!=='preview'&&Array.isArray(e.entitlements)?e.entitlements:[]).filter(x=>catalog.some(p=>p.sku===x)))}else owned.clear();if(!owned.has('mayor_mech'))mech=0;verifiedReturn();status=mode==='live'?'販売中 / 買い切り':mode==='test'?'Stripeテスト環境 / 実際の請求なし':'販売準備中 / 決済できません';return true}catch{owned.clear();mech=0;mode='preview';status=API?'購入情報を確認できません / 再接続してください':'未接続 / 販売準備中';return false}finally{busy=false;changed();schedule()}}
+ async function buy(sku){if(busy||!catalog.some(p=>p.sku===sku)||owned.has(sku)||mode==='preview')return false;busy=true;changed();try{if(!identity)keep(await request('/api/player',{},false));const r=await request('/api/checkout',{sku,requestId:crypto.randomUUID()});const url=new URL(r.url);if(url.protocol!=='https:'||url.hostname!=='checkout.stripe.com')throw new Error('invalid_checkout');location.assign(url.href);return true}catch(e){status=e.message==='already_owned'?'購入済みです / 購入情報を更新してください':'決済を開始できませんでした / 再試行できます';return false}finally{busy=false;changed();schedule()}}
+ async function restore(code){if(busy||!code.trim())return false;busy=true;changed();try{const r=await request('/api/restore',{recoveryCode:code.trim()},false);keep(r);mode=serviceMode=['test','live'].includes(r.mode)?r.mode:'preview';owned=new Set((mode!=='preview'&&Array.isArray(r.entitlements)?r.entitlements:[]).filter(x=>catalog.some(p=>p.sku===x)));if(!owned.has('mayor_mech'))mech=0;status='購入情報を復元しました';return true}catch{owned.clear();mech=0;status='復元できませんでした / コードと接続を確認してください';return false}finally{busy=false;changed();schedule()}}
+ async function copyRecovery(){if(!identity)return false;try{await navigator.clipboard.writeText(identity.token);status='復元コードをコピーしました / 安全な場所へ保存してください';changed();return true}catch{status='コピーできませんでした';changed();return false}}
+ function activate(){if(!owned.has('mayor_mech')||cooldown>0||Pocket.paused()||state.player.down>0)return false;mech=15;cooldown=45;A.sfx('rare');fxBurst(state.player.x,state.player.y,'#e6c169',22,1.6);toast('村長ロボ出動！ 予算が歩いている');return true}
+ function tick(dt){mech=Math.max(0,mech-dt);cooldown=Math.max(0,cooldown-dt);pulse=Math.max(0,pulse-dt);if(!owned.has('mayor_mech'))mech=0}
+ function damageMultiplier(){return mech>0&&owned.has('mayor_mech')?6:owned.has('golden_seal')?4:1}
+ const damage=damageEnemy;damageEnemy=function(e,dmg,...args){return damage(e,dmg*(playerAttack?damageMultiplier():1),...args)};
+ const attack=playerAutoCombat;playerAutoCombat=function(){if(window.WorldGame?.away)return attack();const before=state.player.attackCd;try{playerAttack=true;attack()}finally{playerAttack=false}if(before<=0&&state.player.attackCd>0&&pulse<=0&&(owned.has('golden_seal')||mech>0)){pulse=1;fxBurst(state.player.x,state.player.y,'#f0cd70',14,1.3);for(const e of state.enemies)if(!e.dead&&dist(e,state.player)<(mech>0?130:95))damageEnemy(e,mech>0?65:32,state.player.x,state.player.y,false)}};
+ const hurt=damagePlayer;damagePlayer=function(dmg,e){return hurt(dmg*(mech>0&&owned.has('mayor_mech')?.2:1),e)};
+ const oldLife=updateHumanLife;updateHumanLife=function(dt){oldLife(dt);tick(dt)};
+ const drawHero=drawPlayerEntity;drawPlayerEntity=function(){const p=state.player,x=sx(p.x),y=sy(p.y);if(mech>0){rect(x-21,y-26,42,37,'#6c613c');rect(x-18,y-23,36,28,'#c59b4d');rect(x-25,y-18,7,25,'#9d7b3d');rect(x+18,y-18,7,25,'#9d7b3d');rect(x-17,y+10,12,9,'#3a4033');rect(x+5,y+10,12,9,'#3a4033');rect(x-12,y-18,24,9,'#263f38');rect(x-8,y-16,5,4,'#b5dbab');rect(x+3,y-16,5,4,'#b5dbab')}else{drawHero();if(owned.has('golden_seal')){rect(x+9,y-18,8,8,'#efc86b');rect(x+7,y-10,14,6,'#c89539')}if(owned.has('supporter')){rect(x-6,y-32,12,4,'#efd18d');rect(x-4,y-36,3,4,'#efd18d');rect(x+2,y-36,3,4,'#efd18d')}}};
+ window.ChiefShop=Object.freeze({catalog,refresh,revalidate,buy,restore,copyRecovery,activate,tick,damageMultiplier,shieldActive:()=>mech>0&&owned.has('mayor_mech'),owned:sku=>owned.has(sku),get mode(){return mode},get serviceMode(){return serviceMode},get returnStatus(){return returnStatus},get status(){return status},get busy(){return busy},get hasIdentity(){return !!identity},get mech(){return mech},get cooldown(){return cooldown},get configured(){return !!API}});
+ if(API){
+  addEventListener('focus',revalidate);addEventListener('online',revalidate);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(pollTimer);pollTimer=null}else revalidate()});
+  refresh();
+ }
+})();

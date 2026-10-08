@@ -1,0 +1,92 @@
+// Actual production page and payment fixture; browser clock avoids real 30-second waits.
+const {chromium}=require('playwright'),assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({executablePath:process.env.CHROME_PATH||'/tmp/chromium',args:['--no-sandbox','--disable-dev-shm-usage']});
+ let checks=0;const errors=[];const check=(v,m)=>{assert(v,m);checks++;console.log('PASS',m)};
+ const until=async(p,fn)=>{for(let i=0;i<100;i++){if(await p.evaluate(fn))return;await new Promise(r=>setTimeout(r,20))}throw Error('fixture did not settle')};
+ const identity={token:'test_identity_secret_32_bytes_not_a_real_key',playerId:'fixture'};
+ let owned=[],fail=false,hold=false,release=null,mode='test',active=0,maxActive=0;const requests=[];
+ try{
+  const ctx=await browser.newContext({viewport:{width:390,height:844}});
+  await ctx.addInitScript(identity=>localStorage.setItem('chief-world-purchase-identity-v1',JSON.stringify(identity)),identity);
+  await ctx.route('**/prototype-chief-world.html*',async route=>{const r=await route.fetch();await route.fulfill({response:r,body:(await r.text()).replace('</head>','<meta name="chief-payment-api" content="https://payments.example.test"></head>')})});
+  await ctx.route('https://payments.example.test/**',async route=>{
+   const path=new URL(route.request().url()).pathname;requests.push(path);active++;maxActive=Math.max(maxActive,active);
+   try{if(hold&&path==='/api/entitlements')await new Promise(r=>release=r);
+    if(fail)return await route.fulfill({status:503,json:{error:'unavailable'}});
+    if(path==='/api/catalog')return await route.fulfill({json:{mode,products:[]}});
+    if(path==='/api/restore')return await route.fulfill({json:{...identity,mode,entitlements:owned}});
+    if(path==='/api/entitlements')return await route.fulfill({json:{mode,entitlements:owned}});
+    return await route.fulfill({status:404,json:{error:'not_found'}});
+   }finally{active--}
+  });
+  const p=await ctx.newPage();p.on('pageerror',e=>errors.push(e.message));
+  await p.clock.install({time:new Date('2026-10-08T12:00:00Z')});
+  await p.goto('http://127.0.0.1:4173/prototype-chief-world.html?checkout=success&entitlements=golden_seal,mayor_mech');
+  await until(p,()=>window.ChiefShop&&!ChiefShop.busy&&ChiefShop.mode==='test');
+  await p.clock.pauseAt(await p.evaluate(()=>Date.now()+100));
+  await p.evaluate(()=>WorldUI.setTab('shop'));await until(p,()=>!ChiefShop.busy);
+  check(await p.evaluate(()=>ChiefShop.damageMultiplier()===1&&!ChiefShop.owned('golden_seal')),'Checkout success and forged query cannot grant ownership');
+  check((await p.locator('#world-checkout-return').textContent()).includes('確認中'),'Checkout return shows explicit pending verification');
+  await p.locator('#world-recovery').fill('unfinished-recovery-draft');
+  await p.evaluate(()=>{$('world-recovery').focus();$('world-recovery').setSelectionRange(4,11)});
+  const before=requests.length;await p.clock.runFor(1900);check(requests.length===before,'pending return does not poll more often than two seconds');
+  owned=['golden_seal','mayor_mech'];await p.clock.runFor(200);await until(p,()=>!ChiefShop.busy&&ChiefShop.owned('golden_seal'));
+  check(await p.evaluate(()=>ChiefShop.damageMultiplier()===4),'delayed fulfillment arrives automatically without manual refresh or reload');
+  check(await p.evaluate(()=>{$('world-recovery');return $('world-recovery').value==='unfinished-recovery-draft'&&document.activeElement.id==='world-recovery'&&$('world-recovery').selectionStart===4&&$('world-recovery').selectionEnd===11}),'background verification preserves recovery draft, focus and selection');
+  check((await p.locator('#world-checkout-return').textContent()).includes('サーバー確認済み'),'verified change resolves pending return message');
+  await p.evaluate(()=>{closeSheet();ChiefShop.activate();WorldUI.setTab('shop')});await until(p,()=>!ChiefShop.busy);
+  check(await p.evaluate(()=>ChiefShop.mech>0&&ChiefShop.shieldActive()),'mech is active before remote revocation');
+  const ordinary=requests.length;await p.clock.runFor(29900);check(requests.length===ordinary,'ordinary visible verification waits thirty seconds');
+  owned=[];await p.clock.runFor(200);await until(p,()=>!ChiefShop.busy&&!ChiefShop.owned('mayor_mech'));
+  check(await p.evaluate(()=>ChiefShop.damageMultiplier()===1&&ChiefShop.mech===0&&!ChiefShop.shieldActive()),'automatic revocation clears seal and active mech while game remains open');
+  owned=['golden_seal'];await p.evaluate(()=>dispatchEvent(new Event('focus')));await until(p,()=>!ChiefShop.busy&&ChiefShop.owned('golden_seal'));
+  check(await p.evaluate(()=>ChiefShop.damageMultiplier()===4),'foreground focus automatically regains verified ownership');
+  owned=[];await p.evaluate(()=>dispatchEvent(new Event('online')));await until(p,()=>!ChiefShop.busy);
+  check(await p.evaluate(()=>ChiefShop.damageMultiplier()===1),'online event automatically observes revocation');
+  await p.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'))});
+  const hidden=requests.length;await p.clock.runFor(90000);check(requests.length===hidden,'hidden document makes no periodic verification requests');
+  owned=['golden_seal'];await p.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:false});document.dispatchEvent(new Event('visibilitychange'))});await until(p,()=>!ChiefShop.busy&&ChiefShop.owned('golden_seal'));
+  check(await p.evaluate(()=>ChiefShop.damageMultiplier()===4),'visibility resume immediately regains verified ownership');
+  owned=[];await p.evaluate(()=>WorldUI.setTab('atlas'));await p.evaluate(()=>WorldUI.setTab('shop'));await until(p,()=>!ChiefShop.busy);
+  check(await p.evaluate(()=>ChiefShop.damageMultiplier()===1),'shop entry automatically observes revocation');
+  owned=['golden_seal','mayor_mech'];await p.evaluate(()=>dispatchEvent(new Event('online')));await until(p,()=>!ChiefShop.busy&&ChiefShop.owned('mayor_mech'));
+  await p.evaluate(()=>{closeSheet();ChiefShop.tick(50);ChiefShop.activate();WorldUI.setTab('shop')});await until(p,()=>!ChiefShop.busy);
+  fail=true;await p.clock.runFor(30100);await until(p,()=>!ChiefShop.busy);
+  check(await p.evaluate(()=>ChiefShop.damageMultiplier()===1&&ChiefShop.mech===0&&ChiefShop.mode==='preview'),'failed automatic verification fails closed and ends active mech');
+  check((await p.locator('#world-payment-mode').textContent()).includes('Stripeテスト環境'),'test environment badge survives connection status failure');
+  fail=false;await p.evaluate(()=>ChiefShop.restore('fixture-recovery'));await until(p,()=>!ChiefShop.busy);
+  check((await p.locator('#world-payment-mode').textContent()).includes('実際の請求なし'),'test environment badge survives restored status');
+  mode='live';await p.evaluate(()=>dispatchEvent(new Event('online')));await until(p,()=>!ChiefShop.busy&&ChiefShop.mode==='live');await p.evaluate(()=>ChiefShop.restore('fixture-recovery'));
+  check((await p.locator('#world-payment-mode').textContent()).includes('LIVE / 実際の請求あり'),'live environment badge remains explicit after restore');
+  hold=true;await p.evaluate(()=>dispatchEvent(new Event('online')));for(let i=0;i<100&&!release;i++)await new Promise(r=>setTimeout(r,10));check(!!release,'slow verification fixture is in flight');
+  const inflight=requests.length;await p.evaluate(()=>{for(let i=0;i<10;i++){dispatchEvent(new Event('focus'));dispatchEvent(new Event('online'));WorldUI.setTab('shop');ChiefShop.refresh()}});await p.clock.runFor(5000);
+  check(requests.length===inflight&&maxActive===1,'foreground, online, shop and manual bursts never overlap service fetches');hold=false;release();release=null;await until(p,()=>!ChiefShop.busy);
+  check(!requests.includes('/api/player')&&!requests.includes('/api/checkout'),'automatic verification never creates a player or starts checkout');
+  const lifecycleRequests=requests.length;await ctx.close();
+  // A return that stays empty uses at most fifteen short retries then falls back to ordinary checks.
+  owned=[];mode='test';requests.length=0;
+  const pendingCtx=await browser.newContext();await pendingCtx.addInitScript(identity=>localStorage.setItem('chief-world-purchase-identity-v1',JSON.stringify(identity)),identity);
+  await pendingCtx.route('**/prototype-chief-world.html*',async route=>{const r=await route.fetch();await route.fulfill({response:r,body:(await r.text()).replace('</head>','<meta name="chief-payment-api" content="https://payments.example.test"></head>')})});
+  await pendingCtx.route('https://payments.example.test/**',async route=>{requests.push(new URL(route.request().url()).pathname);await route.fulfill({json:new URL(route.request().url()).pathname==='/api/catalog'?{mode:'test'}:{mode:'test',entitlements:[]}})});
+  const q=await pendingCtx.newPage();q.on('pageerror',e=>errors.push(e.message));await q.clock.install({time:new Date('2026-10-08T12:00:00Z')});await q.goto('http://127.0.0.1:4173/prototype-chief-world.html?checkout=success');await until(q,()=>window.ChiefShop&&!ChiefShop.busy);await q.clock.pauseAt(await q.evaluate(()=>Date.now()+100));await q.evaluate(()=>WorldUI.setTab('shop'));await until(q,()=>!ChiefShop.busy);
+  for(let i=0;i<15;i++){await q.clock.runFor(2000);await until(q,()=>!ChiefShop.busy)}
+  check(requests.length<=34,'pending return short retries are bounded to a thirty-second window');
+  check((await q.locator('#world-checkout-return').textContent()).includes('購入反映待ち'),'unfulfilled return retains truthful pending follow-up after retry window');
+  const pendingRequests=requests.length,limited=requests.length;await q.clock.runFor(29000);check(requests.length===limited,'return expiry falls back to thirty-second verification');await q.clock.runFor(1100);await until(q,()=>!ChiefShop.busy);check(requests.length===limited+2,'ordinary verification continues after return retry window');await q.close();
+  await pendingCtx.addInitScript(()=>localStorage.removeItem('chief-world-purchase-identity-v1'));
+  const noIdentity=await pendingCtx.newPage(),unauthStart=requests.length;await noIdentity.clock.install();await noIdentity.goto('http://127.0.0.1:4173/prototype-chief-world.html');await until(noIdentity,()=>window.ChiefShop&&!ChiefShop.busy);await noIdentity.clock.pauseAt(await noIdentity.evaluate(()=>Date.now()+100));await noIdentity.evaluate(()=>WorldUI.setTab('shop'));await until(noIdentity,()=>!ChiefShop.busy);await noIdentity.clock.runFor(30100);await until(noIdentity,()=>!ChiefShop.busy);
+  check(await noIdentity.evaluate(()=>!ChiefShop.hasIdentity&&ChiefShop.damageMultiplier()===1)&&requests.slice(unauthStart).every(path=>path==='/api/catalog'),'configured polling with no identity only checks catalog and never creates a player');await pendingCtx.close();
+  const preview=await browser.newPage();const external=[];preview.on('pageerror',e=>errors.push(e.message));preview.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith('http://127.0.0.1:4173'))external.push(r.url())});await preview.clock.install();await preview.goto('http://127.0.0.1:4173/prototype-chief-world.html?checkout=success&entitlements=golden_seal');await until(preview,()=>window.WorldUI);await preview.clock.pauseAt(await preview.evaluate(()=>Date.now()+100));await preview.evaluate(()=>{WorldUI.setTab('shop');dispatchEvent(new Event('focus'));dispatchEvent(new Event('online'));ChiefShop.refresh()});await preview.clock.runFor(120000);
+  check(external.length===0&&await preview.evaluate(()=>ChiefShop.mode==='preview'&&ChiefShop.damageMultiplier()===1&&!ChiefShop.hasIdentity),'unconfigured preview stays at zero external requests with forged return and automatic hooks');
+  await preview.evaluate(()=>{WorldUI.setTab('atlas');state.world.expeditions=[{id:'copy-fixture',region:'forest',workers:[],remaining:10,duration:20,status:'running'}];Chief.state.forge={remaining:5}});
+  check((await preview.locator('#panel-world').textContent()).includes('探索中も進行'),'trade copy correctly explains progress during exploration');
+  await preview.evaluate(()=>WorldUI.setTab('expeditions'));check((await preview.locator('#panel-world').textContent()).includes('メニューを閉じると再開 / 探索中も進行'),'expedition copy correctly explains menu pause and exploration progress');
+  await preview.evaluate(()=>openPanel('record'));check((await preview.locator('#chief-bureau').textContent()).includes('メニューを閉じると再開 / 探索中も進行'),'World-only forge guidance explains exploration progress');
+  const legacy=await browser.newPage();legacy.on('pageerror',e=>errors.push(e.message));await legacy.goto('http://127.0.0.1:4173/prototype-chief.html');await until(legacy,()=>window.ChiefUI);await legacy.evaluate(()=>{Chief.state.forge={remaining:5};openPanel('record')});
+  check((await legacy.locator('#chief-bureau').textContent()).includes('村に戻ると再開')&&!(await legacy.locator('#chief-bureau').textContent()).includes('探索中も進行'),'Chief v2.1 retains its original forge guidance');
+  check(errors.length===0,'no uncaught browser errors: '+JSON.stringify(errors));
+  console.log('REQUEST_EVIDENCE',JSON.stringify({lifecycleRequests,pendingWindowRequests:pendingRequests,maxConcurrentFetches:maxActive,previewExternalRequests:external.length}));
+  console.log('TOTAL',checks,'(actual production page, mocked payment service, controlled browser clock; no real Stripe operations)');
+ }finally{if(release)release();await browser.close()}
+})().catch(e=>{console.error(e);process.exit(1)});

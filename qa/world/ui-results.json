@@ -1,0 +1,5 @@
+{
+  "checks": 36,
+  "errors": [],
+  "notes": "Chromium mobile emulation, no physical iOS test. Mech screenshot uses explicitly mocked test service; no real Stripe payment performed."
+}
