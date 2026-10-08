@@ -148,13 +148,16 @@ function upgradeBuildingById(id){
   save();forceUiRefresh();return true;
 }
 upgrade=function(type){const b=state.buildings.find(x=>x.type===type&&x.level<(BUILD[type]?.max||1));return b?upgradeBuildingById(b.id):false};
+// IDs can arrive from an imported save. Preserve them as data in quoted HTML
+// attributes, including during boot before the progression renderer takes over.
+function escapeUpgradeId(id){return String(id).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 renderUpgrades=function(){
   const el=$('upgrade-grid');if(!el)return;const cards=[];const indexes={};
   for(const b of state.buildings){const d=BUILD[b.type];if(!d||b.level>=d.max)continue;indexes[b.type]=(indexes[b.type]||0)+1;
     if(!ROUTINE_REPEAT_UPGRADES.has(b.type)&&cards.some(x=>x.type===b.type))continue;
     const c=costFor(b.type,b.level+1);cards.push({id:b.id,type:b.type,name:d.name,index:indexes[b.type],L:b.level,c});
   }
-  el.innerHTML=cards.length?cards.map(x=>`<button data-upgrade-id="${x.id}" ${hasCost(x.c)?'':'disabled'}><b>${x.name}${ROUTINE_REPEAT_UPGRADES.has(x.type)?` #${x.index}`:''} Lv.${x.L} → ${x.L+1}</b><small>${upgradeBenefit(x.type,x.L+1)}</small><em>${fmtCost(x.c)}</em></button>`).join(''):'<div class="notice">建物を建てると強化が解禁</div>';
+  el.innerHTML=cards.length?cards.map(x=>`<button data-upgrade-id="${escapeUpgradeId(x.id)}" ${hasCost(x.c)?'':'disabled'}><b>${x.name}${ROUTINE_REPEAT_UPGRADES.has(x.type)?` #${x.index}`:''} Lv.${x.L} → ${x.L+1}</b><small>${upgradeBenefit(x.type,x.L+1)}</small><em>${fmtCost(x.c)}</em></button>`).join(''):'<div class="notice">建物を建てると強化が解禁</div>';
   el.querySelectorAll('[data-upgrade-id]').forEach(btn=>btn.onclick=()=>upgradeBuildingById(btn.dataset.upgradeId));
 };
 

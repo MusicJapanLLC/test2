@@ -1,0 +1,32 @@
+[
+  {
+    "name": "world-simulation",
+    "code": 0,
+    "checks": 47,
+    "note": "After readonly API correction and intentional cargo assertion update"
+  },
+  {
+    "name": "world-ui",
+    "code": 0
+  },
+  {
+    "name": "world-shop",
+    "code": 0
+  },
+  {
+    "name": "standalone",
+    "code": 0
+  },
+  {
+    "name": "chief",
+    "code": 0
+  },
+  {
+    "name": "pocket",
+    "code": 0
+  },
+  {
+    "name": "legacy",
+    "code": 0
+  }
+]

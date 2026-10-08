@@ -17,15 +17,15 @@ const Citizens=(()=>{
  function speed(w){return trait(w).speed*(ensure(w).trait===5&&['night','dusk'].includes(state.phase)?1.15:1)}
  function trainCost(w){const L=ensure(w).level;return{wood:10+L*4,food:14+L*6}}
  function train(id){const w=state.workers.find(w=>w.id===id&&!w.dead);if(!w||ensure(w).level>=20||Chief.state.time-w.citizen.trainedAt<10||!hasCost(trainCost(w)))return false;pay(trainCost(w));w.citizen.trainedAt=Chief.state.time;gain(w,32);A.voice(w.citizen.trait,true);save();return true}
- function reassign(id,role){const w=state.workers.find(w=>w.id===id&&!w.dead);if(!w||!ROLE_NAMES[role]||(role==='guard'&&!state.buildings.some(b=>b.type==='barracks')))return false;const health=clamp(w.hp/w.maxHp,0,1);w.role=role;w.maxHp=role==='guard'?120:85;w.hp=w.maxHp*health;w.targetId=null;delete w._gateTransit;save();return true}
+ function reassign(id,role){const w=state.workers.find(w=>w.id===id&&!w.dead);if(!w||!ROLE_NAMES[role]||(role==='guard'&&!state.buildings.some(b=>b.type==='barracks')))return false;const health=clamp(w.hp/w.maxHp,0,1);w.role=role;w.maxHp=role==='guard'?120:85;w.hp=w.maxHp*health;w.targetId=null;if(window.Logistics){w.work=0;if(Logistics.cargoTotal(w)>0)w.cargoMode='returning'}delete w._gateTransit;save();return true}
  let speakingUntil=0;
  function say(w,text,excited=false){if(Chief.state.time<speakingUntil||dist(w,state.player)>170||w.hiddenAtHome)return;speakingUntil=Chief.state.time+3;w.say=text;w.sayUntil=Pocket.clock+3;A.voice(ensure(w).trait,excited)}
  const baseSpeed=workerMoveSpeed;workerMoveSpeed=role=>baseSpeed(role)*(Citizens.actor?speed(Citizens.actor):1);
- const oldHire=hire;hire=function(role){const count=state.workers.length;oldHire(role);if(state.workers.length>count){const w=state.workers.at(-1);ensure(w);say(w,trait(w).quote,true);save()}};
+ const oldHire=hire;hire=function(role){const count=state.workers.length;oldHire(role);if(state.workers.length>count){const w=state.workers.at(-1);ensure(w);if(window.Logistics)Logistics.ensure(w);say(w,trait(w).quote,true);save()}};
  const oldDamage=damageEnemy;damageEnemy=function(e,dmg,ax,ay,guard){const w=Citizens.actor;if(w)dmg*=trait(w).combat*(1+(ensure(w).level-1)*.015);return oldDamage(e,dmg,ax,ay,guard)};
  updateWorkers=function(dt){const claimed=new Set();for(const w of state.workers)if(w.targetId&&w.role!=='guard')claimed.add(w.targetId);
   for(const w of state.workers){ensure(w);ensureWorkerVitals(w);ensureWorkerHome(w);if(w.dead)continue;Citizens.actor=w;Chief.setActor(w);w.cool=Math.max(0,(w.cool||0)-dt);w.hit=Math.max(0,(w.hit||0)-dt);
-   if(Chief.state.time>=w.citizen.chatAt){w.citizen.chatAt=Chief.state.time+14+w.citizen.number%8;say(w,trait(w).quote)}
+   if(!window.WorldGame&&Chief.state.time>=w.citizen.chatAt){w.citizen.chatAt=Chief.state.time+14+w.citizen.number%8;say(w,trait(w).quote)}
    if(w.role==='guard'){const first=state.projectiles.length;guardDefendSector(w,dt);for(const p of state.projectiles.slice(first))if(p.kind==='arrow')p.damage*=trait(w).combat*(1+(ensure(w).level-1)*.015);if(state.enemies.some(e=>!e.dead&&dist(w,e)<220))gain(w,dt*.4);continue}
    if(isCivilianHomeTime()){gfGoHome(w,dt);continue}
    w.hiddenAtHome=false;if(workerCombat(w,dt))continue;
