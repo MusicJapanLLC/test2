@@ -21,3 +21,19 @@ Open the new version on the old raw.githack.com origin first, which retains its 
 All images in qa/living are actual game renders. The village, cargo and relationship scenes use seeded fixtures to expose specific states; they are not claims of natural-play progression or real purchases. Mobile checks are Chromium emulation, not physical phone testing.
 
 Final security correction: both inherited building upgrade attributes escape IDs, imported autoForge requires an optional boolean, and its rendered attribute is boolean-only.19 focused browser security checks passed, including real import/reload/render, plus the26 existing focused checks. Rebuilt standalone5 checks pass after this correction.
+
+## Published — 2026-10-08
+- Official verified URL: https://game.music-japan.com/mayor/
+- Host PR: https://github.com/MusicJapanLLC/test/pull/1010 (merged)
+- Source PR: https://github.com/MusicJapanLLC/test2/pull/131
+- Host merge: ddedd21219ac192703d865b0c804c10deae0a8cb
+- Production Vercel deployment: 2cX8QxubuMBEjqZnu9HHFuadTJa5, guild-akari-game success
+- Official HTTP200,586799 bytes, SHA2567ac848c61bd20306cbd2687b4cfbd175631968f04fd6d88feccd89cef0ee6bf8: exact reviewed release
+- Existing homepage HTTP200,1399790 bytes, SHA256471949937bb6a65b14c87d66f95403f79ee5bfc8da23264efacfe89849794436: byte-identical baseline
+- Authenticated cloud browser opened the official URL, showed LIVING04, entered the forest through the real controls, and wood/collection increased0 to16. Screenshot: qa/living/official-live.jpg. Browser logs contained extension metadata errors only, not game-origin errors.
+- Existing The World project routing was not changed; its earlier automated HTTP baseline was Cloudflare1010, so no new claim of successful automated play for that unrelated route. The specific Lantern Journey repository rewrites are byte-preserved.
+- The repository triggers several unrelated Vercel projects. The test project status was already failed on production base ed8082d; guild-akari-game succeeds on both preview and production. No required-check bypass or hosting setting changes were used.
+- No real charge or checkout activation. Physical iOS/Android and subjective sound perception remain untested.
+
+Old-origin migration build: https://raw.githack.com/MusicJapanLLC/test2/4a2370a40f5714b3dbc3883e304e2214612cd4e2/prototype-chief-world-standalone.html
+Open it on the previous raw.githack.com origin to export the existing World save, then import at the official URL through 村長室 → 街のお引っ越し. Do not reset the prior village.
