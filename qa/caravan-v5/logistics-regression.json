@@ -1,0 +1,176 @@
+{
+  "checks": [
+    "harvest enters cargo before bank",
+    "partial deposit conserves remainder",
+    "full bank cannot consume held cargo",
+    "free storage deposits remainder once",
+    "reassignment preserves cargo type and targets new role",
+    "guard reassignment delivers preserved cargo",
+    "worker loop clears current actor",
+    "shelter reduces actual cargo harvest",
+    "north wood real gate delivery",
+    "north wood night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":0,\"food\":0},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "south wood real gate delivery",
+    "south wood night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":0,\"food\":0},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "east wood real gate delivery",
+    "east wood night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":0,\"food\":0},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "west wood real gate delivery",
+    "west wood night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":0,\"food\":0},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "north stone real gate delivery",
+    "north stone night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":1.7763568394002505e-15,\"food\":0},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "south stone real gate delivery",
+    "south stone night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":0,\"food\":0},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "east stone real gate delivery",
+    "east stone night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":0,\"food\":0},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "west stone real gate delivery",
+    "west stone night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":0,\"food\":0},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "north food real gate delivery",
+    "north food night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":0,\"food\":0},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "south food real gate delivery",
+    "south food night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":0,\"food\":3.552713678800501e-15},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "east food real gate delivery",
+    "east food night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":0,\"food\":1.7763568394002505e-15},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "west food real gate delivery",
+    "west food night unload and home {\"state\":\"sleeping\",\"cargo\":{\"wood\":0,\"stone\":0,\"food\":0},\"x\":-6,\"y\":37,\"hidden\":true}",
+    "full storage preserves sleeping cargo",
+    "night cargo resumes at dawn",
+    "scarce node admits at most two workers",
+    "expedition dispatch succeeds with cargo",
+    "expedition freezes and reports away cargo",
+    "expedition returns",
+    "returned cargo delivers once",
+    "death drops recoverable parcel",
+    "player recovers exact fallen cargo",
+    "malformed cargo normalized finite and bounded",
+    "eight deliveries grant bounded non-resource festival",
+    "festival speed bounded to ten percent",
+    "festival expires",
+    "nearby conversation starts",
+    "conversation pair exclusive",
+    "per-worker13-second cooldown enforced",
+    "conversation resumes after cooldown",
+    "away worker excluded",
+    "hidden worker excluded",
+    "combat excluded",
+    "observed shared work forms relationship",
+    "expedition friend relationship persists",
+    "context dialogue content coverage",
+    "away home simulation freezes",
+    "reload keeps cargo without duplicate bank credit",
+    "relationship survives reload",
+    "death parcel persists and recovers after reload",
+    "no browser errors"
+  ],
+  "gates": [
+    {
+      "side": "north",
+      "role": "wood",
+      "delivered": 48
+    },
+    {
+      "side": "south",
+      "role": "wood",
+      "delivered": 59.931
+    },
+    {
+      "side": "east",
+      "role": "wood",
+      "delivered": 59.931
+    },
+    {
+      "side": "west",
+      "role": "wood",
+      "delivered": 48
+    },
+    {
+      "side": "north",
+      "role": "stone",
+      "delivered": 41.76
+    },
+    {
+      "side": "south",
+      "role": "stone",
+      "delivered": 48
+    },
+    {
+      "side": "east",
+      "role": "stone",
+      "delivered": 48
+    },
+    {
+      "side": "west",
+      "role": "stone",
+      "delivered": 36
+    },
+    {
+      "side": "north",
+      "role": "food",
+      "delivered": 48
+    },
+    {
+      "side": "south",
+      "role": "food",
+      "delivered": 52.8
+    },
+    {
+      "side": "east",
+      "role": "food",
+      "delivered": 54.4
+    },
+    {
+      "side": "west",
+      "role": "food",
+      "delivered": 44
+    }
+  ],
+  "measurements": [
+    {
+      "role": "wood",
+      "count": 1,
+      "banked": 108,
+      "carried": 5.192,
+      "harvested": 113.192
+    },
+    {
+      "role": "wood",
+      "count": 5,
+      "banked": 444,
+      "carried": 3.461,
+      "harvested": 447.461
+    },
+    {
+      "role": "wood",
+      "count": 10,
+      "banked": 876,
+      "carried": 39.69,
+      "harvested": 915.69
+    },
+    {
+      "role": "stone",
+      "count": 1,
+      "banked": 72,
+      "carried": 2.932,
+      "harvested": 74.932
+    },
+    {
+      "role": "stone",
+      "count": 5,
+      "banked": 348,
+      "carried": 22.261,
+      "harvested": 370.261
+    },
+    {
+      "role": "stone",
+      "count": 10,
+      "banked": 636,
+      "carried": 71.182,
+      "harvested": 707.182
+    }
+  ],
+  "reloadExpected": {
+    "cargo": 3,
+    "wood": 4700,
+    "id": "fixture-0",
+    "friend": "fixture-1"
+  }
+}

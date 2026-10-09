@@ -28,7 +28,7 @@ const Pocket=(()=>{
  function claim(id){const m=milestones.find(m=>m.id===id);if(!m||!m.done()||p.claimed.includes(id))return false;p.claimed.push(id);award(m.reward);save();A.sfx('hire');toast('達成！ '+m.name);renderVillage();return true}
  function choosePolicy(id){if(!policies[id]||p.tokens<=0||p.policies[id]>=5)return false;p.tokens--;p.spent++;p.policies[id]++;save();A.sfx('build');toast(policies[id].quote);renderVillage();return true}
  function clearInput(){input={x:0,y:0,mag:0};pointer=null;keys.clear();state.player.vx=state.player.vy=0}
- function paused(){return document.hidden||currentPanel!==null}
+ function paused(){return document.hidden||currentPanel!==null||(document.body.dataset.world&&document.body.dataset.caravanTitle==='true')}
  function syncPause(){const now=Date.now();if(paused()){if(!p.pausedAt)p.pausedAt=now;return}if(p.pausedAt){const elapsed=Math.max(0,now-p.pausedAt);if(state.boost>1&&state.boostUntil>p.pausedAt)state.boostUntil+=elapsed;if(p.whistleUntil>p.pausedAt)p.whistleUntil+=elapsed;p.pausedAt=0}}
 
  function whistle(){if(window.WorldGame?.away)return WorldGame.whistle();if(paused()||Date.now()<p.whistleUntil||state.player.down>0)return false;p.whistleUntil=Date.now()+22000;rally=5;p.rally=5;for(const e of state.enemies){if(e.dead||dist(e,state.player)>115)continue;damageEnemy(e,12,state.player.x,state.player.y);const d=Math.max(1,dist(e,state.player));e.x+=(e.x-state.player.x)/d*30;e.y+=(e.y-state.player.y)/d*30}fxBurst(state.player.x,state.player.y,'#ffe7a4',24,1.5);toast('村長の号令！ 5秒間、採集2倍');A.sfx('hire');save();return true}

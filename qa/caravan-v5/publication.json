@@ -1,0 +1,44 @@
+{
+  "official": "https://game.music-japan.com/mayor/",
+  "source_pr": "https://github.com/MusicJapanLLC/test2/pull/132",
+  "publication_pr": "https://github.com/MusicJapanLLC/test/pull/1015",
+  "source_remote_commit": "f1a70205240194f578412bc4a31bbbeb96bc00ba",
+  "release_sha256": "403bb75631366b3e3960aace2ff21a19dc74085aab41840dc018639eda66e2bf",
+  "release_bytes": 591215,
+  "root_baseline_sha256": "9e37ebe37c75e07925cbe2e48566dbf8d07c3edaec638e6797dcee43b716aeea",
+  "status": "published and verified",
+  "publication_merge": "951f7b3fb61c07d7b18909504f9ebfc2449fe145",
+  "target_vercel": "guild-akari-game",
+  "target_vercel_status": "success",
+  "official_http": {
+    "mayor": {
+      "status": 200,
+      "sha256": "403bb75631366b3e3960aace2ff21a19dc74085aab41840dc018639eda66e2bf",
+      "bytes": 591215
+    },
+    "root": {
+      "status": 200,
+      "sha256": "9e37ebe37c75e07925cbe2e48566dbf8d07c3edaec638e6797dcee43b716aeea",
+      "bytes": 1665261
+    },
+    "expectedMayor": true,
+    "rootUnchanged": true
+  },
+  "official_browser": {
+    "title": "村長、世界まで行くんですか？",
+    "stages": 18,
+    "destinations": 18,
+    "voices": "original-formant-murmur",
+    "music": {
+      "scene": "morning",
+      "title": "朝礼は踊ってから",
+      "enabled": true,
+      "context": "running",
+      "active": 7,
+      "tracks": 17
+    },
+    "manualSaveButtons": 0,
+    "viewportOverflow": false,
+    "errors": []
+  }
+}

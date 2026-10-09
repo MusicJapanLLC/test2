@@ -1,0 +1,17 @@
+{
+  "title": "村長、世界まで行くんですか？",
+  "stages": 18,
+  "destinations": 18,
+  "voices": "original-formant-murmur",
+  "music": {
+    "scene": "morning",
+    "title": "朝礼は踊ってから",
+    "enabled": true,
+    "context": "running",
+    "active": 7,
+    "tracks": 17
+  },
+  "manualSaveButtons": 0,
+  "viewportOverflow": false,
+  "errors": []
+}
