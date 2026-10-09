@@ -74,5 +74,5 @@ const WorldGame=(()=>{
  const damageWorker0=damageWorker;damageWorker=function(worker,...args){if(!worker.expeditionId)return damageWorker0(worker,...args)};
  for(const action of ['train','reassign']){const old=Citizens[action];Citizens[action]=function(id,...args){if(state.workers.some(worker=>worker.id===id&&worker.expeditionId))return false;return old(id,...args)}}
  if(w.region!=='home'){cam.x=state.player.x;cam.y=state.player.y-40;clear()}
- return{get state(){return w},get away(){return w.region!=='home'},regions,current,available,visit,home,tick,drawMap,whistle,dispatch,claimExpedition:id=>finishJob(id,true),cancelExpedition:id=>finishJob(id,false),upgradeOutpost,outpostCost,trade,tradeCost,expeditionCost,expeditionDuration,hasResident:id=>(roster||state.workers).some(worker=>worker.id===id&&!worker.dead)};
+ return{get state(){return w},get away(){return w.region!=='home'},regions,current,available,visit,home,tick,drawMap,whistle,dispatch,claimExpedition:id=>finishJob(id,true),cancelExpedition:id=>finishJob(id,false),upgradeOutpost,outpostCost,trade,tradeCost,expeditionCost,expeditionDuration,hasResident:id=>(roster||state.workers).some(worker=>worker.id===id&&!worker.dead)||(state.chief?.crew?.retired||[]).some(worker=>worker.id===id)};
 })();window.WorldGame=WorldGame;
