@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "start and game loop",
+    "training, specialist, gear and buddy affect real yield",
+    "sheet header, resident tabs and intro remain fixed while cards scroll",
+    "research tab isolated from construction",
+    "hiring hard capped at twelve",
+    "300-resident save archives 288 without discarding people",
+    "all IDs, XP, cargo and archived relationships survive reload",
+    "OB can rejoin through one-for-one exchange",
+    "lethal damage causes visible defeat and rescue cost",
+    "rescue restores play with protection",
+    "departure confirmation opens with touch",
+    "real tap departure loads next village with roster and archive",
+    "trophy is a compact top-right notification",
+    "phone layout fits 360",
+    "phone layout fits 390",
+    "phone layout fits 430",
+    "no runtime errors in scoped checks []"
+  ],
+  "errors": [],
+  "notes": "Chromium phone emulation. Advanced state and migration are explicit test fixtures. Not a physical iPhone or full campaign playthrough."
+}
