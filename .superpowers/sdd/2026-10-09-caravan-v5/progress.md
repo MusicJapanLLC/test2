@@ -1,0 +1,12 @@
+# SDD ledger — plan: docs/superpowers/plans/2026-10-09-caravan-v5.md
+Preflight: Task1 campaign API -> Task2 visual UI; API contract report required before consumer. Task1transfer -> Task2build only disjoint files. Task2title pause -> Task1 tick checks Pocket.paused; both must freeze. Task1preserved resources -> root capUI uses capacity hook. Task1 tests load dynamic module; root entry integration separate. No conflicting requirements. Tasks1-3 internally consistent.
+Authorization: direct user autonomous implementation request and prior publication permission; no repeated design approval questions. No deferred findings.
+
+User steering accepted:18stages, autosave/reset only, expressive varied residents, more frequent dialogue, spear ground guards and staffed bow towers.
+Task1 author8f5f718:42campaign+19validation checks. Review1P2 wind destination; author assigned narrow fix.
+Task2 root:24UI checks pass.60logistics regression and12 gate/role cases pass. First real-pointer noresourceinjection house+hire27.3sec.3reviewP2s fixed with focused regression coverage.
+Ruling: one-card fallback on compact combo screens preserves readability, as user asks more chatter without an all-resident wall of speech.
+Ruling: title user gesture unlocks browser audio; autoplay without any gesture is not possible reliably. No separate music-enable UI.
+Ruling: existing installed audio generator is text-to-speech-only, unsuitable for requested SFX. Original local synthesis used, noRunway/no spending.
+Final holistic review:1P2 relationship loader capped200 while campaign supports300. Accepted and fixed social relationship/cooldown normalization to300; one scoped300resident migration/reload verification required before publication. Noothermustfix; artifactsource consistency confirmed.
+Final scoped rereview PASS at28128a6:300residents,900ties,300cooldowns preserved acrossactualmigration/reload;6checks. Finalreviewclosed. Nooutstandingmustfix. Official isolated host build rootSHA2569e37ebe37c75e07925cbe2e48566dbf8d07c3edaec638e6797dcee43b716aeea andartifactdda9c013160227e25a681955e7992a39c7b345a176bdbd6006589439eaeb8ffd unchanged frompre-edit. ReleaseSHA256403bb75631366b3e3960aace2ff21a19dc74085aab41840dc018639eda66e2bf,591215bytes.

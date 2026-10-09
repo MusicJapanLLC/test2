@@ -3,3 +3,6 @@ BUILD.warehouse.max=20;BUILD.hut.max=12;BUILD.lantern.max=8;BUILD.watchtower.max
 
 // Import Pocket once; a deliberate new-game reset must not resurrect the old village.
 if(!document.body.dataset.world)try{if(localStorage.getItem((document.body.dataset.save+'-imported')))delete document.body.dataset.importSave;else localStorage.setItem((document.body.dataset.save+'-imported'),'1')}catch{}
+
+// Caravans preserve existing inventory above the new town capacity. Spending still works.
+if(document.body.dataset.world){capResource=function(type){if(['wood','stone','food'].includes(type))state[type]=Number.isFinite(state[type])?Math.max(0,state[type]):0}}

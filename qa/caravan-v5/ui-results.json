@@ -1,0 +1,33 @@
+{
+  "checks": [
+    "title pauses simulation before first input",
+    "single start tap opens game and unlocks shared audio",
+    "original murmur plays with global overlap limiter",
+    "no spoken MP3 decoding or remote voice generation",
+    "no sound or speed switches",
+    "all eighteen destinations visible",
+    "production simulation visibly loads actual cargo",
+    "two expressive portrait speech bubbles visible",
+    "two dialogue cards do not overlap",
+    "compact screen hides second card if combo leaves insufficient room",
+    "authored paired dialogue data valid and substantial",
+    "handbook has each resident original portrait",
+    "manual save export/import removed from player UI",
+    "only automatic saves plus reset control remain",
+    "ground guard deals spear damage without shooting",
+    "tower fires only with living stationed guard",
+    "spearman routes through a gate instead of stalling across a nearby wall",
+    "ambient chatter reserves both participants until the contextual reply",
+    "nearby repair button pays once and applies biome remedy",
+    "autosave reload restores exact stage progress and resources",
+    "360 title start accessible without horizontal overflow",
+    "390 title start accessible without horizontal overflow",
+    "844 title start accessible without horizontal overflow",
+    "360 campaign sheet fits",
+    "390 campaign sheet fits",
+    "844 campaign sheet fits",
+    "no uncaught errors in real release []"
+  ],
+  "errors": [],
+  "notes": "Chromium mobile emulation. Cast/weather images use seeded fixtures with actual game rendering and production mechanics. No physical iPhone or subjective audio listening test."
+}

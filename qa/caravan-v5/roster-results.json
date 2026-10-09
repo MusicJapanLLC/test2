@@ -1,0 +1,38 @@
+{
+  "checks": 6,
+  "description": "Actual standalone migration/reload retains all 300 resident IDs, 300 relationship owners with three ties each, and 300 cooldown owners.",
+  "before": {
+    "residents": 300,
+    "relationshipOwners": 300,
+    "cooldownOwners": 300
+  },
+  "after": {
+    "stage": "rain",
+    "residents": 300,
+    "relationshipOwners": 300,
+    "cooldownOwners": 300
+  },
+  "lastOwner": {
+    "id": "roster-299",
+    "relationships": [
+      {
+        "id": "roster-0",
+        "score": 4,
+        "at": 99
+      },
+      {
+        "id": "roster-1",
+        "score": 3,
+        "at": 99
+      },
+      {
+        "id": "roster-2",
+        "score": 2,
+        "at": 99
+      }
+    ],
+    "cooldown": 105
+  },
+  "errors": [],
+  "notes": "Focused Chromium fixture with animation frozen; real serializer, validator, storage and boot normalization. No broad suite or production mutation."
+}
